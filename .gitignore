@@ -1,0 +1,10 @@
+# silvester files
+/silvester-angular/node_modules
+/silvester-angular/package-lock.json
+
+# silvester-node files
+/silvester-node/node_modules
+/silvester-node/package-lock.json
+
+# misc
+/.vscode/*
