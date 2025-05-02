@@ -11,7 +11,6 @@ async function createEntity(entity) {
     });
     return response.data;
   } catch (error) {
-    console.error('Error creating entity:', error.response?.data || error.message);
     throw error;
   }
 }
@@ -21,7 +20,6 @@ async function getEntities() {
     const response = await axios.get(`${ORION_URL}/entities`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching entities:', error.response?.data || error.message);
     throw error;
   }
 }

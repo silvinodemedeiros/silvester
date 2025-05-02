@@ -1,10 +1,22 @@
 # silvester files
-/silvester-angular/node_modules
-/silvester-angular/package-lock.json
+/angular/node_modules
+/angular/package-lock.json
 
-# silvester-node files
+# node files
 /silvester-node/node_modules
 /silvester-node/package-lock.json
 
+# weather files
+/silvester-feed/node_modules
+/silvester-feed/package-lock.json
+
+# node files
+/node/node_modules
+/node/package-lock.json
+
+# weather files
+/weather/node_modules
+/weather/package-lock.json
+
 # misc
-/.vscode/*
+*/.vscode*
