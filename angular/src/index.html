@@ -9,5 +9,18 @@
 </head>
 <body>
   <app-root></app-root>
+
+  <script>
+    // Optional: Allow spacebar to trigger focus feedback
+    document.querySelectorAll('[tabindex="0"]').forEach(el => {
+      el.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') {
+          e.preventDefault();
+          el.classList.add('focused');
+          setTimeout(() => el.classList.remove('focused'), 200);
+        }
+      });
+    });
+  </script>
 </body>
 </html>

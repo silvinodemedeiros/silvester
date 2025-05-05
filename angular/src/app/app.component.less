@@ -1,0 +1,119 @@
+/* styles.css */
+
+.layout {
+    display: grid;
+    grid-template-rows: 60px 1fr;
+    grid-template-columns: 240px 1fr;
+    grid-template-areas:
+        "topbar topbar"
+        "sidebar content";
+    height: 100vh;
+}
+
+.topbar {
+    grid-area: topbar;
+    background-color: #444;
+    /* Dark gray */
+    color: white;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar {
+    grid-area: sidebar;
+    background-color: #ccc;
+    /* Medium gray */
+    padding: 1rem;
+    border-right: 1px solid #bbb;
+}
+
+.content {
+    position: relative;
+    grid-area: content;
+    align-content: center;
+    background-color: #eee;
+    /* Light gray */
+    padding: 2rem;
+    background-image:
+        linear-gradient(to right, #fff 1px, transparent 1px),
+        linear-gradient(to bottom, #fff 1px, transparent 1px);
+    background-size: calc(40px - 0.5rem) calc(40px - 0.5rem);
+}
+
+/* Visual feedback when "space" is pressed */
+.focused {
+    outline: 2px solid #007acc;
+    box-shadow: 0 0 5px #007acc;
+}
+
+
+// WIDGET STYLES
+
+.widget-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: #f8f8f8;
+    border: 1px solid #ccc;
+    max-width: 200px;
+}
+
+.widget-item {
+    padding: 0.75rem;
+    background: #fff;
+    border: 1px solid #aaa;
+    cursor: grab;
+    user-select: none;
+    border-radius: 4px;
+    transition: background 0.2s;
+    margin: 0 0 .5rem 0;
+    text-transform: uppercase;
+    font-size: .8rem;
+}
+
+.widget-item:active {
+    cursor: grabbing;
+    background: #eaeaea;
+}
+
+.grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: .5rem;
+    width: 100%;
+    aspect-ratio: 6 / 3;
+}
+
+.cell {
+    background-color: white;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+
+.frosty {
+    background: rgba(193, 25, 25, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(220, 90, 90, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 4px 30px rgba(136, 106, 106, 0.1);
+}
+
+.widgets-wrapper {
+    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: .5rem;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 6 / 3;
+}

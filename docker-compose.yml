@@ -19,6 +19,7 @@ services:
     ports:
       - "1026:1026"
     command: ["-dbhost", "mongo-db"]
+    entrypoint: ["sh", "-c", "rm /tmp/contextBroker.pid; /usr/bin/contextBroker -fg -multiservice -dbhost localhost -logLevel DEBUG"]
     networks:
       - fiware
     environment:

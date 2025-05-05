@@ -1,1 +1,47 @@
-<h1>{{title}}</h1>
+
+<div
+  class="layout"
+  (dragover)="onDragOver($event, -1, -1)"
+  (drop)="onDrop($event, -1, -1)"
+  (dragleave)="onDragLeave()"
+>
+    <header class="topbar" role="banner" tabindex="0">Topbar</header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" role="complementary" tabindex="0">
+        @for (widgetItem of widgetItems; track widgetItem.content.id) {
+            <div
+              class="widget-item"
+              draggable="true"
+              (dragstart)="onDragStart($event, widgetItem)"
+            >
+              {{ widgetItem.content.label }}
+            </div>
+          }
+    </aside>
+
+    <!-- GRID -->
+    <main class="content" role="main" tabindex="0">
+      <div class="grid">
+        <div
+          *ngFor="let cell of cells"
+          class="cell"
+          (dragover)="onDragOver($event, cell.row, cell.col)"
+          (drop)="onDrop($event, cell.row, cell.col)"
+          (dragleave)="onDragLeave()"
+        ></div>
+        <div class="widgets-wrapper" *ngIf="!isDragging">
+          <div
+            *ngFor="let widget of widgets"
+            class="cell frosty"
+            [ngStyle]="{
+              'grid-area': (widget.row + 1) + '/' + (widget.col + 1) + '/ span ' + widget.content.width + '/ span ' + widget.content.height
+            }"
+            draggable="true"
+            (dragstart)="onDragStart($event, widget, true)"
+          ></div>
+        </div>
+      </div>
+    </main>
+</div>
+

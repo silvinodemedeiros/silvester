@@ -3,14 +3,6 @@
 /angular/package-lock.json
 
 # node files
-/silvester-node/node_modules
-/silvester-node/package-lock.json
-
-# weather files
-/silvester-feed/node_modules
-/silvester-feed/package-lock.json
-
-# node files
 /node/node_modules
 /node/package-lock.json
 
