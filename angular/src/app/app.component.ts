@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 interface Cell {
   row: number;
@@ -11,8 +12,11 @@ interface Cell {
 interface Widget {
   id: string;
   label: string;
+  type: string;
   width: number;
   height: number;
+  content?: object | null;
+  data?: object | null;
 }
 
 @Component({
@@ -23,7 +27,7 @@ interface Widget {
   ],
   styleUrl: './app.component.less'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'silvester';
   apiUrl = 'http://localhost:3000';
 
@@ -40,6 +44,7 @@ export class AppComponent implements OnInit {
   _widgets: Record<any, any> = {};
 
   isDragging = false;
+  subscription = new Subscription();
 
   get widgets() {
     return Object.values(this._widgets);
@@ -49,11 +54,48 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // EVENT SOURCE
+    
+    const eventSource = new EventSource('http://localhost:3000/events');
+    eventSource.onmessage = (event) => {
+      const notification = JSON.parse(event.data);
+      console.log('📡 Received event:', notification);
+    };
+
+
     for (let row = 0; row < this.rows; row++) {
       for (let col = 0; col < this.cols; col++) {
         this.cells.push({ row, col });
       }
     }
+
+    const widgetSub = this.httpClient.get<any>(this.apiUrl + '/').subscribe((response) => {
+      const widgetData = response[0];
+      console.log(widgetData);
+
+      this.widgetItems = Object.keys(widgetData).reduce((acc: any[], key, index) => {
+        if(typeof widgetData[key] === 'object') {
+          return [...acc, {
+            content: {
+              id: 'wi' + (index + 1),
+              type: widgetData[key].type,
+              label: key.replace('_', ' '),
+              width: 2,
+              height: 2
+            },
+            data: widgetData
+          }];
+        }
+
+        return acc;
+      }, []);
+    });
+
+    this.subscription.add(widgetSub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onDragStart(event: DragEvent, widget: any, moved = false): void {

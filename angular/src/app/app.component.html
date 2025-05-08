@@ -3,21 +3,20 @@
   class="layout"
   (dragover)="onDragOver($event, -1, -1)"
   (drop)="onDrop($event, -1, -1)"
-  (dragleave)="onDragLeave()"
 >
     <header class="topbar" role="banner" tabindex="0">Topbar</header>
 
     <!-- SIDEBAR -->
     <aside class="sidebar" role="complementary" tabindex="0">
         @for (widgetItem of widgetItems; track widgetItem.content.id) {
-            <div
-              class="widget-item"
-              draggable="true"
-              (dragstart)="onDragStart($event, widgetItem)"
-            >
-              {{ widgetItem.content.label }}
-            </div>
-          }
+          <div
+            class="widget-item"
+            draggable="true"
+            (dragstart)="onDragStart($event, widgetItem)"
+          >
+            {{ widgetItem.content.label }}
+          </div>
+        }
     </aside>
 
     <!-- GRID -->
@@ -25,7 +24,7 @@
       <div class="grid">
         <div
           *ngFor="let cell of cells"
-          class="cell"
+          class="cell frosty"
           (dragover)="onDragOver($event, cell.row, cell.col)"
           (drop)="onDrop($event, cell.row, cell.col)"
           (dragleave)="onDragLeave()"
