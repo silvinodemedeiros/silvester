@@ -47,8 +47,8 @@ async function updateSubscription(subscriptionId, subscription) {
 }
 
 module.exports = {
+  getEntities,
   createEntity,
   getSubscriptions,
   updateSubscription,
-  getEntities,
 };

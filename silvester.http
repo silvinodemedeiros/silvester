@@ -3,9 +3,6 @@
 ### Get Subscriptions
 GET {{host}}/subscriptions
 
-### Get Entities
-GET {{host}}/entities
-
 ### Update Subscription By Id
 PATCH {{host}}/subscriptions/update/681cf69aa6729eb6c403182b
 Content-Type: application/json
@@ -34,3 +31,6 @@ Content-Type: application/json
   },
   "expires": "2045-01-01T00:00:00Z"
 }
+
+### Get Entities
+GET {{host}}/entities

@@ -32,13 +32,19 @@
         <div class="widgets-wrapper" *ngIf="!isDragging">
           <div
             *ngFor="let widget of widgets"
-            class="cell frosty"
+            class="widget cell frosty"
             [ngStyle]="{
               'grid-area': (widget.row + 1) + '/' + (widget.col + 1) + '/ span ' + widget.content.width + '/ span ' + widget.content.height
             }"
             draggable="true"
             (dragstart)="onDragStart($event, widget, true)"
-          ></div>
+          >
+            <p class="widget-title">Clouds</p>
+            <p class="widget-value">40</p>
+            <p class="widget-icon">
+              <ng-icon name="bootstrapClouds"></ng-icon>
+            </p>
+          </div>
         </div>
       </div>
     </main>

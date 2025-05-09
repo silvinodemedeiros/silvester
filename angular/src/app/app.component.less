@@ -117,6 +117,36 @@
     height: 100%;
     aspect-ratio: 6 / 3;
 
+    .widget {
+        display: grid;
+        grid-template-rows: auto auto auto;
+        grid-template-areas: "title" "value" "icon";
+        grid-gap: 1rem;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+
+        & > * {
+            margin: 0;
+        }
+
+        &-title {
+            grid-area: title;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        &-value {
+            grid-area: value;
+            font-size: 3rem;
+        }
+
+        &-icon {
+            grid-area: icon;
+            font-size: 1.1rem;
+        }
+    }
+
     .frosty {
         background: rgba(255, 255, 255, 1);
         box-shadow: 0 4px 30px rgba(39, 39, 39, 0.25);

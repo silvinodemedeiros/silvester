@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { bootstrapClouds } from '@ng-icons/bootstrap-icons';
 
 interface Cell {
   row: number;
@@ -23,7 +25,11 @@ interface Widget {
   selector: 'app-root',
   templateUrl: './app.component.html',
   imports: [
-    CommonModule
+    CommonModule,
+    NgIcon
+  ],
+  providers: [
+    provideIcons({bootstrapClouds})
   ],
   styleUrl: './app.component.less'
 })
