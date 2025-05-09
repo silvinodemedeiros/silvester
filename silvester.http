@@ -1,0 +1,36 @@
+@host = http://localhost:3000
+
+### Get Subscriptions
+GET {{host}}/subscriptions
+
+### Get Entities
+GET {{host}}/entities
+
+### Update Subscription By Id
+PATCH {{host}}/subscriptions/update/681cf69aa6729eb6c403182b
+Content-Type: application/json
+
+{
+  "subject": {
+    "entities": [
+      {
+        "id": "WeatherObserved:0001",
+        "type": "WeatherObserved"
+      }
+    ],
+    "condition": {
+      "attrs": [
+        "clouds", "dew_point", "dt", "feels_like", "humidity", "pressure", "sunrise", "sunset", "temp", "timezone", "timezone_offset", "uvi", "visibility", "wind_deg", "wind_speed"
+      ]
+    }
+  },
+  "notification": {
+    "http": {
+      "url": "http://host.docker.internal:3000/notify"
+    },
+    "attrs": [
+      "clouds", "dew_point", "dt", "feels_like", "humidity", "pressure", "sunrise", "sunset", "temp", "timezone", "timezone_offset", "uvi", "visibility", "wind_deg", "wind_speed"
+    ]
+  },
+  "expires": "2045-01-01T00:00:00Z"
+}

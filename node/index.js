@@ -12,8 +12,18 @@ app.use(cors());
 // app.use(express.json());
 app.use(bodyParser.json());
 
+// get all orion entities
+app.get('/entities', async (req, res) => {
+  try {
+    const result = await orionService.getEntities();
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(500).json({ error: 'Could not get entity' });
+  }
+});
+
 // creates orion entity
-app.post('/', async (req, res) => {
+app.post('/entities', async (req, res) => {
   try {
     const entity = req.body;
     const result = await orionService.createEntity(entity);
@@ -23,13 +33,26 @@ app.post('/', async (req, res) => {
   }
 });
 
-// get all orion entities
-app.get('/', async (req, res) => {
+// get all orion subscriptions
+app.get('/subscriptions', async (req, res) => {
   try {
-    const result = await orionService.getEntities();
+    const result = await orionService.getSubscriptions();
     res.status(201).json(result);
   } catch (err) {
     res.status(500).json({ error: 'Could not get entity' });
+  }
+});
+
+// updates orion subscriptions
+app.patch('/subscriptions/update/:subscriptionId', async (req, res) => {
+  try {
+    const id = req.params.subscriptionId;
+    const subscription = req.body;
+    const result = await orionService.updateSubscription(id, subscription);
+    res.status(201).json(result);
+  } catch (err) {
+    const {status, message, stack, code} = err;
+    res.status(500).json({status, message, stack, code});
   }
 });
 
@@ -58,9 +81,6 @@ app.get('/events', (req, res) => {
 // get orion POST notification from subscription
 app.post('/notify', async (req, res) => {
   try {
-    console.log('Received notification from Orion:');
-    console.log(JSON.stringify(req.body, null, 2));
-
     // Send to all connected Angular clients
     clients.forEach(client => {
       client.write(`data: ${JSON.stringify(req.body)}\n\n`);

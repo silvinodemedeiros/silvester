@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     }
 
-    const widgetSub = this.httpClient.get<any>(this.apiUrl + '/').subscribe((response) => {
+    const widgetSub = this.httpClient.get<any>(this.apiUrl + '/entities').subscribe((response) => {
       const widgetData = response[0];
       console.log(widgetData);
 
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit, OnDestroy {
             content: {
               id: 'wi' + (index + 1),
               type: widgetData[key].type,
-              label: key.replace('_', ' '),
+              label: key,
               width: 2,
               height: 2
             },
