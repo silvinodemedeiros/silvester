@@ -8,13 +8,13 @@
 
     <!-- SIDEBAR -->
     <aside class="sidebar" role="complementary" tabindex="0">
-        @for (widgetItem of widgetItems; track widgetItem.content.id) {
+        @for (widgetItem of widgetItems; track widgetItem.item.id) {
           <div
             class="widget-item"
             draggable="true"
             (dragstart)="onDragStart($event, widgetItem)"
           >
-            {{ widgetItem.content.label }}
+            {{ widgetItem.item.label }}
           </div>
         }
     </aside>
@@ -34,13 +34,13 @@
             *ngFor="let widget of widgets"
             class="widget cell frosty"
             [ngStyle]="{
-              'grid-area': (widget.row + 1) + '/' + (widget.col + 1) + '/ span ' + widget.content.width + '/ span ' + widget.content.height
+              'grid-area': (widget.row + 1) + '/' + (widget.col + 1) + '/ span ' + widget.item.width + '/ span ' + widget.item.height
             }"
             draggable="true"
             (dragstart)="onDragStart($event, widget, true)"
           >
-            <p class="widget-title">Clouds</p>
-            <p class="widget-value">40</p>
+            <p class="widget-title">{{ widget.item.label}}</p>
+            <p class="widget-value">{{ widget.data.value }}</p>
             <p class="widget-icon">
               <ng-icon name="bootstrapClouds"></ng-icon>
             </p>
