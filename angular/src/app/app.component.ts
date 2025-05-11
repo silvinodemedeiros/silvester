@@ -67,6 +67,10 @@ export class AppComponent implements OnInit, OnDestroy {
     
     const widgetSource = new EventSource('http://localhost:3000/events');
     widgetSource.onmessage = (event) => {
+      /* 
+          BEWARE!!!
+          - See https://github.com/silvinodemedeiros/silvester/issues/9
+      */
       const widgetSourceObj = JSON.parse(event.data).data[0];
       console.log('📡 Received event:', widgetSourceObj);
 
@@ -132,10 +136,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
       return acc;
     }, []);
-  }
-
-  updateWidgetByLabel(label: string) {
-
   }
 
   onDragStart(event: DragEvent, widget: any, moved = false): void {
