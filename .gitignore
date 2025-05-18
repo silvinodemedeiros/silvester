@@ -5,10 +5,10 @@
 # node files
 /node/node_modules
 /node/package-lock.json
-
 # weather files
-/weather/node_modules
-/weather/package-lock.json
+/node/weather/node_modules
+/node/weather/package-lock.json
+
 
 # misc
 */.vscode*
