@@ -65,7 +65,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // EVENT SOURCE
     
-    const widgetSource = new EventSource('http://localhost:3000/events');
+    const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
       const widgetSourceObj = JSON.parse(event.data).data[0];
 

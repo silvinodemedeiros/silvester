@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const orionService = require('./orion.service');
-const weatherService = require('../weather/weather.service');
+const weatherService = require('./weather/weather.service');
 const app = express();
 
 const PORT = 3000;
