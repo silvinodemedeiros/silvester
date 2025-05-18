@@ -24,6 +24,19 @@ async function createEntity(entity) {
   }
 }
 
+async function updateEntity(updateBody, entityId) {
+  try {
+    const requestUrl = `${ORION_URL}/entities/${entityId}/attrs`;
+    const response = await axios.patch(requestUrl, updateBody, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  } catch (error) {
+    console.error('Error updating entity:', error.response?.data || error.message);
+  }
+}
+
 async function getSubscriptions() {
   try {
     const response = await axios.get(`${ORION_URL}/subscriptions`);
@@ -49,6 +62,7 @@ async function updateSubscription(subscriptionId, subscription) {
 module.exports = {
   getEntities,
   createEntity,
+  updateEntity,
   getSubscriptions,
   updateSubscription,
 };

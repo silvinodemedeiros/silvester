@@ -42,7 +42,7 @@
             <p class="widget-title">{{ widget.item.label}}</p>
             <p class="widget-value">{{ widget.data.value }}</p>
             <p class="widget-icon">
-              <ng-icon name="bootstrapClouds"></ng-icon>
+              <ng-icon [name]="widget.data.metadata.icon.value"></ng-icon>
             </p>
           </div>
         </div>

@@ -23,10 +23,10 @@ app.get('/entities', async (req, res) => {
 });
 
 // creates orion entity
-app.post('/entities', async (req, res) => {
+app.patch('/entities/:id', async (req, res) => {
   try {
-    const entity = req.body;
-    const result = await orionService.createEntity(entity);
+    const id = req.params.id;
+    const result = await orionService.updateEntity(req.body, id);
     res.status(201).json(result);
   } catch (err) {
     res.status(500).json({ error: 'Could not create entity' });

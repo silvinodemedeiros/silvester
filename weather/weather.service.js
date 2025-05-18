@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { ICON_METADATA } = require('./utils');
 
 const lat = '-5.891076';
 const lon = '-35.228625';
@@ -19,7 +20,10 @@ function generateOrionEntity(weatherObject) {
       ...acc,
       [key]: {
         value: value,
-        type: "Number"
+        type: "Number",
+        metadata: {
+          icon: {...ICON_METADATA[key]}
+        }
       }
     };
   }, {
@@ -27,11 +31,17 @@ function generateOrionEntity(weatherObject) {
     type: "WeatherObserved",
     timezone: {
       type: "Timezone",
-      value: timezone
+      value: timezone,
+      metadata: {
+        icon: {...ICON_METADATA['timezone']}
+      }
     },
     timezone_offset: {
       type: "TimezoneOffset",
-      value: timezone_offset
+      value: timezone_offset,
+      metadata: {
+        icon: {...ICON_METADATA['timezone_offset']}
+      }
     }
   });
 }

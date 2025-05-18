@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { bootstrapClouds } from '@ng-icons/bootstrap-icons';
+import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
 
 interface Cell {
   row: number;
@@ -30,7 +30,7 @@ interface Widget {
     NgIcon
   ],
   providers: [
-    provideIcons({bootstrapClouds})
+    provideIcons(bootstrapIcons)
   ],
   styleUrl: './app.component.less'
 })
@@ -67,12 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
     
     const widgetSource = new EventSource('http://localhost:3000/events');
     widgetSource.onmessage = (event) => {
-      /* 
-          BEWARE!!!
-          - See https://github.com/silvinodemedeiros/silvester/issues/9
-      */
       const widgetSourceObj = JSON.parse(event.data).data[0];
-      console.log('📡 Received event:', widgetSourceObj);
 
       // update widgetItems data
       this.updateWidgetItems(widgetSourceObj);
@@ -92,9 +87,7 @@ export class AppComponent implements OnInit, OnDestroy {
           };
         }
       });
-
-      console.log('widget after message', this._widgets);
-      console.log('widgetItems after message', this.widgetItems);
+      
       this.cd.detectChanges();
     };
 
@@ -109,7 +102,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const widgetObject = response[0];
       this.updateWidgetItems(widgetObject);
 
-      console.log('widget items', this.widgetItems);
+      console.log(widgetObject);
     });
 
     this.subscription.add(widgetSub);
@@ -187,8 +180,6 @@ export class AppComponent implements OnInit, OnDestroy {
       const widgetKey = `${widget.row}${widget.col}`;
       delete this._widgets[widgetKey];
     }
-
-    console.log('widgets', this._widgets);
   }
 
   onDragLeave(): void {
