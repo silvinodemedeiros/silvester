@@ -25,10 +25,16 @@
         <div
           *ngFor="let cell of cells"
           class="cell frosty"
+          [ngClass]="{
+            'cell': true,
+            'frosty': true,
+            'has-preview': previewWidget && hasPreview(cell.row, cell.col)
+          }"
           (dragover)="onDragOver($event, cell.row, cell.col)"
           (drop)="onDrop($event, cell.row, cell.col)"
           (dragleave)="onDragLeave()"
         ></div>
+        
         <div class="widgets-wrapper" *ngIf="!isDragging">
           <div
             *ngFor="let widget of widgets"

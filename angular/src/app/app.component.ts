@@ -53,6 +53,8 @@ export class AppComponent implements OnInit, OnDestroy {
   isDragging = false;
   subscription = new Subscription();
 
+  previewWidget: any = null;
+
   get widgets() {
     return Object.values(this._widgets);
   }
@@ -63,8 +65,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // EVENT SOURCE
     
+    // EVENT SOURCE - receives events from backend
     const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
       const widgetSourceObj = JSON.parse(event.data).data[0];
@@ -98,6 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     }
 
+    // populates widgets with first item
     const widgetSub = this.httpClient.get<any>(this.apiUrl + '/entities').subscribe((response) => {
       const widgetObject = response[0];
       this.updateWidgetItems(widgetObject);
@@ -110,6 +113,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  hasPreview(cellRow: number, cellCol: number): boolean {
+    const {width, height} = this.previewWidget.item;
+    const {row, col} = this.previewWidget;
+
+    return (
+      cellRow >= row && cellRow < row + width &&
+      cellCol >= col && cellCol < col + height
+    );
   }
 
   updateWidgetItems(widgetsObject: any) {
@@ -139,6 +152,9 @@ export class AppComponent implements OnInit, OnDestroy {
       ...widget,
       moved
     };
+
+    // populates preview widget
+    this.previewWidget = {...widget};
     
     if (event.dataTransfer) {
       event.dataTransfer.setData('application/json', JSON.stringify(widget));
@@ -148,10 +164,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onDragOver(event: DragEvent, row: number, col: number): void {
     event.preventDefault();
-    const data = event.dataTransfer?.getData('application/json');
-    if (!data) return;
 
-    const widget = JSON.parse(data);
+    // updates drop preview (with (-1, -1) as invalid)
+    if (
+      row != -1 && col != -1 && 
+      (this.previewWidget?.row != row || this.previewWidget?.col != col)
+    ) {
+      this.previewWidget = {
+        ...this.previewWidget,
+        row,
+        col
+      };
+    }
   }
 
   onDrop(event: DragEvent, row: number, col: number): void {
@@ -164,8 +188,8 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // populates _widgets array
     const widget = JSON.parse(data);
-
     this._widgets = {
       ...this._widgets,
       [`${row}${col}`]: {
@@ -176,10 +200,14 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     };
 
+    // if widget as moved instead of added, delete previous widget
     if (widget.moved) {
       const widgetKey = `${widget.row}${widget.col}`;
       delete this._widgets[widgetKey];
     }
+
+    // cleans up after drop
+    this.previewWidget = null;
   }
 
   onDragLeave(): void {
