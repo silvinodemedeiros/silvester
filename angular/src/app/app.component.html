@@ -8,15 +8,15 @@
 
     <!-- SIDEBAR -->
     <aside class="sidebar" role="complementary" tabindex="0">
-        @for (widgetItem of widgetItems; track widgetItem.item.id) {
-          <div
-            class="widget-item"
-            draggable="true"
-            (dragstart)="onDragStart($event, widgetItem)"
-          >
-            {{ widgetItem.item.label }}
-          </div>
-        }
+      @for (widgetItem of widgetItems; track widgetItem?.item.id) {
+        <div
+          class="widget-item"
+          draggable="true"
+          (dragstart)="onDragStart($event, widgetItem)"
+        >
+          {{ widgetItem?.item.label }}
+        </div>
+      }
     </aside>
 
     <!-- GRID -->
@@ -47,7 +47,7 @@
           >
             <p class="widget-title">{{ widget.item.label}}</p>
             <span class="widget-value">
-              {{ widget.data.value }}
+              {{ widget | widgetValue }}
               <span class="widget-value-suffix">
                 {{ widget.data.metadata.measures?.value | widgetSuffix }}
               </span>

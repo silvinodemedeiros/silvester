@@ -32,6 +32,7 @@ async function updateEntity(updateBody, entityId) {
         'Content-Type': 'application/json'
       }
     });
+    return response.data;
   } catch (error) {
     console.error('Error updating entity:', error.response?.data || error.message);
   }

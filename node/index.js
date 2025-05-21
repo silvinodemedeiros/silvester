@@ -100,8 +100,9 @@ app.listen(PORT, () => {
 
     const orionEntity = weatherService.generateOrionEntity(localWeather);
 
-    orionService.createEntity(orionEntity).then((result) => {
-      console.log(result);
-    }, error => console.log(error.response?.status, error.response?.data));
+    orionService.createEntity(orionEntity).then(
+      (result) => console.log(result), 
+      (error) => console.log(error.response?.status, error.response?.data)
+    );
   });
 });

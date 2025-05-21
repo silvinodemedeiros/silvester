@@ -16,13 +16,13 @@ export class WidgetSuffixPipe implements PipeTransform {
         suffix = '°C';
         break;
       case 'distance':
-        suffix = 'm';
+        suffix = 'km';
         break;
       case 'hectoPascal':
         suffix = 'hPa';
         break;
-      case 'angle':
-        suffix = '°';
+      case 'velocity':
+        suffix = 'm/s';
         break;
       default:
         suffix = '';

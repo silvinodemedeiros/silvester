@@ -1,10 +1,11 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
 import { WidgetSuffixPipe } from './pipes/widget-suffix/widget-suffix.pipe';
+import { WidgetValuePipe } from './pipes/widget-value/widget-value.pipe';
 
 interface Cell {
   row: number;
@@ -29,9 +30,11 @@ interface Widget {
   imports: [
     CommonModule,
     NgIcon,
-    WidgetSuffixPipe
+    WidgetSuffixPipe,
+    WidgetValuePipe
   ],
   providers: [
+    DatePipe,
     provideIcons(bootstrapIcons)
   ],
   styleUrl: './app.component.less'
@@ -40,11 +43,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'silvester';
   apiUrl = 'http://localhost:3000';
 
-  widgetItems = [
-    {item: { id: 'w1', label: 'Chart', width: 2, height: 2 }},
-    {item: { id: 'w2', label: 'Table', width: 3, height: 1 }},
-    {item: { id: 'w3', label: 'Text Box', width: 2, height: 1 }},
-  ];
+  widgetItems: any[] = [];
 
   rows = 6;
   cols = 12;
@@ -107,7 +106,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const widgetObject = response[0];
       this.updateWidgetItems(widgetObject);
 
-      console.log(widgetObject);
+      // console.log(widgetObject);
     });
 
     this.subscription.add(widgetSub);
@@ -206,6 +205,8 @@ export class AppComponent implements OnInit, OnDestroy {
         data: {...widget.data}
       }
     };
+
+    console.log(this.widgets[this.widgets.length - 1]);
 
     // if widget as moved instead of added, delete previous widget
     if (widget.moved) {

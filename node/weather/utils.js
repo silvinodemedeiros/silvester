@@ -4,11 +4,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapClouds',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'percentage',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -17,24 +17,24 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapDropletHalf',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'temperature',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
     dt: {
-        type: 'Integer',
+        type: 'Time',
         metadata: {
             icon: {
                 value: 'bootstrapWatch',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'time',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -43,11 +43,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapEmojiSunglasses',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'temperature',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -56,11 +56,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapDroplet',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'percentage',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -69,11 +69,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapChevronBarDown',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'hectoPascal',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -82,11 +82,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapSunrise',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'time',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -95,11 +95,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapSunset',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'time',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -108,11 +108,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapThermometerHalf',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'temperature',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -121,24 +121,24 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapClock',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'timezone',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
     timezone_offset: {
-        type: 'Integer',
+        type: 'TimezoneOffset',
         metadata: {
             icon: {
                 value: 'bootstrapClockFill',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
-                value: 'offset',
-                type: 'ClimateValueUnit'
+                value: 'timezoneOffset',
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -147,11 +147,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapArrowDownRight',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'numeric',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -160,11 +160,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapEye',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'distance',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -173,11 +173,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapArrowsMove',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'angle',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -186,11 +186,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapWind',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'velocity',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
@@ -199,11 +199,11 @@ const WEATHER_DATA = {
         metadata: {
             icon: {
                 value: 'bootstrapWind',
-                type: 'ClimateIconName'
+                type: 'WeatherIconName'
             },
             measures: {
                 value: 'velocity',
-                type: 'ClimateValueUnit'
+                type: 'WeatherValueUnit'
             }
         }
     },
