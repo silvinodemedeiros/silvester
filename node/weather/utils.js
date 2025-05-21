@@ -1,66 +1,214 @@
-const ICON_METADATA = {
+const WEATHER_DATA = {
     clouds: {
-        value: 'bootstrapClouds',
-        type: 'ClimateIconName'
+        type: 'Integer',
+        metadata: {
+            icon: {
+                value: 'bootstrapClouds',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'percentage',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     dew_point: {
-        value: 'bootstrapDropletHalf',
-        type: 'ClimateIconName'
+        type: 'Float',
+        metadata: {
+            icon: {
+                value: 'bootstrapDropletHalf',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'temperature',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     dt: {
-        value: 'bootstrapWatch',
-        type: 'ClimateIconName'
+        type: 'Integer',
+        metadata: {
+            icon: {
+                value: 'bootstrapWatch',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'time',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     feels_like: {
-        value: 'bootstrapEmojiSunglasses',
-        type: 'ClimateIconName'
+        type: 'Float',
+        metadata: {
+            icon: {
+                value: 'bootstrapEmojiSunglasses',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'temperature',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     humidity: {
-        value: 'bootstrapDroplet',
-        type: 'ClimateIconName'
+        type: 'Integer',
+        metadata: {
+            icon: {
+                value: 'bootstrapDroplet',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'percentage',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     pressure: {
-        value: 'bootstrapChevronBarDown',
-        type: 'ClimateIconName'
+        type: 'Integer',
+        metadata: {
+            icon: {
+                value: 'bootstrapChevronBarDown',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'hectoPascal',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     sunrise: {
-        value: 'bootstrapSunrise',
-        type: 'ClimateIconName'
+        type: 'Integer',
+        metadata: {
+            icon: {
+                value: 'bootstrapSunrise',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'time',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     sunset: {
-        value: 'bootstrapSunset',
-        type: 'ClimateIconName'
+        type: 'Integer',
+        metadata: {
+            icon: {
+                value: 'bootstrapSunset',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'time',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     temp: {
-        value: 'bootstrapThermometerHalf',
-        type: 'ClimateIconName'
+        type: 'Float',
+        metadata: {
+            icon: {
+                value: 'bootstrapThermometerHalf',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'temperature',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     timezone: {
-        value: 'bootstrapClock',
-        type: 'ClimateIconName'
+        type: 'Timezone',
+        metadata: {
+            icon: {
+                value: 'bootstrapClock',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'timezone',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     timezone_offset: {
-        value: 'bootstrapClockFill',
-        type: 'ClimateIconName'
+        type: 'Integer',
+        metadata: {
+            icon: {
+                value: 'bootstrapClockFill',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'offset',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     uvi: {
-        value: 'bootstrapArrowDownRight',
-        type: 'ClimateIconName'
+        type: 'Integer',
+        metadata: {
+            icon: {
+                value: 'bootstrapArrowDownRight',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'numeric',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     visibility: {
-        value: 'bootstrapEye',
-        type: 'ClimateIconName'
+        type: 'Float',
+        metadata: {
+            icon: {
+                value: 'bootstrapEye',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'distance',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     wind_deg: {
-        value: 'bootstrapArrowsMove',
-        type: 'ClimateIconName'
+        type: 'Float',
+        metadata: {
+            icon: {
+                value: 'bootstrapArrowsMove',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'angle',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
     wind_speed: {
-        value: 'bootstrapWind',
-        type: 'ClimateIconName'
+        type: 'Float',
+        metadata: {
+            icon: {
+                value: 'bootstrapWind',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'velocity',
+                type: 'ClimateValueUnit'
+            }
+        }
+    },
+    wind_gust: {
+        type: 'Float',
+        metadata: {
+            icon: {
+                value: 'bootstrapWind',
+                type: 'ClimateIconName'
+            },
+            measures: {
+                value: 'velocity',
+                type: 'ClimateValueUnit'
+            }
+        }
     },
 };
 
 module.exports = {
-    ICON_METADATA
+    WEATHER_DATA
 };

@@ -34,7 +34,7 @@
           (drop)="onDrop($event, cell.row, cell.col)"
           (dragleave)="onDragLeave()"
         ></div>
-        
+
         <div class="widgets-wrapper" *ngIf="!isDragging">
           <div
             *ngFor="let widget of widgets"
@@ -46,7 +46,12 @@
             (dragstart)="onDragStart($event, widget, true)"
           >
             <p class="widget-title">{{ widget.item.label}}</p>
-            <p class="widget-value">{{ widget.data.value }}</p>
+            <span class="widget-value">
+              {{ widget.data.value }}
+              <span class="widget-value-suffix">
+                {{ widget.data.metadata.measures?.value | widgetSuffix }}
+              </span>
+            </span>
             <p class="widget-icon">
               <ng-icon [name]="widget.data.metadata.icon.value"></ng-icon>
             </p>

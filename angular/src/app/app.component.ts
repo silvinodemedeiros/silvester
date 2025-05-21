@@ -4,6 +4,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
+import { WidgetSuffixPipe } from './pipes/widget-suffix/widget-suffix.pipe';
 
 interface Cell {
   row: number;
@@ -27,7 +28,8 @@ interface Widget {
   templateUrl: './app.component.html',
   imports: [
     CommonModule,
-    NgIcon
+    NgIcon,
+    WidgetSuffixPipe
   ],
   providers: [
     provideIcons(bootstrapIcons)
@@ -183,8 +185,13 @@ export class AppComponent implements OnInit, OnDestroy {
     event.preventDefault();
     const data = event.dataTransfer?.getData('application/json');
 
+
     if (!(row >= 0 && col >= 0) || !data) {
       this.isDragging = false;
+      
+      // cleans up after drop
+      this.previewWidget = null;
+      
       return;
     }
 

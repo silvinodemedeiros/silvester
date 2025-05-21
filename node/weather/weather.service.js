@@ -1,11 +1,11 @@
 const axios = require('axios');
-const { ICON_METADATA } = require('./utils');
+const { WEATHER_DATA } = require('./utils');
 
 const lat = '-5.891076';
 const lon = '-35.228625';
 const apiKey = '65e9a19e408ce1c1f36a942069007c41';
 const API_URL_ROOT = 'https://api.openweathermap.org/data/3.0/onecall?';
-const WEATHER_API_URL = `${API_URL_ROOT}&exclude=minutely,hourly,daily&lat=${lat}&lon=${lon}&appid=${apiKey}`;
+const WEATHER_API_URL = `${API_URL_ROOT}&units=metric&exclude=minutely,hourly,daily&lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
 function generateOrionEntity(weatherObject) {
   
@@ -20,28 +20,22 @@ function generateOrionEntity(weatherObject) {
       ...acc,
       [key]: {
         value: value,
-        type: "Number",
-        metadata: {
-          icon: {...ICON_METADATA[key]}
-        }
+        type: WEATHER_DATA[key].type,
+        metadata: {...WEATHER_DATA[key].metadata}
       }
     };
   }, {
     id: "WeatherObserved:0001",
     type: "WeatherObserved",
     timezone: {
-      type: "Timezone",
+      type: WEATHER_DATA['timezone'].type,
       value: timezone,
-      metadata: {
-        icon: {...ICON_METADATA['timezone']}
-      }
+      metadata: {...WEATHER_DATA['timezone'].metadata}
     },
     timezone_offset: {
-      type: "TimezoneOffset",
+      type: WEATHER_DATA['timezone_offset'].type,
       value: timezone_offset,
-      metadata: {
-        icon: {...ICON_METADATA['timezone_offset']}
-      }
+      metadata: {...WEATHER_DATA['timezone_offset'].metadata}
     }
   });
 }
