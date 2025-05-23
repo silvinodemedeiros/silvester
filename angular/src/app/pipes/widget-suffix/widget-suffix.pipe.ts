@@ -15,6 +15,9 @@ export class WidgetSuffixPipe implements PipeTransform {
       case 'temperature':
         suffix = '°C';
         break;
+      case 'angle':
+        suffix = '°';
+        break;
       case 'distance':
         suffix = 'km';
         break;

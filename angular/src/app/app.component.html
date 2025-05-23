@@ -4,7 +4,7 @@
   (dragover)="onDragOver($event, -1, -1)"
   (drop)="onDrop($event, -1, -1)"
 >
-    <header class="topbar" role="banner" tabindex="0">Topbar</header>
+    <header class="topbar" role="banner" tabindex="0">Silvester</header>
 
     <!-- SIDEBAR -->
     <aside class="sidebar" role="complementary" tabindex="0">
@@ -45,7 +45,9 @@
             draggable="true"
             (dragstart)="onDragStart($event, widget, true)"
           >
-            <p class="widget-title">{{ widget.item.label}}</p>
+            <p class="widget-title">
+              {{ widget.data.metadata.title?.value }}
+            </p>
             <span class="widget-value">
               {{ widget | widgetValue }}
               <span class="widget-value-suffix">

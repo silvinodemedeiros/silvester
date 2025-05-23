@@ -20,6 +20,7 @@ export class WidgetValuePipe implements PipeTransform {
     
     let resultValue;
     const valueType = widget.data.metadata.measures?.value;
+    const dataType = widget.data.type;
 
     switch(valueType) {
       case 'time':
@@ -33,6 +34,15 @@ export class WidgetValuePipe implements PipeTransform {
         break;
       default:
         resultValue = widget.data.value;
+        break;
+    }
+
+    switch(dataType) {
+      case 'Integer':
+        resultValue = parseInt(resultValue, 10);
+        break;
+      case 'Float':
+        resultValue = parseFloat(resultValue).toFixed(1);
         break;
     }
 

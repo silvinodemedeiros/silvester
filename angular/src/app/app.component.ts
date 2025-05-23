@@ -133,7 +133,7 @@ export class AppComponent implements OnInit, OnDestroy {
           item: {
             id: 'wi' + (index + 1),
             type: widgetsObject[key].type,
-            label: key,
+            label: widgetsObject[key].metadata.title.value,
             width: 2,
             height: 2
           },

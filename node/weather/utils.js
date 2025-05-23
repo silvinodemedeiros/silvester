@@ -2,6 +2,10 @@ const WEATHER_DATA = {
     clouds: {
         type: 'Integer',
         metadata: {
+            title: {
+                value: 'Clouds',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapClouds',
                 type: 'WeatherIconName'
@@ -15,6 +19,10 @@ const WEATHER_DATA = {
     dew_point: {
         type: 'Float',
         metadata: {
+            title: {
+                value: 'Dew Point',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapDropletHalf',
                 type: 'WeatherIconName'
@@ -28,6 +36,10 @@ const WEATHER_DATA = {
     dt: {
         type: 'Time',
         metadata: {
+            title: {
+                value: 'Current Time',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapWatch',
                 type: 'WeatherIconName'
@@ -41,6 +53,10 @@ const WEATHER_DATA = {
     feels_like: {
         type: 'Float',
         metadata: {
+            title: {
+                value: 'Feels Like',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapEmojiSunglasses',
                 type: 'WeatherIconName'
@@ -54,6 +70,10 @@ const WEATHER_DATA = {
     humidity: {
         type: 'Integer',
         metadata: {
+            title: {
+                value: 'Humidity',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapDroplet',
                 type: 'WeatherIconName'
@@ -67,6 +87,10 @@ const WEATHER_DATA = {
     pressure: {
         type: 'Integer',
         metadata: {
+            title: {
+                value: 'Pressure',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapChevronBarDown',
                 type: 'WeatherIconName'
@@ -80,6 +104,10 @@ const WEATHER_DATA = {
     sunrise: {
         type: 'Integer',
         metadata: {
+            title: {
+                value: 'Sunrise',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapSunrise',
                 type: 'WeatherIconName'
@@ -93,6 +121,10 @@ const WEATHER_DATA = {
     sunset: {
         type: 'Integer',
         metadata: {
+            title: {
+                value: 'Sunset',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapSunset',
                 type: 'WeatherIconName'
@@ -106,6 +138,10 @@ const WEATHER_DATA = {
     temp: {
         type: 'Float',
         metadata: {
+            title: {
+                value: 'Temperature',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapThermometerHalf',
                 type: 'WeatherIconName'
@@ -119,6 +155,10 @@ const WEATHER_DATA = {
     timezone: {
         type: 'Timezone',
         metadata: {
+            title: {
+                value: 'Timezone',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapClock',
                 type: 'WeatherIconName'
@@ -132,6 +172,10 @@ const WEATHER_DATA = {
     timezone_offset: {
         type: 'TimezoneOffset',
         metadata: {
+            title: {
+                value: 'Timezone Offset',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapClockFill',
                 type: 'WeatherIconName'
@@ -143,14 +187,18 @@ const WEATHER_DATA = {
         }
     },
     uvi: {
-        type: 'Integer',
+        type: 'Float',
         metadata: {
+            title: {
+                value: 'UVI',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapArrowDownRight',
                 type: 'WeatherIconName'
             },
             measures: {
-                value: 'numeric',
+                value: 'angle',
                 type: 'WeatherValueUnit'
             }
         }
@@ -158,6 +206,10 @@ const WEATHER_DATA = {
     visibility: {
         type: 'Float',
         metadata: {
+            title: {
+                value: 'Visibility',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapEye',
                 type: 'WeatherIconName'
@@ -171,6 +223,10 @@ const WEATHER_DATA = {
     wind_deg: {
         type: 'Float',
         metadata: {
+            title: {
+                value: 'Wind Angle',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapArrowsMove',
                 type: 'WeatherIconName'
@@ -184,6 +240,10 @@ const WEATHER_DATA = {
     wind_speed: {
         type: 'Float',
         metadata: {
+            title: {
+                value: 'Wind Speed',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapWind',
                 type: 'WeatherIconName'
@@ -197,6 +257,10 @@ const WEATHER_DATA = {
     wind_gust: {
         type: 'Float',
         metadata: {
+            title: {
+                value: 'Wind Gust',
+                type: 'WeatherTitle'
+            },
             icon: {
                 value: 'bootstrapWind',
                 type: 'WeatherIconName'
