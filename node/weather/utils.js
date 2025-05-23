@@ -102,7 +102,7 @@ const WEATHER_DATA = {
         }
     },
     sunrise: {
-        type: 'Integer',
+        type: 'Time',
         metadata: {
             title: {
                 value: 'Sunrise',
@@ -119,7 +119,7 @@ const WEATHER_DATA = {
         }
     },
     sunset: {
-        type: 'Integer',
+        type: 'Time',
         metadata: {
             title: {
                 value: 'Sunset',

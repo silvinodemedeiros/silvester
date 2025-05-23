@@ -48,8 +48,7 @@
     box-shadow: 0 0 5px #007acc;
 }
 
-
-// WIDGET STYLES
+// SIDEBAR
 
 .widget-list {
     display: flex;
@@ -68,15 +67,30 @@
     cursor: grab;
     user-select: none;
     border-radius: 4px;
-    transition: background 0.2s;
+    text-transform: uppercase;
     margin: 0 0 .5rem 0;
-    font-size: .8rem;
+    font-size: .7rem;
+
+    &-button {
+        cursor: pointer;
+        text-align: center;
+
+        &:hover {
+            border: 1px solid red;
+        }
+        
+        &:active {
+            cursor: pointer;
+        }
+    }
 }
 
 .widget-item:active {
     cursor: grabbing;
     background: #eaeaea;
 }
+
+// GRID
 
 .grid {
     position: relative;
@@ -109,6 +123,8 @@
     border-radius: 12px;
     box-shadow: 0 4px 30px rgba(136, 106, 106, 0.1);
 }
+
+// GRID (WIDGETS LAYER)
 
 .widgets-wrapper {
     position: absolute;
@@ -157,7 +173,8 @@
 
         &-icon {
             grid-area: icon;
-            font-size: 1.1rem;
+            font-size: 1.3rem;
+            line-height: 1rem;
         }
     }
 
@@ -165,4 +182,19 @@
         background: rgba(255, 255, 255, 1);
         box-shadow: 0 4px 30px rgba(39, 39, 39, 0.25);
     }
+}
+
+// GRID (UPLOADER LAYER)
+
+.uploader-wrapper {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 6 / 3;
+    background: rgba(0, 0, 255, 0.5);
+    border-radius: 12px;
+    color: white;
 }

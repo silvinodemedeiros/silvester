@@ -12,8 +12,14 @@ export class WidgetValuePipe implements PipeTransform {
 
   formatOffset(offset: number): string {
     const sign = offset >= 0 ? '+' : '-';
-    const absValue = Math.abs(offset).toString().padStart(2, '0');
-    return `${sign}${absValue}00`;
+    const abs = Math.abs(offset);
+    const hours = Math.floor(abs);
+    const minutes = Math.round((abs - hours) * 60);
+  
+    const hh = hours.toString().padStart(2, '0');
+    const mm = minutes.toString().padStart(2, '0');
+  
+    return `${sign}${hh}${mm}`;
   }
 
   transform(widget: any): unknown {

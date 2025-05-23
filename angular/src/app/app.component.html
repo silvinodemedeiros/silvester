@@ -17,6 +17,18 @@
           {{ widgetItem?.item.label }}
         </div>
       }
+      <div
+        class="widget-item widget-item-button"
+        (click)="exportGrid()"
+      >
+        Export Grid
+      </div>
+      <div
+        class="widget-item widget-item-button"
+        (click)="importGrid()"
+      >
+        Import Grid
+      </div>
     </aside>
 
     <!-- GRID -->
@@ -31,10 +43,11 @@
             'has-preview': previewWidget && hasPreview(cell.row, cell.col)
           }"
           (dragover)="onDragOver($event, cell.row, cell.col)"
-          (drop)="onDrop($event, cell.row, cell.col)"
           (dragleave)="onDragLeave()"
+          (drop)="onDrop($event, cell.row, cell.col)"
         ></div>
 
+        <!-- WIDGETS LAYER -->
         <div class="widgets-wrapper" *ngIf="!isDragging">
           <div
             *ngFor="let widget of widgets"
@@ -58,6 +71,17 @@
               <ng-icon [name]="widget.data.metadata.icon.value"></ng-icon>
             </p>
           </div>
+        </div>
+
+        <!-- UPLOADER LAYER -->
+        <div
+          *ngIf="isDraggingFile"
+          class="uploader-wrapper"
+          (dragover)="onUploadDragOver()"
+          (dragleave)="onUploadDragLeave()"
+          (drop)="onUploadDrop($event)"
+        >
+          <h1>Drop your JSON file here</h1>
         </div>
       </div>
     </main>
