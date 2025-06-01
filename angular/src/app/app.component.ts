@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
@@ -52,12 +52,19 @@ export class AppComponent implements OnInit, OnDestroy {
   _widgets: Record<any, any> = {};
 
   isDragging = false;
-  subscription = new Subscription();
-
+  isDraggingFile = false;
   previewWidget: any = null;
+
+  subscription = new Subscription();
 
   get widgets() {
     return Object.values(this._widgets);
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscKey(event: KeyboardEvent) {
+    this.isDragging = false;
+    this.isDraggingFile = false;
   }
 
   constructor(
@@ -70,6 +77,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // EVENT SOURCE - receives events from backend
     const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
+      console.log(event);
       const widgetSourceObj = JSON.parse(event.data).data[0];
 
       // update widgetItems data
@@ -259,8 +267,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     reader.readAsText(file);
   }
-
-  isDraggingFile = false;
 
   importGrid() {
     this.isDraggingFile = true;

@@ -14,9 +14,11 @@
           draggable="true"
           (dragstart)="onDragStart($event, widgetItem)"
         >
+          <ng-icon [name]="widgetItem?.data.metadata.icon.value"></ng-icon>
           {{ widgetItem?.item.label }}
         </div>
       }
+      <div class="divider"></div>
       <div
         class="widget-item widget-item-button"
         (click)="exportGrid()"
