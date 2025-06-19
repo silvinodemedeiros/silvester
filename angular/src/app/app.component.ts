@@ -86,7 +86,7 @@ export class AppComponent implements OnInit, OnDestroy {
       // update grid widgets
       Object.keys(this._widgets).forEach((key) => {
         const gridWidget = this._widgets[key];
-        const gridWidgetLabel = gridWidget.item.label;
+        const gridWidgetLabel = gridWidget.item.label.toLowerCase();
 
         if (Object.keys(widgetSourceObj).some((label) => label === gridWidgetLabel)) {
           this._widgets = {
@@ -95,8 +95,10 @@ export class AppComponent implements OnInit, OnDestroy {
               ...gridWidget,
               data: {...widgetSourceObj[gridWidgetLabel]}
             }
-          };
+          };  
         }
+
+        debugger
       });
       
       this.cd.detectChanges();
