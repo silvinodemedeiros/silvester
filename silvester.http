@@ -5,8 +5,68 @@
 ### GET
 GET {{host}}/subscriptions
 
+### POST
+POST {{host}}/subscriptions
+Content-Type: application/json
+
+{
+  "description": "Notify me when any attribute changes",
+  "subject": {
+    "entities": [
+      {
+        "id": "WeatherObserved:0001",
+        "type": "WeatherObserved"
+      }
+    ],
+    "condition": {
+      "attrs": [
+        "clouds",
+        "dew_point",
+        "dt",
+        "feels_like",
+        "humidity",
+        "pressure",
+        "sunrise",
+        "sunset",
+        "temp",
+        "timezone",
+        "timezone_offset",
+        "uvi",
+        "visibility",
+        "wind_deg",
+        "wind_speed"
+      ]
+    }
+  },
+  "notification": {
+    "http": {
+      "url": "http://host.docker.internal:3000/notify"
+    },
+    "attrs": [
+      "clouds",
+      "dew_point",
+      "dt",
+      "feels_like",
+      "humidity",
+      "pressure",
+      "sunrise",
+      "sunset",
+      "temp",
+      "timezone",
+      "timezone_offset",
+      "uvi",
+      "visibility",
+      "wind_deg",
+      "wind_speed"
+    ]
+  },
+  "expires": "2025-12-31T23:59:59.00Z",
+  "throttling": 5
+}
+
+
 ### DELETE
-@subscriptionId = 6837137b1d9f4eb18c097bfb
+@subscriptionId = 6894eef80ca43e16dc0197dc
 DELETE {{host}}/subscriptions/{{subscriptionId}}
 
 ## Entities
@@ -22,6 +82,10 @@ Content-Type: application/json
 {
   "clouds": {
     "value": 33,
-    "type": "Float"
+    "type": "Integer"
   }
 }
+
+### DELETE
+@entity = WeatherObserved:0001
+DELETE {{host}}/entities/{{entity}}

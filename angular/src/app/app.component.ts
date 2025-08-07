@@ -62,7 +62,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('document:keydown.escape', ['$event'])
-  onEscKey(event: KeyboardEvent) {
+  onEscKey() {
     this.isDragging = false;
     this.isDraggingFile = false;
   }
@@ -97,8 +97,6 @@ export class AppComponent implements OnInit, OnDestroy {
             }
           };  
         }
-
-        debugger
       });
       
       this.cd.detectChanges();
