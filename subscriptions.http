@@ -66,26 +66,5 @@ Content-Type: application/json
 
 
 ### DELETE
-@subscriptionId = 6894eef80ca43e16dc0197dc
+@subscriptionId = 68af0af4cc65040e6f0c111b
 DELETE {{host}}/subscriptions/{{subscriptionId}}
-
-## Entities
-
-### GET
-GET {{host}}/entities
-
-### UPDATE
-@entity = WeatherObserved:0001
-PATCH {{host}}/entities/{{entity}}/attrs
-Content-Type: application/json
-
-{
-  "clouds": {
-    "value": 33,
-    "type": "Integer"
-  }
-}
-
-### DELETE
-@entity = WeatherObserved:0001
-DELETE {{host}}/entities/{{entity}}
