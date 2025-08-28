@@ -1,20 +1,19 @@
 @host = http://localhost:1026/v2
+@entity = WeatherObserved:0001
 
 ### GET
 GET {{host}}/entities
 
 ### UPDATE
-@entity = WeatherObserved:0001
 PATCH {{host}}/entities/{{entity}}/attrs
 Content-Type: application/json
 
 {
   "clouds": {
-    "value": 33,
+    "value": 44,
     "type": "Integer"
   }
 }
 
 ### DELETE
-@entity = WeatherObserved:0001
 DELETE {{host}}/entities/{{entity}}
