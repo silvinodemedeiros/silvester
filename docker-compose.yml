@@ -24,6 +24,33 @@ services:
     environment:
       - ORION_LOG_LEVEL=INFO
 
+  node:
+    build:
+      context: ./node
+      dockerfile: Dockerfile
+    container_name: silvester-node
+    ports:
+      - "3000:3000"
+    networks:
+      - fiware
+    depends_on:
+      - orion
+    environment:
+      - ORION_URL=http://orion:1026
+      - MONGO_URL=mongodb://mongo-db:27017
+
+  angular:
+    build:
+      context: ./angular
+      dockerfile: Dockerfile
+    container_name: silvester-angular
+    ports:
+      - "8080:80"
+    networks:
+      - fiware
+    depends_on:
+      - orion
+
 volumes:
   mongo-data:
 
