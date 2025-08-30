@@ -7,6 +7,7 @@ import { WidgetSuffixPipe } from './pipes/widget-suffix/widget-suffix.pipe';
 import { WidgetValuePipe } from './pipes/widget-value/widget-value.pipe';
 import { Cell } from './types';
 import { MenuItemService } from './services/menu-item/menu-item.service';
+import { GridWidgetService } from './services/grid-widget/grid-widget.service';
 
 @Component({
   selector: 'app-root',
@@ -27,25 +28,20 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'silvester';
   apiUrl = 'http://localhost:3000';
 
-  menuItems = computed(() => {
-    return this.menuItemService.menuItems();
-  });
+  menuItems = computed(() => this.menuItemService.menuItems());
 
   rows = 6;
   cols = 12;
   cells: Cell[] = [];
 
-  _gridWidgets: Record<any, any> = {};
+  _gridWidgets = computed(() => this.gridWidgetService._gridWidgets());
+  gridWidgets = computed(() => Object.values(this._gridWidgets()));
 
   isDragging = false;
   isDraggingFile = false;
   previewWidget: any = null;
 
   subscription = new Subscription();
-
-  get gridWidgets() {
-    return Object.values(this._gridWidgets);
-  }
 
   @HostListener('document:keydown.escape', ['$event'])
   onEscKey() {
@@ -55,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private menuItemService: MenuItemService,
+    private gridWidgetService: GridWidgetService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -65,25 +62,9 @@ export class AppComponent implements OnInit, OnDestroy {
     widgetSource.onmessage = (event) => {
       const widgetSourceObj = JSON.parse(event.data).data[0];
 
-      // update menuWidgets data
+      // update menu, grid and refresh
       this.menuItemService.updateMenuItems(widgetSourceObj);
-      
-      // update grid widgets
-      Object.keys(this._gridWidgets).forEach((key) => {
-        const gridWidget = this._gridWidgets[key];
-        const gridWidgetLabel = gridWidget.item.label.toLowerCase();
-
-        if (Object.keys(widgetSourceObj).some((label) => label === gridWidgetLabel)) {
-          this._gridWidgets = {
-            ...this._gridWidgets,
-            [key]: {
-              ...gridWidget,
-              data: {...widgetSourceObj[gridWidgetLabel]}
-            }
-          };
-        }
-      });
-      
+      this.gridWidgetService.updateGridWidgets(widgetSourceObj);
       this.cd.detectChanges();
     };
 
@@ -110,25 +91,6 @@ export class AppComponent implements OnInit, OnDestroy {
       cellRow >= row && cellRow < row + width &&
       cellCol >= col && cellCol < col + height
     );
-  }
-
-  exportGrid() {
-
-    if (this.gridWidgets.length === 0) {
-      console.log('No widgets detected...');
-      return;
-    }
-    
-    const json = JSON.stringify(this._gridWidgets, null, 2); // pretty-print with 2-space indent
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = 'grid.json';
-    anchor.click();
-
-    URL.revokeObjectURL(url); // clean up
   }
 
   onDragStart(event: DragEvent, widget: any, moved = false): void {
@@ -168,37 +130,44 @@ export class AppComponent implements OnInit, OnDestroy {
   onDrop(event: DragEvent, row: number, col: number): void {
 
     event.preventDefault();
-    const data = event.dataTransfer?.getData('application/json');
 
-    if (!(row >= 0 && col >= 0) || !data) {
+    if (!(row >= 0 && col >= 0)) {
       this.isDragging = false;
       this.previewWidget = null;
       return;
     }
 
-    // populates _gridWidgets array
-    const widget = JSON.parse(data);
-    this._gridWidgets = {
-      ...this._gridWidgets,
-      [`${row}${col}`]: {
-        row,
-        col,
-        item: {...widget.item},
-        data: {...widget.data}
-      }
-    };
-
-    // if widget as moved instead of added, delete previous widget
-    if (widget.moved) {
-      const widgetKey = `${widget.row}${widget.col}`;
-      delete this._gridWidgets[widgetKey];
-    }
+    // adds widget to grid
+    this.gridWidgetService.addGridWidget(event, row, col);
 
     // cleans up after drop
     this.previewWidget = null;
   }
 
   onDragLeave(): void {
+  }
+
+  importGrid() {
+    this.isDraggingFile = true;
+  }
+
+  exportGrid() {
+
+    if (this.gridWidgets.length === 0) {
+      console.log('No widgets detected...');
+      return;
+    }
+    
+    const json = JSON.stringify(this._gridWidgets(), null, 2); // pretty-print with 2-space indent
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'grid.json';
+    anchor.click();
+
+    URL.revokeObjectURL(url); // clean up
   }
 
   onUploadDragOver(): void {}
@@ -219,7 +188,7 @@ export class AppComponent implements OnInit, OnDestroy {
     reader.onload = () => {
       try {
         const json = JSON.parse(reader.result as string);
-        this._gridWidgets = {...json};
+        this.gridWidgetService.setGridWidgets(json);
         console.log('Loaded JSON:', json);
       } catch (err) {
         console.error('Invalid JSON file', err);
@@ -227,9 +196,5 @@ export class AppComponent implements OnInit, OnDestroy {
     };
 
     reader.readAsText(file);
-  }
-
-  importGrid() {
-    this.isDraggingFile = true;
   }
 }

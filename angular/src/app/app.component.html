@@ -55,7 +55,7 @@
         <!-- WIDGETS LAYER -->
         <div class="grid-widgets-wrapper" *ngIf="!isDragging">
           <div
-            *ngFor="let gridWidget of gridWidgets"
+            *ngFor="let gridWidget of gridWidgets()"
             class="grid-widget cell frosty"
             [ngStyle]="{
               'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.width + '/ span ' + gridWidget.item.height
