@@ -11,25 +11,25 @@
 
     <!-- SIDEBAR -->
     <aside class="sidebar" role="complementary" tabindex="0">
-      @for (menuWidget of menuWidgets(); track menuWidget.item.id) {
+      @for (menuItem of menuItems(); track menuItem.item.id) {
         <div
-          class="widget-item"
+          class="menu-item"
           draggable="true"
-          (dragstart)="onDragStart($event, menuWidget)"
+          (dragstart)="onDragStart($event, menuItem)"
         >
-          <ng-icon [name]="menuWidget.data.metadata?.icon?.value"></ng-icon>
-          {{ menuWidget.item.label }}
+          <ng-icon [name]="menuItem.data.metadata?.icon?.value"></ng-icon>
+          {{ menuItem.item.label }}
         </div>
       }
       <div class="divider"></div>
       <div
-        class="widget-item widget-item-button"
+        class="menu-item menu-item-button"
         (click)="exportGrid()"
       >
         Export Grid
       </div>
       <div
-        class="widget-item widget-item-button"
+        class="menu-item menu-item-button"
         (click)="importGrid()"
       >
         Import Grid

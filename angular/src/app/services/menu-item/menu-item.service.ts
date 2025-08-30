@@ -1,17 +1,17 @@
 import { Injectable, Signal, signal } from '@angular/core';
-import { MenuWidget } from '../../types';
+import { MenuItem } from '../../types';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MenuWidgetService {
+export class MenuItemService {
 
   sub = new Subscription();
   apiUrl = 'http://localhost:3000';
   entitiesUrl = this.apiUrl + '/entities';
-  menuWidgets = signal<MenuWidget[]>([]);
+  menuItems = signal<MenuItem[]>([]);
 
   constructor(
     private httpClient: HttpClient
@@ -19,14 +19,14 @@ export class MenuWidgetService {
 
   init() {
     const sub = this.httpClient.get<any>(this.entitiesUrl).subscribe((response) => {
-      this.updateMenuWidgets(response[0]);
+      this.updateMenuItems(response[0]);
     });
 
     this.sub.add(sub);
   }
 
-  updateMenuWidgets(widgetsObject: any) {
-    const menuWidgets: MenuWidget[] = Object.keys(widgetsObject).reduce((acc: MenuWidget[], key, index) => {
+  updateMenuItems(widgetsObject: any) {
+    const menuItems = Object.keys(widgetsObject).reduce((acc: MenuItem[], key, index) => {
       if(typeof widgetsObject[key] === 'object') {
         return [...acc, {
           item: {
@@ -43,7 +43,7 @@ export class MenuWidgetService {
       return acc;
     }, []);
 
-    this.menuWidgets.set(menuWidgets);
+    this.menuItems.set(menuItems);
   }
 
   destroy() {

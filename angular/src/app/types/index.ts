@@ -4,17 +4,17 @@ export interface Cell {
     item?: string;
 }
 
-export interface MenuWidget {
+export interface MenuItem {
     item: {
         id: string;
         label: string;
         width: number;
         height: number;
     };
-    data: MenuWidgetData;
+    data: MenuItemData;
 }
 
-export interface MenuWidgetData {
+export interface MenuItemData {
     type: string;
     value: string;
     metadata?: {

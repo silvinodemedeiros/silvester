@@ -1,13 +1,12 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, computed, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
 import { WidgetSuffixPipe } from './pipes/widget-suffix/widget-suffix.pipe';
 import { WidgetValuePipe } from './pipes/widget-value/widget-value.pipe';
-import { MenuWidget, Cell } from './types';
-import { MenuWidgetService } from './services/menu-widget/menu-widget.service';
+import { Cell } from './types';
+import { MenuItemService } from './services/menu-item/menu-item.service';
 
 @Component({
   selector: 'app-root',
@@ -28,8 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'silvester';
   apiUrl = 'http://localhost:3000';
 
-  menuWidgets = computed(() => {
-    return this.menuWidgetService.menuWidgets();
+  menuItems = computed(() => {
+    return this.menuItemService.menuItems();
   });
 
   rows = 6;
@@ -55,7 +54,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private menuWidgetService: MenuWidgetService,
+    private menuItemService: MenuItemService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -67,7 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const widgetSourceObj = JSON.parse(event.data).data[0];
 
       // update menuWidgets data
-      this.menuWidgetService.updateMenuWidgets(widgetSourceObj);
+      this.menuItemService.updateMenuItems(widgetSourceObj);
       
       // update grid widgets
       Object.keys(this._gridWidgets).forEach((key) => {
@@ -95,11 +94,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     // initializes menu service
-    this.menuWidgetService.init();
+    this.menuItemService.init();
   }
 
   ngOnDestroy(): void {
-    this.menuWidgetService.destroy();
+    this.menuItemService.destroy();
     this.subscription.unsubscribe();
   }
 
