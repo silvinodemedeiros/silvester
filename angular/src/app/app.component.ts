@@ -1,28 +1,13 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
 import { WidgetSuffixPipe } from './pipes/widget-suffix/widget-suffix.pipe';
 import { WidgetValuePipe } from './pipes/widget-value/widget-value.pipe';
-
-interface Cell {
-  row: number;
-  col: number;
-  item?: string;
-}
-
-interface Widget {
-  id: string;
-  item?: null | {
-    id: string;
-    label: string;
-    width: number;
-    height: number;
-  };
-  data?: any | null;
-}
+import { MenuWidget, Cell } from './types';
+import { MenuWidgetService } from './services/menu-widget/menu-widget.service';
 
 @Component({
   selector: 'app-root',
@@ -43,13 +28,15 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'silvester';
   apiUrl = 'http://localhost:3000';
 
-  widgetItems: any[] = [];
+  menuWidgets = computed(() => {
+    return this.menuWidgetService.menuWidgets();
+  });
 
   rows = 6;
   cols = 12;
   cells: Cell[] = [];
 
-  _widgets: Record<any, any> = {};
+  _gridWidgets: Record<any, any> = {};
 
   isDragging = false;
   isDraggingFile = false;
@@ -57,8 +44,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   subscription = new Subscription();
 
-  get widgets() {
-    return Object.values(this._widgets);
+  get gridWidgets() {
+    return Object.values(this._gridWidgets);
   }
 
   @HostListener('document:keydown.escape', ['$event'])
@@ -68,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private httpClient: HttpClient,
+    private menuWidgetService: MenuWidgetService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -77,25 +64,24 @@ export class AppComponent implements OnInit, OnDestroy {
     // EVENT SOURCE - receives events from backend
     const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
-      console.log(event);
       const widgetSourceObj = JSON.parse(event.data).data[0];
 
-      // update widgetItems data
-      this.updateWidgetItems(widgetSourceObj);
+      // update menuWidgets data
+      this.menuWidgetService.updateMenuWidgets(widgetSourceObj);
       
       // update grid widgets
-      Object.keys(this._widgets).forEach((key) => {
-        const gridWidget = this._widgets[key];
+      Object.keys(this._gridWidgets).forEach((key) => {
+        const gridWidget = this._gridWidgets[key];
         const gridWidgetLabel = gridWidget.item.label.toLowerCase();
 
         if (Object.keys(widgetSourceObj).some((label) => label === gridWidgetLabel)) {
-          this._widgets = {
-            ...this._widgets,
+          this._gridWidgets = {
+            ...this._gridWidgets,
             [key]: {
               ...gridWidget,
               data: {...widgetSourceObj[gridWidgetLabel]}
             }
-          };  
+          };
         }
       });
       
@@ -108,16 +94,12 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     }
 
-    // populates widgets with first item
-    const widgetSub = this.httpClient.get<any>(this.apiUrl + '/entities').subscribe((response) => {
-      const widgetObject = response[0];
-      this.updateWidgetItems(widgetObject);
-    });
-
-    this.subscription.add(widgetSub);
+    // initializes menu service
+    this.menuWidgetService.init();
   }
 
   ngOnDestroy(): void {
+    this.menuWidgetService.destroy();
     this.subscription.unsubscribe();
   }
 
@@ -131,33 +113,14 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
-  updateWidgetItems(widgetsObject: any) {
-    this.widgetItems = Object.keys(widgetsObject).reduce((acc: any[], key, index) => {
-      if(typeof widgetsObject[key] === 'object') {
-        return [...acc, {
-          item: {
-            id: 'wi' + (index + 1),
-            type: widgetsObject[key].type,
-            label: widgetsObject[key].metadata.title.value,
-            width: 2,
-            height: 2
-          },
-          data: {...widgetsObject[key]}
-        }];
-      }
-
-      return acc;
-    }, []);
-  }
-
   exportGrid() {
 
-    if (this.widgets.length === 0) {
+    if (this.gridWidgets.length === 0) {
       console.log('No widgets detected...');
       return;
     }
     
-    const json = JSON.stringify(this._widgets, null, 2); // pretty-print with 2-space indent
+    const json = JSON.stringify(this._gridWidgets, null, 2); // pretty-print with 2-space indent
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
 
@@ -208,17 +171,16 @@ export class AppComponent implements OnInit, OnDestroy {
     event.preventDefault();
     const data = event.dataTransfer?.getData('application/json');
 
-
     if (!(row >= 0 && col >= 0) || !data) {
       this.isDragging = false;
       this.previewWidget = null;
       return;
     }
 
-    // populates _widgets array
+    // populates _gridWidgets array
     const widget = JSON.parse(data);
-    this._widgets = {
-      ...this._widgets,
+    this._gridWidgets = {
+      ...this._gridWidgets,
       [`${row}${col}`]: {
         row,
         col,
@@ -230,7 +192,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // if widget as moved instead of added, delete previous widget
     if (widget.moved) {
       const widgetKey = `${widget.row}${widget.col}`;
-      delete this._widgets[widgetKey];
+      delete this._gridWidgets[widgetKey];
     }
 
     // cleans up after drop
@@ -258,7 +220,7 @@ export class AppComponent implements OnInit, OnDestroy {
     reader.onload = () => {
       try {
         const json = JSON.parse(reader.result as string);
-        this._widgets = {...json};
+        this._gridWidgets = {...json};
         console.log('Loaded JSON:', json);
       } catch (err) {
         console.error('Invalid JSON file', err);

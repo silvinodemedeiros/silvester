@@ -11,14 +11,14 @@
 
     <!-- SIDEBAR -->
     <aside class="sidebar" role="complementary" tabindex="0">
-      @for (widgetItem of widgetItems; track widgetItem?.item.id) {
+      @for (menuWidget of menuWidgets(); track menuWidget.item.id) {
         <div
           class="widget-item"
           draggable="true"
-          (dragstart)="onDragStart($event, widgetItem)"
+          (dragstart)="onDragStart($event, menuWidget)"
         >
-          <ng-icon [name]="widgetItem?.data.metadata.icon.value"></ng-icon>
-          {{ widgetItem?.item.label }}
+          <ng-icon [name]="menuWidget.data.metadata?.icon?.value"></ng-icon>
+          {{ menuWidget.item.label }}
         </div>
       }
       <div class="divider"></div>
@@ -53,27 +53,27 @@
         ></div>
 
         <!-- WIDGETS LAYER -->
-        <div class="widgets-wrapper" *ngIf="!isDragging">
+        <div class="grid-widgets-wrapper" *ngIf="!isDragging">
           <div
-            *ngFor="let widget of widgets"
-            class="widget cell frosty"
+            *ngFor="let gridWidget of gridWidgets"
+            class="grid-widget cell frosty"
             [ngStyle]="{
-              'grid-area': (widget.row + 1) + '/' + (widget.col + 1) + '/ span ' + widget.item.width + '/ span ' + widget.item.height
+              'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.width + '/ span ' + gridWidget.item.height
             }"
             draggable="true"
-            (dragstart)="onDragStart($event, widget, true)"
+            (dragstart)="onDragStart($event, gridWidget, true)"
           >
-            <p class="widget-title">
-              {{ widget.data.metadata.title?.value }}
+            <p class="grid-widget-title">
+              {{ gridWidget.data.metadata.title?.value }}
             </p>
-            <span class="widget-value">
-              {{ widget | widgetValue }}
-              <span class="widget-value-suffix">
-                {{ widget.data.metadata.measures?.value | widgetSuffix }}
+            <span class="grid-widget-value">
+              {{ gridWidget | widgetValue }}
+              <span class="grid-widget-value-suffix">
+                {{ gridWidget.data.metadata.measures?.value | widgetSuffix }}
               </span>
             </span>
-            <p class="widget-icon">
-              <ng-icon [name]="widget.data.metadata.icon.value"></ng-icon>
+            <p class="grid-widget-icon">
+              <ng-icon [name]="gridWidget.data.metadata.icon.value"></ng-icon>
             </p>
           </div>
         </div>
