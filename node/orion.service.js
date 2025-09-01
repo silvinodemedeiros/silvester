@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const ORION_URL = 'http://silvester-orion-1:1026/v2';
+const ORION_URL = 'http://silvester-orion:1026/v2';
 
 async function getEntities() {
   try {

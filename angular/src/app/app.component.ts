@@ -26,7 +26,7 @@ import { GridWidgetService } from './services/grid-widget/grid-widget.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'silvester';
-  apiUrl = 'http://localhost:3000';
+  apiUrl = 'http://silvester-node:3000';
 
   menuItems = computed(() => this.menuItemService.menuItems());
 
