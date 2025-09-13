@@ -8,12 +8,16 @@ import { WidgetValuePipe } from './pipes/widget-value/widget-value.pipe';
 import { Cell } from './types';
 import { MenuItemService } from './services/menu-item/menu-item.service';
 import { GridWidgetService } from './services/grid-widget/grid-widget.service';
+import { LeafletModule } from '@bluehalo/ngx-leaflet';
+import { latLng, tileLayer } from 'leaflet';
 
 @Component({
   selector: 'app-root',
+  // templateUrl: './app2.component.html',
   templateUrl: './app.component.html',
   imports: [
     CommonModule,
+    LeafletModule,
     NgIcon,
     WidgetSuffixPipe,
     WidgetValuePipe
@@ -25,8 +29,19 @@ import { GridWidgetService } from './services/grid-widget/grid-widget.service';
   styleUrl: './app.component.less'
 })
 export class AppComponent implements OnInit, OnDestroy {
+  mapOptions = {
+    layers: [
+      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '...'
+      })
+    ],
+    zoom: 5,
+    center: latLng(-5.795, -35.20944)
+  };
+  
   title = 'silvester';
-  apiUrl = 'http://silvester-node:3000';
+  apiUrl = 'http://localhost:3000';
 
   menuItems = computed(() => this.menuItemService.menuItems());
 

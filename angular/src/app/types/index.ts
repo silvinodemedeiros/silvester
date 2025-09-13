@@ -4,32 +4,36 @@ export interface Cell {
     item?: string;
 }
 
+export type GridWidgetSource = Record<string, GridWidget>;
+
+export type GridWidget = {
+    row: number;
+    col: number;
+} & MenuItem;
+
 export interface MenuItem {
-    item: {
-        id: string;
-        label: string;
-        width: number;
-        height: number;
-    };
-    data: MenuItemData;
+    item: MenuItemData;
+    data: EntityData<string> | EntityData<number>;
 }
 
 export interface MenuItemData {
+    id: string;
+    label: string;
+    width: number;
+    height: number;
+}
+
+export interface EntityData<T> {
     type: string;
-    value: string;
+    value: T;
     metadata?: {
-        icon: EntityStringMetadata,
-        measures: EntityStringMetadata,
-        title: EntityStringMetadata
+        icon: EntityMetadata<string>,
+        measures: EntityMetadata<string> | EntityMetadata<number>,
+        title: EntityMetadata<string>
     }
 }
 
-export interface EntityStringMetadata {
+export interface EntityMetadata<T> {
     type: string;
-    value: string;
-}
-
-export interface EntityNumberMetadata {
-    type: string;
-    value: number;
+    value: T;
 }

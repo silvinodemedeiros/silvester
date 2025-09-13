@@ -1,4 +1,4 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { effect, Injectable, Signal, signal } from '@angular/core';
 import { MenuItem } from '../../types';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
@@ -15,7 +15,11 @@ export class MenuItemService {
 
   constructor(
     private httpClient: HttpClient
-  ) { }
+  ) {
+    effect(() => {
+      console.log('menu items svc log', this.menuItems());
+    });
+  }
 
   init() {
     const sub = this.httpClient.get<any>(this.entitiesUrl).subscribe((response) => {
@@ -33,8 +37,8 @@ export class MenuItemService {
             id: 'wi' + (index + 1),
             type: widgetsObject[key].type,
             label: widgetsObject[key].metadata.title.value,
-            width: 2,
-            height: 2
+            width: 4,
+            height: 4
           },
           data: {...widgetsObject[key]}
         }];

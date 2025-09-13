@@ -1,19 +1,24 @@
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { GridWidgetSource } from '../../types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GridWidgetService {
 
-  _gridWidgets = signal<Record<any, any>>({});
+  _gridWidgets = signal<GridWidgetSource>({});
   update_ = signal(false);
   
   sub = new Subscription();
   apiUrl = 'http://localhost:3000';
   eventsUrl = this.apiUrl + '/events';
 
-  constructor() {}
+  constructor() {
+    effect(() => {
+      console.log('grid widget svc log', this._gridWidgets());
+    });
+  }
 
   setGridWidgets(data: any) {
     this._gridWidgets.set({...data});
@@ -22,11 +27,11 @@ export class GridWidgetService {
   addGridWidget(event: DragEvent, row: number, col: number) {
     let gridWidgets: any = {};
     
-    const data = event.dataTransfer?.getData('application/json');
-    if (!data) return;
+    const widgetJsonStr = event.dataTransfer?.getData('application/json');
+    if (!widgetJsonStr) return;
 
     // populates _gridWidgets array
-    const widget = JSON.parse(data);
+    const widget = JSON.parse(widgetJsonStr);
     gridWidgets = {
       ...this._gridWidgets(),
       [`${row}${col}`]: {
