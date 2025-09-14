@@ -66,30 +66,30 @@
               }"
               draggable="true"
               (dragstart)="onDragStart($event, gridWidget, true)"
-              *ngSwitch="gridWidget.data.type"
             >
               <p class="grid-widget-title">
                 {{ gridWidget.data.metadata?.title?.value }}
               </p>
-              <span class="grid-widget-value">
-                <!-- {{ gridWidget | widgetValue }} -->
-                
+              @if (gridWidget.data.metadata?.title?.value == 'Clouds') {
                 <div
                   class="grid-widget-value-map"
                   leaflet 
                   [leafletOptions]="mapOptions"
                   (dragstart)="$event.preventDefault()"
                 ></div>
-                <!-- <span class="grid-widget-value-suffix">
-                  {{ gridWidget.data.metadata.measures?.value | widgetSuffix }}
-                </span> -->
-              </span>
-              <!-- <p class="grid-widget-icon">
-                <ng-icon [name]="gridWidget.data.metadata.icon.value"></ng-icon>
-              </p> -->
+              } @else {
+                <span class="grid-widget-value">
+                  {{ gridWidget | widgetValue }}
+                  <span class="grid-widget-value-suffix">
+                    {{ gridWidget.data.metadata?.measures?.value | widgetSuffix }}
+                  </span>
+                </span>
+              }
+              <p class="grid-widget-icon">
+                <ng-icon [name]="gridWidget.data.metadata?.icon?.value"></ng-icon>
+              </p>
             </div>
           </ng-container>
-          
         </div>
 
         <!-- UPLOADER LAYER -->
