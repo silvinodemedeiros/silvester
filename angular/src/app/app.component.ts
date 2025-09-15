@@ -75,6 +75,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // EVENT SOURCE - receives events from backend
     const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
+      console.log(event);
       const widgetSourceObj = JSON.parse(event.data).data[0];
 
       // update menu, grid and refresh

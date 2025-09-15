@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { WEATHER_DATA } = require('./utils');
+const { WEATHER_DATA, MAP_DATA_1 } = require('./utils');
 
 const lat = '-5.891076';
 const lon = '-35.228625';
@@ -36,6 +36,27 @@ function generateOrionEntity(weatherObject) {
       type: WEATHER_DATA['timezone_offset'].type,
       value: timezone_offset,
       metadata: {...WEATHER_DATA['timezone_offset'].metadata}
+    },
+    location: {
+      type: 'Location',
+      value: {
+        lat: -5.795,
+        lng: -35.20944
+      },
+      metadata: {
+        title: {
+          value: 'Map Widget',
+          type: 'MapTitle'
+        },
+        icon: {
+          value: 'bootstrapGeo',
+          type: 'MapIconName'
+        },
+        category: {
+          value: 'capital',
+          type: 'Text'
+        }
+      }
     }
   });
 }

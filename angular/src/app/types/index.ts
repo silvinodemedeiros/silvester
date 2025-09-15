@@ -27,9 +27,9 @@ export interface EntityData<T> {
     type: string;
     value: T;
     metadata?: {
-        icon: EntityMetadata<string>,
-        measures: EntityMetadata<string> | EntityMetadata<number>,
-        title: EntityMetadata<string>
+        icon?: EntityMetadata<string>,
+        measures?: EntityMetadata<string> | EntityMetadata<number>,
+        title?: EntityMetadata<string>
     }
 }
 

@@ -70,7 +70,7 @@
               <p class="grid-widget-title">
                 {{ gridWidget.data.metadata?.title?.value }}
               </p>
-              @if (gridWidget.data.metadata?.title?.value == 'Clouds') {
+              @if (gridWidget.data.type == 'Location') {
                 <div
                   class="grid-widget-value-map"
                   leaflet 

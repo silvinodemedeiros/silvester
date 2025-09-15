@@ -32,13 +32,18 @@ export class MenuItemService {
   updateMenuItems(widgetsObject: any) {
     const menuItems = Object.keys(widgetsObject).reduce((acc: MenuItem[], key, index) => {
       if(typeof widgetsObject[key] === 'object') {
+
+        const dimensions = {
+          width: key === 'location' ? 4 : 2,
+          height: key === 'location' ? 4 : 2
+        };
+        
         return [...acc, {
           item: {
             id: 'wi' + (index + 1),
             type: widgetsObject[key].type,
             label: widgetsObject[key].metadata.title.value,
-            width: 4,
-            height: 4
+            ...dimensions
           },
           data: {...widgetsObject[key]}
         }];
