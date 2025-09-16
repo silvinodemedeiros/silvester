@@ -35,10 +35,38 @@ body, html {
     background-color: #ccc;
     padding: 1rem;
     border-right: 1px solid #bbb;
+    overflow: auto;
 
     .divider {
         margin-top: auto;
     }
+
+    /* Apply to all scrollable elements */
+    &::-webkit-scrollbar {
+        width: 8px;              /* slim width */
+        height: 8px;             /* slim height for horizontal scrollbar */
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;  /* no background */
+        margin: 2px;              /* spacing at ends */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(100, 100, 100, 0.4); /* semi-transparent */
+        border-radius: 10px;                   /* rounded */
+        transition: background 0.3s ease;      /* smooth hover effect */
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(100, 100, 100, 0.7);
+    }
+
+    /* Optional: hide scrollbar corner */
+    &::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+
 }
 
 .content {

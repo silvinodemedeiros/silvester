@@ -13,7 +13,7 @@ export type GridWidget = {
 
 export interface MenuItem {
     item: MenuItemData;
-    data: EntityData<string> | EntityData<number>;
+    data: EntityData<string> | EntityData<number> | EntityData<{lat: number, lng: number}>;
 }
 
 export interface MenuItemData {

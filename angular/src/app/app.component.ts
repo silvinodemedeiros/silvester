@@ -29,36 +29,6 @@ import { icon, latLng, Layer, marker, tileLayer } from 'leaflet';
   styleUrl: './app.component.less'
 })
 export class AppComponent implements OnInit, OnDestroy {
-  mapOptions = {
-    layers: [
-      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '...'
-      })
-    ],
-    zoom: 5,
-    center: latLng(-5.795, -35.20944)
-  };
-
-  addPoint(lat: number, lng: number, label?: string): void {
-    const point = marker([lat, lng], {
-      icon: icon({
-        iconSize: [25, 41],
-        iconAnchor: [13, 41],
-        iconUrl: 'assets/marker-icon.png',
-        shadowUrl: 'assets/marker-shadow.png'
-      })
-    });
-
-    if (label) {
-      point.bindPopup(label);
-    }
-
-    this.layers.push(point);
-  }
-
-  // Array of layers → each marker is a point
-  layers: Layer[] = [];
   
   title = 'silvester';
   apiUrl = 'http://localhost:3000';
@@ -89,7 +59,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private gridWidgetService: GridWidgetService,
     private cd: ChangeDetectorRef
   ) {
-    this.addPoint(-5.795, -35.209, 'Natal, RN');
+
+    // initializes menu service
+    this.menuItemService.init();
   }
 
   ngOnInit(): void {
@@ -111,9 +83,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.cells.push({ row, col });
       }
     }
-
-    // initializes menu service
-    this.menuItemService.init();
   }
 
   ngOnDestroy(): void {
@@ -234,5 +203,37 @@ export class AppComponent implements OnInit, OnDestroy {
     };
 
     reader.readAsText(file);
+  }
+
+  /*# MAP INSTRUCTIONS #*/
+
+  mapOptions = {
+    layers: [
+      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '...'
+      })
+    ],
+    zoom: 5,
+    center: latLng(-5.795, -35.20944)
+  };
+
+  layers: Layer[] = [];
+
+  addPoint(lat: number, lng: number, label?: string): void {
+    const point = marker([lat, lng], {
+      icon: icon({
+        iconSize: [25, 41],
+        iconAnchor: [13, 41],
+        iconUrl: 'assets/marker-icon.png',
+        shadowUrl: 'assets/marker-shadow.png'
+      })
+    });
+
+    if (label) {
+      point.bindPopup(label);
+    }
+
+    this.layers.push(point);
   }
 }
