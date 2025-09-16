@@ -36,11 +36,11 @@
       </div>
     </aside>
 
-    <!-- GRID -->
+    <!--# GRID #-->
     <main class="content" role="main" tabindex="0">
       <div class="grid">
 
-        <!-- CELLS LAYER -->
+        <!--# CELLS LAYER #-->
         <div
           *ngFor="let cell of cells"
           class="cell frosty"
@@ -54,7 +54,7 @@
           (drop)="onDrop($event, cell.row, cell.col)"
         ></div>
 
-        <!-- WIDGETS LAYER -->
+        <!--# WIDGETS LAYER #-->
         <div class="grid-widgets-wrapper" *ngIf="!isDragging">
           <ng-container
             *ngFor="let gridWidget of gridWidgets()"
@@ -62,7 +62,7 @@
             <div
               class="grid-widget cell frosty"
               [ngStyle]="{
-                'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.width + '/ span ' + gridWidget.item.height
+                'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.height + '/ span ' + gridWidget.item.width
               }"
               draggable="true"
               (dragstart)="onDragStart($event, gridWidget, true)"
@@ -70,12 +70,14 @@
               <p class="grid-widget-title">
                 {{ gridWidget.data.metadata?.title?.value }}
               </p>
+
+              <!--# WIDGET DIFFERENTIATION #-->
               @if (gridWidget.data.type == 'Location') {
                 <div
                   class="grid-widget-value-map"
                   leaflet 
                   [leafletOptions]="mapOptions"
-                  (dragstart)="$event.preventDefault()"
+                  [leafletLayers]="layers"
                 ></div>
               } @else {
                 <span class="grid-widget-value">
@@ -85,6 +87,7 @@
                   </span>
                 </span>
               }
+
               <p class="grid-widget-icon">
                 <ng-icon [name]="gridWidget.data.metadata?.icon?.value"></ng-icon>
               </p>
@@ -92,7 +95,7 @@
           </ng-container>
         </div>
 
-        <!-- UPLOADER LAYER -->
+        <!--# UPLOADER LAYER #-->
         <div
           *ngIf="isDraggingFile"
           class="uploader-wrapper"

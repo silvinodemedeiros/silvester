@@ -9,7 +9,7 @@ import { Cell } from './types';
 import { MenuItemService } from './services/menu-item/menu-item.service';
 import { GridWidgetService } from './services/grid-widget/grid-widget.service';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
-import { latLng, tileLayer } from 'leaflet';
+import { icon, latLng, Layer, marker, tileLayer } from 'leaflet';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +39,26 @@ export class AppComponent implements OnInit, OnDestroy {
     zoom: 5,
     center: latLng(-5.795, -35.20944)
   };
+
+  addPoint(lat: number, lng: number, label?: string): void {
+    const point = marker([lat, lng], {
+      icon: icon({
+        iconSize: [25, 41],
+        iconAnchor: [13, 41],
+        iconUrl: 'assets/marker-icon.png',
+        shadowUrl: 'assets/marker-shadow.png'
+      })
+    });
+
+    if (label) {
+      point.bindPopup(label);
+    }
+
+    this.layers.push(point);
+  }
+
+  // Array of layers → each marker is a point
+  layers: Layer[] = [];
   
   title = 'silvester';
   apiUrl = 'http://localhost:3000';
@@ -68,7 +88,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private menuItemService: MenuItemService,
     private gridWidgetService: GridWidgetService,
     private cd: ChangeDetectorRef
-  ) {}
+  ) {
+    this.addPoint(-5.795, -35.209, 'Natal, RN');
+  }
 
   ngOnInit(): void {
     
@@ -104,8 +126,8 @@ export class AppComponent implements OnInit, OnDestroy {
     const {row, col} = this.previewWidget;
 
     return (
-      cellRow >= row && cellRow < row + width &&
-      cellCol >= col && cellCol < col + height
+      cellRow >= row && cellRow < row + height &&
+      cellCol >= col && cellCol < col + width
     );
   }
 
