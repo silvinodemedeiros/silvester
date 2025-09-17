@@ -1,5 +1,5 @@
 @host = http://localhost:1026/v2
-@subscriptionId = 68ca9ff9b89ffff9f6028daa
+@subscriptionId = 68cab3c9b89ffff9f6028dac
 
 ## Subscriptions
 
@@ -36,6 +36,7 @@ Content-Type: application/json
         "uvi",
         "visibility",
         "wind_deg",
+        "wind_gust",
         "wind_speed"
       ]
     }
@@ -60,6 +61,7 @@ Content-Type: application/json
       "uvi",
       "visibility",
       "wind_deg",
+      "wind_gust",
       "wind_speed"
     ]
   },

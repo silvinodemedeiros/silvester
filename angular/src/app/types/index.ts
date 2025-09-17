@@ -13,7 +13,7 @@ export type GridWidget = {
 
 export interface MenuItem {
     item: MenuItemData;
-    data: EntityData<string> | EntityData<number> | EntityData<{lat: number, lng: number}>;
+    data: EntityData<string> | EntityData<number> | EntityData<LocationValue>;
 }
 
 export interface MenuItemData {
@@ -22,6 +22,8 @@ export interface MenuItemData {
     width: number;
     height: number;
 }
+
+export interface LocationValue {lat: number, lng: number}
 
 export interface EntityData<T> {
     type: string;

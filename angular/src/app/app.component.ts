@@ -1,15 +1,15 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, computed, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
 import { WidgetSuffixPipe } from './pipes/widget-suffix/widget-suffix.pipe';
 import { WidgetValuePipe } from './pipes/widget-value/widget-value.pipe';
-import { Cell } from './types';
+import { Cell, GridWidget, LocationValue, MenuItem } from './types';
 import { MenuItemService } from './services/menu-item/menu-item.service';
 import { GridWidgetService } from './services/grid-widget/grid-widget.service';
-import { LeafletModule } from '@bluehalo/ngx-leaflet';
-import { icon, latLng, Layer, marker, tileLayer } from 'leaflet';
+import { LeafletDirective, LeafletModule } from '@bluehalo/ngx-leaflet';
+import { icon, LatLng, latLng, Layer, MapOptions, marker, tileLayer } from 'leaflet';
 
 @Component({
   selector: 'app-root',
@@ -59,17 +59,10 @@ export class AppComponent implements OnInit, OnDestroy {
     private gridWidgetService: GridWidgetService,
     private cd: ChangeDetectorRef
   ) {
-
-    // initializes menu service
-    this.menuItemService.init();
-  }
-
-  ngOnInit(): void {
     
-    // EVENT SOURCE - receives events from backend
+    // EVENT SOURCE - receives notifications from subscription
     const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
-      console.log(event);
       const widgetSourceObj = JSON.parse(event.data).data[0];
 
       // update menu, grid and refresh
@@ -77,7 +70,11 @@ export class AppComponent implements OnInit, OnDestroy {
       this.gridWidgetService.updateGridWidgets(widgetSourceObj);
       this.cd.detectChanges();
     };
+  }
 
+  ngOnInit(): void {
+    
+    // initializes cells
     for (let row = 0; row < this.rows; row++) {
       for (let col = 0; col < this.cols; col++) {
         this.cells.push({ row, col });
@@ -135,6 +132,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onDrop(event: DragEvent, row: number, col: number): void {
+    
+    const widgetJsonStr = event.dataTransfer?.getData('application/json');
+    if (!widgetJsonStr) return;
+
+    // populates _gridWidgets array
+    const widget = JSON.parse(widgetJsonStr);
 
     event.preventDefault();
 
@@ -149,6 +152,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // cleans up after drop
     this.previewWidget = null;
+
+    // initializes if widget is of type location
+    if (widget.data.type === 'Location') {
+      this.initMapWidget(widget);
+    }
   }
 
   onDragLeave(): void {
@@ -207,18 +215,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /*# MAP INSTRUCTIONS #*/
 
-  mapOptions = {
+  mapOptions: MapOptions = {
     layers: [
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,
         attribution: '...'
       })
-    ],
-    zoom: 5,
-    center: latLng(-5.795, -35.20944)
+    ]
   };
 
-  layers: Layer[] = [];
+  mapLayers: Layer[] = [];
+
+  @ViewChild('leaflet') leaflet!: LeafletDirective;
 
   addPoint(lat: number, lng: number, label?: string): void {
     const point = marker([lat, lng], {
@@ -234,6 +242,17 @@ export class AppComponent implements OnInit, OnDestroy {
       point.bindPopup(label);
     }
 
-    this.layers.push(point);
+    this.mapLayers.push(point);
+  }
+
+  initMapWidget(menuItem: MenuItem) {
+    const {lat, lng} = menuItem.data.value as LocationValue;
+    const latLngView = latLng(lat, lng);
+
+    this.mapOptions = {
+      ...this.mapOptions,
+      zoom: 15,
+      center: latLngView
+    };
   }
 }
