@@ -225,6 +225,7 @@ export class AppComponent implements OnInit, OnDestroy {
   };
 
   mapLayers: Layer[] = [];
+  mapPoints: any[] = [];
 
   @ViewChild('leaflet') leaflet!: LeafletDirective;
 
@@ -243,6 +244,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     this.mapLayers.push(point);
+    this.mapPoints = [{lat, lng}];
   }
 
   initMapWidget(menuItem: MenuItem) {
@@ -254,5 +256,9 @@ export class AppComponent implements OnInit, OnDestroy {
       zoom: 15,
       center: latLngView
     };
+
+    if (!this.mapPoints.includes({lat, lng})) {
+      this.addPoint(lat, lng);
+    }
   }
 }

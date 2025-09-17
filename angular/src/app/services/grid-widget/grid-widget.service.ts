@@ -48,7 +48,7 @@ export class GridWidgetService {
       delete gridWidgets[widgetKey];
     }
 
-    this._gridWidgets.set(gridWidgets);
+    this._gridWidgets.update((currentWidgets: any) => ({...currentWidgets, ...gridWidgets}));
   }
 
   updateGridWidgets(widgetSourceObj: any) {

@@ -9,9 +9,12 @@ PATCH {{host}}/entities/{{entity}}/attrs
 Content-Type: application/json
 
 {
-  "clouds": {
-    "value": 11,
-    "type": "Integer"
+  "location": {
+    "value": {
+      "lat": -5.796,
+      "lng": -35.20944
+    },
+    "type": "Location"
   }
 }
 
