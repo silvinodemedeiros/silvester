@@ -10,7 +10,7 @@ Content-Type: application/json
 
 {
   "clouds": {
-    "value": 22,
+    "value": 11,
     "type": "Integer"
   }
 }

@@ -1,5 +1,5 @@
 @host = http://localhost:1026/v2
-@subscriptionId = 68af0af4cc65040e6f0c111b
+@subscriptionId = 68ca9ff9b89ffff9f6028daa
 
 ## Subscriptions
 
@@ -30,6 +30,7 @@ Content-Type: application/json
         "sunrise",
         "sunset",
         "temp",
+        "location",
         "timezone",
         "timezone_offset",
         "uvi",
@@ -53,6 +54,7 @@ Content-Type: application/json
       "sunrise",
       "sunset",
       "temp",
+      "location",
       "timezone",
       "timezone_offset",
       "uvi",
