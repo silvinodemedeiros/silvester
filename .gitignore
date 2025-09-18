@@ -13,3 +13,5 @@
 # misc
 */.vscode*
 scrapbook.txt
+subscriptions.http
+weather-entities.http
