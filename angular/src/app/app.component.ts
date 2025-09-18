@@ -9,7 +9,7 @@ import { Cell, GridWidget, LocationValue, MenuItem } from './types';
 import { MenuItemService } from './services/menu-item/menu-item.service';
 import { GridWidgetService } from './services/grid-widget/grid-widget.service';
 import { LeafletDirective, LeafletModule } from '@bluehalo/ngx-leaflet';
-import { icon, LatLng, latLng, Layer, MapOptions, marker, tileLayer } from 'leaflet';
+import { icon, LatLng, latLng, Layer, LeafletMouseEvent, MapOptions, marker, tileLayer } from 'leaflet';
 
 @Component({
   selector: 'app-root',
@@ -68,6 +68,9 @@ export class AppComponent implements OnInit, OnDestroy {
       // update menu, grid and refresh
       this.menuItemService.updateMenuItems(widgetSourceObj);
       this.gridWidgetService.updateGridWidgets(widgetSourceObj);
+
+      this.addPoint(widgetSourceObj['location']['value']);
+      
       this.cd.detectChanges();
     };
   }
@@ -229,7 +232,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @ViewChild('leaflet') leaflet!: LeafletDirective;
 
-  addPoint(lat: number, lng: number, label?: string): void {
+  addPoint(locationValue: LocationValue, label?: string): void {
+    const {lat, lng} = locationValue;
     const point = marker([lat, lng], {
       icon: icon({
         iconSize: [25, 41],
@@ -256,5 +260,13 @@ export class AppComponent implements OnInit, OnDestroy {
       zoom: 15,
       center: latLngView
     };
+  }
+
+  /* DRAG HANDLE SHENANIGANS */
+  handleOnMouseDown(event: MouseEvent) {
+    (event.target as any)?.parentNode.setAttribute('draggable', 'true')
+  }
+  handleOnMouseUp(event: MouseEvent) {
+    (event.target as any)?.parentNode.setAttribute('draggable', 'false')
   }
 }

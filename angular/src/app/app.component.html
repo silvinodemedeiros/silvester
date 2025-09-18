@@ -64,21 +64,21 @@
               [ngStyle]="{
                 'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.height + '/ span ' + gridWidget.item.width
               }"
-              draggable="true"
               (dragstart)="onDragStart($event, gridWidget, true)"
             >
+            
               <p class="grid-widget-title">
                 {{ gridWidget.data.metadata?.title?.value }}
               </p>
 
               <!--# WIDGET DIFFERENTIATION #-->
               @if (gridWidget.data.type == 'Location') {
-                <div
-                  class="grid-widget-value-map"
-                  leaflet 
-                  [leafletOptions]="mapOptions"
-                  [leafletLayers]="mapLayers"
-                ></div>
+                  <div
+                    class="grid-widget-value-map"
+                    leaflet 
+                    [leafletOptions]="mapOptions"
+                    [leafletLayers]="mapLayers"
+                  ></div>
               } @else {
                 <span class="grid-widget-value">
                   {{ gridWidget | widgetValue }}
@@ -91,6 +91,13 @@
               <p class="grid-widget-icon">
                 <ng-icon [name]="gridWidget.data.metadata?.icon?.value"></ng-icon>
               </p>
+              
+              <div
+                class="drag-handle"
+                (mousedown)="handleOnMouseDown($event)"
+                (mouseup)="handleOnMouseUp($event)"
+              >
+              </div>
             </div>
           </ng-container>
         </div>
