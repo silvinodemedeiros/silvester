@@ -256,9 +256,5 @@ export class AppComponent implements OnInit, OnDestroy {
       zoom: 15,
       center: latLngView
     };
-
-    if (!this.mapPoints.includes({lat, lng})) {
-      this.addPoint(lat, lng);
-    }
   }
 }

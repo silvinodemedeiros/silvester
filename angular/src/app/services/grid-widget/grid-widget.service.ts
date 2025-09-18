@@ -59,7 +59,9 @@ export class GridWidgetService {
       const gridWidget = this._gridWidgets()[key];
       const gridWidgetLabel = gridWidget.item.label.toLowerCase();
 
-      if (Object.keys(widgetSourceObj).some((label) => label === gridWidgetLabel)) {
+      if (Object.keys(widgetSourceObj).some(
+        (label) => label === gridWidgetLabel
+      )) {
         gridWidgets = {
           ...this._gridWidgets(),
           [key]: {

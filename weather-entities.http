@@ -4,14 +4,28 @@
 ### GET
 GET {{host}}/entities
 
-### UPDATE
+### UPDATE WEATHER
 PATCH {{host}}/entities/{{entity}}/attrs
 Content-Type: application/json
 
 {
   "clouds": {
-    "value": 22,
+    "value": 33,
     "type": "Integer"
+  }
+}
+
+### UPDATE LOCATION
+PATCH {{host}}/entities/{{entity}}/attrs
+Content-Type: application/json
+
+{
+  "location": {
+    "type": "Location",
+    "value": {
+      "lat": -5.795,
+      "lng": -35.209
+    }
   }
 }
 
