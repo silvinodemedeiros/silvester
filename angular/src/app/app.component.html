@@ -81,6 +81,8 @@
                     leaflet 
                     [leafletOptions]="mapOptions"
                     [leafletLayers]="mapLayers"
+                    (leafletMapReady)="handleMapReady($event)"
+                    (leafletMapMoveEnd)="handleMapMoveEnd()"
                   ></div>
               } @else {
                 <span class="grid-widget-value">

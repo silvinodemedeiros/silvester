@@ -9,7 +9,7 @@ import { Cell, GridWidget, LocationValue, MenuItem } from './types';
 import { MenuItemService } from './services/menu-item/menu-item.service';
 import { GridWidgetService } from './services/grid-widget/grid-widget.service';
 import { LeafletDirective, LeafletModule } from '@bluehalo/ngx-leaflet';
-import { icon, LatLng, latLng, Layer, LeafletMouseEvent, MapOptions, marker, tileLayer } from 'leaflet';
+import { icon, LatLng, latLng, Layer, LeafletMouseEvent, Map, MapOptions, marker, tileLayer } from 'leaflet';
 
 @Component({
   selector: 'app-root',
@@ -230,7 +230,9 @@ export class AppComponent implements OnInit, OnDestroy {
   mapLayers: Layer[] = [];
   mapPoints: any[] = [];
 
-  @ViewChild('leaflet') leaflet!: LeafletDirective;
+  map: Map | null = null;
+  mapCenter: any;
+  mapZoom: any;
 
   addPoint(locationValue: LocationValue, label?: string): void {
     const {lat, lng} = locationValue;
@@ -257,16 +259,27 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.mapOptions = {
       ...this.mapOptions,
-      zoom: 15,
-      center: latLngView
+      zoom: this.mapZoom ? this.mapZoom : 15,
+      center: this.mapCenter ? this.mapCenter : latLngView
     };
   }
 
-  /* DRAG HANDLE SHENANIGANS */
+  handleMapReady(map: Map) {
+    this.map = map;
+  }
+
+  handleMapMoveEnd() {
+    this.mapCenter = this.map?.getCenter();
+    this.mapZoom = this.map?.getZoom();
+  }
+
+  /*# DRAG HANDLE SHENANIGANS #*/
   handleOnMouseDown(event: MouseEvent) {
     (event.target as any)?.parentNode.setAttribute('draggable', 'true')
   }
   handleOnMouseUp(event: MouseEvent) {
     (event.target as any)?.parentNode.setAttribute('draggable', 'false')
   }
+
+  log(c:any){console.log(c)}
 }
