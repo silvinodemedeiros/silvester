@@ -40,12 +40,12 @@ function generateOrionEntity(weatherObject) {
     location: {
       type: 'Location',
       value: {
-        lat: -5.795,
-        lng: -35.20944
+        lat: -5.837006,
+        lng: -35.203026
       },
       metadata: {
         title: {
-          value: 'Map Widget',
+          value: 'Location',
           type: 'MapTitle'
         },
         icon: {

@@ -231,8 +231,7 @@ export class AppComponent implements OnInit, OnDestroy {
   mapOptions: MapOptions = {
     layers: [
       tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 18,
-        className: 'monochromatic-tile-layer'
+        maxZoom: 18
       })
     ]
   };
@@ -269,7 +268,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.mapOptions = {
       ...this.mapOptions,
-      zoom: this.mapZoom ? this.mapZoom : 15,
+      zoom: this.mapZoom ? this.mapZoom : 14,
       center: this.mapCenter ? this.mapCenter : latLngView
     };
   }
