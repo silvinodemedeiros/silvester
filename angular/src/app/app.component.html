@@ -1,15 +1,35 @@
 
 <div
-  class="layout"
+  [ngClass]="{
+    'layout': true,
+    'layout-preview': gridPreview
+  }"
   (dragover)="onDragOver($event, -1, -1)"
   (drop)="onDrop($event, -1, -1)"
 >
-    <header class="topbar">
-      Silvester
+    <header
+      *ngIf="!gridPreview"
+      class="topbar"
+    >
+      <div class="menu-item menu-item-button menu-item-button-header" (click)="gridPreview = !gridPreview">
+        <ng-icon name="bootstrapEye"></ng-icon>
+        Preview
+      </div>
+      <div class="menu-item menu-item-button menu-item-button-header" (click)="gridPreview = !gridPreview">
+        <ng-icon name="bootstrapMoonStarsFill"></ng-icon>
+        Dark Mode
+      </div>
+      <div class="menu-item menu-item-button menu-item-button-header" (click)="gridPreview = !gridPreview">
+        <ng-icon name="bootstrapEyeglasses"></ng-icon>
+        High Contrast
+      </div>
     </header>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside
+      *ngIf="!gridPreview"
+      class="sidebar"
+    >
       @for (menuItem of menuItems(); track menuItem.item.id) {
         <div
           class="menu-item"
@@ -36,17 +56,23 @@
     </aside>
 
     <!--# GRID #-->
-    <main class="content" role="main">
+    <main
+      [ngClass]="{
+        'content': true,
+        'content-preview': gridPreview
+      }"
+      role="main"
+    >
       <div class="grid">
 
         <!--# CELLS LAYER #-->
         <div
           *ngFor="let cell of cells"
-          class="cell frosty"
           [ngClass]="{
             'cell': true,
             'frosty': true,
-            'has-preview': previewWidget && hasPreview(cell.row, cell.col)
+            'has-widget-preview': previewWidget && hasPreview(cell.row, cell.col),
+            'has-grid-preview': gridPreview
           }"
           (dragover)="onDragOver($event, cell.row, cell.col)"
           (dragleave)="onDragLeave()"
@@ -61,7 +87,8 @@
             <div
               class="grid-widget cell frosty monochromatic"
               [ngClass]="{
-                'grid-widget-map': gridWidget.data.type == 'Location'
+                'grid-widget-map': gridWidget.data.type == 'Location',
+                'grid-widget-has-preview': gridPreview
               }"
               [ngStyle]="{
                 'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.height + '/ span ' + gridWidget.item.width
@@ -98,7 +125,10 @@
               </p>
               
               <div
-                class="drag-handle"
+                *ngIf="!gridPreview"
+                [ngClass]="{
+                  'drag-handle': true
+                }"
                 (mousedown)="handleOnMouseDown($event)"
                 (mouseup)="handleOnMouseUp($event)"
               >

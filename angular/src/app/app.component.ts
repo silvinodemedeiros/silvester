@@ -5,11 +5,11 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
 import { WidgetSuffixPipe } from './pipes/widget-suffix/widget-suffix.pipe';
 import { WidgetValuePipe } from './pipes/widget-value/widget-value.pipe';
-import { Cell, GridWidget, LocationValue, MenuItem } from './types';
+import { Cell, LocationValue, MenuItem } from './types';
 import { MenuItemService } from './services/menu-item/menu-item.service';
 import { GridWidgetService } from './services/grid-widget/grid-widget.service';
-import { LeafletDirective, LeafletModule } from '@bluehalo/ngx-leaflet';
-import { icon, LatLng, latLng, Layer, LeafletMouseEvent, Map, MapOptions, marker, tileLayer } from 'leaflet';
+import { LeafletModule } from '@bluehalo/ngx-leaflet';
+import { icon, latLng, Layer, Map, MapOptions, marker, tileLayer } from 'leaflet';
 
 @Component({
   selector: 'app-root',
@@ -41,6 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   _gridWidgets = computed(() => this.gridWidgetService._gridWidgets());
   gridWidgets = computed(() => Object.values(this._gridWidgets()));
+  gridPreview = false;
 
   isDragging = false;
   isDraggingFile = false;
@@ -52,6 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onEscKey() {
     this.isDragging = false;
     this.isDraggingFile = false;
+    this.gridPreview = false;
   }
 
   constructor(
@@ -63,14 +65,13 @@ export class AppComponent implements OnInit, OnDestroy {
     // EVENT SOURCE - receives notifications from subscription
     const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
-      console.log(event);
       const widgetSourceObj = JSON.parse(event.data).data[0];
 
       // update menu, grid and refresh
       this.menuItemService.updateMenuItems(widgetSourceObj);
       this.gridWidgetService.updateGridWidgets(widgetSourceObj);
 
-      this.addPoint(widgetSourceObj['location']['value']);
+      // this.addPoint(widgetSourceObj['location']['value']);
       
       this.cd.detectChanges();
     };
