@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, computed, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, HostListener, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
@@ -63,6 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // EVENT SOURCE - receives notifications from subscription
     const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
+      console.log(event);
       const widgetSourceObj = JSON.parse(event.data).data[0];
 
       // update menu, grid and refresh
@@ -216,13 +217,22 @@ export class AppComponent implements OnInit, OnDestroy {
     reader.readAsText(file);
   }
 
+  /*# VIEW MODE #*/
+
+  viewMode = signal(false);
+
+  toggleViewMode() {
+    const viewModeValue = this.viewMode();
+    this.viewMode.set(!viewModeValue);
+  }
+
   /*# MAP INSTRUCTIONS #*/
 
   mapOptions: MapOptions = {
     layers: [
-      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         maxZoom: 18,
-        attribution: '...'
+        className: 'monochromatic-tile-layer'
       })
     ]
   };

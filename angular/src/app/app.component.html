@@ -4,13 +4,12 @@
   (dragover)="onDragOver($event, -1, -1)"
   (drop)="onDrop($event, -1, -1)"
 >
-    <header class="topbar" role="banner" tabindex="0">
+    <header class="topbar">
       Silvester
-      
     </header>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar" role="complementary" tabindex="0">
+    <aside class="sidebar">
       @for (menuItem of menuItems(); track menuItem.item.id) {
         <div
           class="menu-item"
@@ -37,7 +36,7 @@
     </aside>
 
     <!--# GRID #-->
-    <main class="content" role="main" tabindex="0">
+    <main class="content" role="main">
       <div class="grid">
 
         <!--# CELLS LAYER #-->
@@ -68,6 +67,7 @@
                 'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.height + '/ span ' + gridWidget.item.width
               }"
               (dragstart)="onDragStart($event, gridWidget, true)"
+              [tabIndex]="1"
             >
             
               <p class="grid-widget-title">
