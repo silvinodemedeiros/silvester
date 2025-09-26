@@ -101,16 +101,13 @@
                 {{ gridWidget.data.metadata?.title?.value }}
               </p>
 
-              <!--# WIDGET DIFFERENTIATION #-->
+              <!-- # WIDGET DIFFERENTIATION # -->
               @if (gridWidget.data.type == 'Location') {
-                  <div
-                    class="grid-widget-map-wrapper"
-                    leaflet 
-                    [leafletOptions]="mapOptions"
-                    [leafletLayers]="mapLayers"
-                    (leafletMapReady)="handleMapReady($event)"
-                    (leafletMapMoveEnd)="handleMapMoveEnd()"
-                  ></div>
+                <app-map-widget
+                  [ngClass]="'grid-widget-map-wrapper'"
+                  [data]="gridWidget"
+                  [has-preview]="gridPreview"
+                ></app-map-widget>
               } @else {
                 <span class="grid-widget-value">
                   {{ gridWidget | widgetValue }}

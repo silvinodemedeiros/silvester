@@ -1,0 +1,8 @@
+<div
+    class="grid-widget-map-wrapper"
+    leaflet 
+    [leafletOptions]="mapOptions"
+    [leafletLayers]="mapLayers"
+    (leafletMapReady)="handleMapReady($event)"
+    (leafletMapMoveEnd)="handleMapMoveEnd()"
+></div>

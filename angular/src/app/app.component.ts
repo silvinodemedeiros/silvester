@@ -10,6 +10,7 @@ import { MenuItemService } from './services/menu-item/menu-item.service';
 import { GridWidgetService } from './services/grid-widget/grid-widget.service';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { icon, latLng, Layer, Map, MapOptions, marker, tileLayer } from 'leaflet';
+import { WidgetComponent } from './components/map-widget/map-widget.component';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import { icon, latLng, Layer, Map, MapOptions, marker, tileLayer } from 'leaflet
     CommonModule,
     LeafletModule,
     NgIcon,
+    WidgetComponent,
     WidgetSuffixPipe,
     WidgetValuePipe
   ],
@@ -70,8 +72,6 @@ export class AppComponent implements OnInit, OnDestroy {
       // update menu, grid and refresh
       this.menuItemService.updateMenuItems(widgetSourceObj);
       this.gridWidgetService.updateGridWidgets(widgetSourceObj);
-
-      // this.addPoint(widgetSourceObj['location']['value']);
       
       this.cd.detectChanges();
     };
@@ -157,11 +157,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // cleans up after drop
     this.previewWidget = null;
-
-    // initializes if widget is of type location
-    if (widget.data.type === 'Location') {
-      this.initMapWidget(widget);
-    }
   }
 
   onDragLeave(): void {
@@ -227,63 +222,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.viewMode.set(!viewModeValue);
   }
 
-  /*# MAP INSTRUCTIONS #*/
-
-  mapOptions: MapOptions = {
-    layers: [
-      tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 18
-      })
-    ]
-  };
-
-  mapLayers: Layer[] = [];
-  mapPoints: any[] = [];
-
-  map: Map | null = null;
-  mapCenter: any;
-  mapZoom: any;
-
-  addPoint(locationValue: LocationValue, label?: string): void {
-    const {lat, lng} = locationValue;
-    const point = marker([lat, lng], {
-      icon: icon({
-        iconSize: [25, 41],
-        iconAnchor: [13, 41],
-        iconUrl: 'assets/marker-icon.png',
-        shadowUrl: 'assets/marker-shadow.png'
-      })
-    });
-
-    if (label) {
-      point.bindPopup(label);
-    }
-
-    this.mapLayers.push(point);
-    this.mapPoints = [{lat, lng}];
-  }
-
-  initMapWidget(menuItem: MenuItem) {
-    const {lat, lng} = menuItem.data.value as LocationValue;
-    const latLngView = latLng(lat, lng);
-
-    this.mapOptions = {
-      ...this.mapOptions,
-      zoom: this.mapZoom ? this.mapZoom : 14,
-      center: this.mapCenter ? this.mapCenter : latLngView
-    };
-  }
-
-  handleMapReady(map: Map) {
-    this.map = map;
-  }
-
-  handleMapMoveEnd() {
-    this.mapCenter = this.map?.getCenter();
-    this.mapZoom = this.map?.getZoom();
-  }
-
   /*# DRAG HANDLE SHENANIGANS #*/
+
   handleOnMouseDown(event: MouseEvent) {
     (event.target as any)?.parentNode.setAttribute('draggable', 'true')
   }
