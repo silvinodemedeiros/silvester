@@ -14,9 +14,11 @@ export class GridWidgetService {
   apiUrl = 'http://localhost:3000';
   eventsUrl = this.apiUrl + '/events';
 
+  widgetIdCounter = 1;
+
   constructor() {
     effect(() => {
-      // console.log('grid widget svc log', this._gridWidgets());
+      console.log('grid widget svc log', this._gridWidgets());
     });
   }
 
@@ -26,8 +28,14 @@ export class GridWidgetService {
 
   addGridWidget(event: DragEvent, row: number, col: number) {
     let gridWidgets: any = {};
-    
-    const widgetJsonStr = event.dataTransfer?.getData('application/json');
+    let widgetJsonStr;
+
+    if (event.dataTransfer) {
+      widgetJsonStr = event.dataTransfer?.getData('application/json');
+    } else {
+      widgetJsonStr = localStorage.getItem('transfer-widget');
+    };
+
     if (!widgetJsonStr) return;
 
     // populates _gridWidgets array

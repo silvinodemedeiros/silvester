@@ -5,7 +5,7 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
 import { WidgetSuffixPipe } from './pipes/widget-suffix/widget-suffix.pipe';
 import { WidgetValuePipe } from './pipes/widget-value/widget-value.pipe';
-import { Cell, LocationValue, MenuItem } from './types';
+import { Cell, EMPTY_WIDGET, LocationValue, MenuItem } from './types';
 import { MenuItemService } from './services/menu-item/menu-item.service';
 import { GridWidgetService } from './services/grid-widget/grid-widget.service';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
@@ -56,6 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isDragging = false;
     this.isDraggingFile = false;
     this.gridPreview = false;
+    this.isCreatingWidget = false;
   }
 
   constructor(
@@ -102,10 +103,7 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
-  onDragStart(event: DragEvent, widget: any, moved = false): void {
-    this.isDragging = true;
-
-    // adds moved attribute to widget so it's retrieved on drop
+  setWidgetTransfer(event: DragEvent, widget: any, moved = false) {
     widget = {
       ...widget,
       moved
@@ -117,7 +115,21 @@ export class AppComponent implements OnInit, OnDestroy {
     if (event.dataTransfer) {
       event.dataTransfer.setData('application/json', JSON.stringify(widget));
       event.dataTransfer.effectAllowed = 'copy';
+    } else {
+      localStorage.setItem('transfer-widget', JSON.stringify(widget));
     }
+  }
+
+  onDragStart(event: DragEvent, widget: any, moved = false): void {
+    this.isDragging = true;
+
+    // adds moved attribute to widget so it's retrieved on drop
+    this.setWidgetTransfer(event, widget, moved);
+  }
+
+  transferEmptyWidget(event: any, row: number, col: number) {
+    const emptyWidget = { ...EMPTY_WIDGET, row, col };
+    this.setWidgetTransfer(event, emptyWidget, false);
   }
 
   onDragOver(event: DragEvent, row: number, col: number): void {
@@ -137,12 +149,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onDrop(event: DragEvent, row: number, col: number): void {
-    
-    const widgetJsonStr = event.dataTransfer?.getData('application/json');
-    if (!widgetJsonStr) return;
-
-    // populates _gridWidgets array
-    const widget = JSON.parse(widgetJsonStr);
 
     event.preventDefault();
 
@@ -231,5 +237,15 @@ export class AppComponent implements OnInit, OnDestroy {
     (event.target as any)?.parentNode.setAttribute('draggable', 'false')
   }
 
-  log(c:any){console.log(c)}
+  /*# CREATE WIDGET INSTRUCTIONS #*/
+
+  isCreatingWidget = false;
+  creationWidget: any = null;
+
+  handleCellClick(event: any, row: number, col: number) {
+    this.transferEmptyWidget(event, row, col);
+    this.onDrop(event, row, col);
+    
+    this.isCreatingWidget = false;
+  }
 }

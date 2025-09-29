@@ -23,6 +23,11 @@
         <ng-icon name="bootstrapEyeglasses"></ng-icon>
         High Contrast
       </div>
+      <div style="margin-left: auto;"></div>
+      <div class="menu-item menu-item-button menu-item-button-header" (click)="isCreatingWidget = !isCreatingWidget">
+        <ng-icon name="bootstrapPlus"></ng-icon>
+        Create Widget
+      </div>
     </header>
 
     <!-- SIDEBAR -->
@@ -70,22 +75,23 @@
           *ngFor="let cell of cells"
           [ngClass]="{
             'cell': true,
-            'frosty': true,
             'has-widget-preview': previewWidget && hasPreview(cell.row, cell.col),
-            'has-grid-preview': gridPreview
+            'has-grid-preview': gridPreview,
+            'is-creating-widget': isCreatingWidget
           }"
           (dragover)="onDragOver($event, cell.row, cell.col)"
           (dragleave)="onDragLeave()"
           (drop)="onDrop($event, cell.row, cell.col)"
+          (click)="handleCellClick($event, cell.row, cell.col)"
         ></div>
 
         <!--# WIDGETS LAYER #-->
-        <div class="grid-widgets-wrapper" *ngIf="!isDragging">
+        <div class="grid-widgets-wrapper" *ngIf="!(isDragging || isCreatingWidget)">
           <ng-container
             *ngFor="let gridWidget of gridWidgets()"
           >
             <div
-              class="grid-widget cell frosty monochromatic"
+              class="grid-widget cell monochromatic"
               [ngClass]="{
                 'grid-widget-map': gridWidget.data.type == 'Location',
                 'grid-widget-has-preview': gridPreview

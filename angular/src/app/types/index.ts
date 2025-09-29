@@ -39,3 +39,30 @@ export interface EntityMetadata<T> {
     type: string;
     value: T;
 }
+
+export const EMPTY_WIDGET = {
+    item: {
+        id: 'empty',
+        label: 'empty',
+        width: 2,
+        height: 2
+    },
+    data: {
+        type: 'EMPTY',
+        value: '#',
+        metadata: {
+            icon: {
+                type: 'string',
+                value: 'bootstrapQuestion'
+            },
+            measures: {
+                type: 'string',
+                value: 'EMPTY'
+            },
+            title: {
+                type: 'string',
+                value: 'no title'
+            }
+        } 
+    }
+}
