@@ -64,7 +64,8 @@
     <main
       [ngClass]="{
         'content': true,
-        'content-preview': gridPreview
+        'content-preview': gridPreview,
+        'content-edit': isEditingWidget
       }"
       role="main"
     >
@@ -136,6 +137,16 @@
                 (mouseup)="handleOnMouseUp($event)"
               >
               </div>
+              
+              <!-- *ngIf="gridWidget.data.value == '#'" -->
+              <div
+                [ngClass]="{
+                  'edit-handle': true
+                }"
+                (mousedown)="activateWidgetEdit(gridWidget)"
+              >
+                <ng-icon name="bootstrapPencil"></ng-icon>
+              </div>
             </div>
           </ng-container>
         </div>
@@ -151,6 +162,52 @@
           <h1>Drop your JSON file here</h1>
         </div>
       </div>
+
+      @if (isEditingWidget) {
+        <div class="config-panel-wrapper">
+
+          <div class="config-panel">
+
+            <div class="config-panel-header"></div>
+
+            <div class="config-panel-form">
+
+              <div class="config-panel-form-content" [formGroup]="editForm">
+                <mat-form-field appearance="outline">
+                  <mat-label>Widget Title</mat-label>
+                  <input matInput formControlName="title"/>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Icon Name</mat-label>
+                  <mat-select formControlName="icon" value="16px">
+                    <mat-option value="10px">10px</mat-option>
+                    <mat-option value="12px">12px</mat-option>
+                    <mat-option value="14px">14px</mat-option>
+                    <mat-option value="16px">16px</mat-option>
+                    <mat-option value="18px">18px</mat-option>
+                    <mat-option value="20px">20px</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>Measures</mat-label>
+                  <mat-select formControlName="measures" value="16px">
+                    <mat-option value="10px">10px</mat-option>
+                    <mat-option value="12px">12px</mat-option>
+                    <mat-option value="14px">14px</mat-option>
+                    <mat-option value="16px">16px</mat-option>
+                    <mat-option value="18px">18px</mat-option>
+                    <mat-option value="20px">20px</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="config-panel-actions"></div>
+          </div>
+        </div>
+      }
     </main>
 </div>
 

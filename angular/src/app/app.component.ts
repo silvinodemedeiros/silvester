@@ -5,12 +5,17 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
 import { WidgetSuffixPipe } from './pipes/widget-suffix/widget-suffix.pipe';
 import { WidgetValuePipe } from './pipes/widget-value/widget-value.pipe';
-import { Cell, EMPTY_WIDGET, LocationValue, MenuItem } from './types';
+import { Cell, EMPTY_WIDGET, GridWidget, LocationValue, MenuItem } from './types';
 import { MenuItemService } from './services/menu-item/menu-item.service';
 import { GridWidgetService } from './services/grid-widget/grid-widget.service';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { icon, latLng, Layer, Map, MapOptions, marker, tileLayer } from 'leaflet';
 import { WidgetComponent } from './components/map-widget/map-widget.component';
+import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
+import {TextFieldModule} from '@angular/cdk/text-field';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +24,11 @@ import { WidgetComponent } from './components/map-widget/map-widget.component';
   imports: [
     CommonModule,
     LeafletModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
     NgIcon,
     WidgetComponent,
     WidgetSuffixPipe,
@@ -50,6 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
   previewWidget: any = null;
 
   subscription = new Subscription();
+  editForm: FormGroup;
 
   @HostListener('document:keydown.escape', ['$event'])
   onEscKey() {
@@ -57,12 +68,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isDraggingFile = false;
     this.gridPreview = false;
     this.isCreatingWidget = false;
+    this.isEditingWidget = false;
   }
 
   constructor(
     private menuItemService: MenuItemService,
     private gridWidgetService: GridWidgetService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private fb: UntypedFormBuilder
   ) {
     
     // EVENT SOURCE - receives notifications from subscription
@@ -76,6 +89,12 @@ export class AppComponent implements OnInit, OnDestroy {
       
       this.cd.detectChanges();
     };
+
+    this.editForm = this.fb.group({
+      title: this.fb.control(''),
+      icon: this.fb.control(''),
+      measures: this.fb.control(''),
+    });
   }
 
   ngOnInit(): void {
@@ -245,7 +264,37 @@ export class AppComponent implements OnInit, OnDestroy {
   handleCellClick(event: any, row: number, col: number) {
     this.transferEmptyWidget(event, row, col);
     this.onDrop(event, row, col);
-    
     this.isCreatingWidget = false;
+  }
+
+  /*# EDIT WIDGET INSTRUCTIONS #*/
+  isEditingWidget = false;
+  previousWidget: GridWidget | null = null;
+
+  activateWidgetEdit(widget: GridWidget) {
+    this.isEditingWidget = true;
+
+    if (this.previousWidget?.item.id === widget.item.id) {
+      this.deactivateWidgetEdit();
+    } else {
+      this.populateWidgetEditForm(widget);
+    }
+
+    this.previousWidget = widget;
+  }
+
+  populateWidgetEditForm(widget: GridWidget) {
+    const title = widget.data.metadata?.title?.value;
+    const icon = widget.data.metadata?.icon?.value;
+    const measures = widget.data.metadata?.measures?.value;
+    
+    this.editForm.get('title')?.patchValue(title);
+    this.editForm.get('icon')?.patchValue(icon);
+    this.editForm.get('measures')?.patchValue(measures);
+  }
+
+  deactivateWidgetEdit() {
+    this.isEditingWidget = false;
+    this.editForm.reset();
   }
 }

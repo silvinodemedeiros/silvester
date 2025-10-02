@@ -1,3 +1,13 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+.mat-select-panel {
+  background: #fff;
+}
+
+.mat-select-panel:not([class*=mat-elevation-z]) {
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -81,8 +91,8 @@ body, html {
     position: relative;
     grid-area: content;
     align-content: center;
+    justify-items: center;
     background-color: #eee;
-    /* Light gray */
     padding: 2rem;
     background-image:
         linear-gradient(to right, #fff 1px, transparent 1px),
@@ -91,6 +101,60 @@ body, html {
 
     &-preview {
         background: none;
+    }
+
+    &-edit {
+        align-content: flex-start;
+    }
+
+    .config-panel-wrapper {
+        position: absolute;
+        bottom: 1rem;
+        left: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: calc(100% - 2rem);
+        height: 20rem;
+    }
+
+    .config-panel {
+        display: grid;
+        grid-template-rows: 3rem 1fr;
+        grid-template-columns: 1fr 20rem;
+        grid-template-areas:
+            "header header"
+            "form actions";
+        width: 100%;
+        height: 100%;
+        max-width: 1080px;
+        background: white;
+        border: 1px solid rgb(200, 200, 200);
+        border-radius: .25rem;
+
+        &-header {
+            grid-area: header;
+            border-bottom: 1px solid rgb(200, 200, 200);
+        }
+
+        &-form {
+            grid-area: form;
+            position: relative;
+            border-right: 1px solid rgb(200, 200, 200);
+
+            &-content {
+                position: absolute;
+                inset: 0 0 0 0;
+                display: flex;
+                flex-direction: column;
+                padding: 1rem;
+                overflow: auto;
+            }
+        }
+
+        &-actions {
+            grid-area: actions;
+        }
     }
 }
 
@@ -156,6 +220,7 @@ body, html {
     gap: .5rem;
     width: 100%;
     aspect-ratio: 6 / 3;
+    max-width: 1080px;
 }
 
 .cell {
@@ -335,4 +400,21 @@ body, html {
         transform: translate(-50%, -50%);
         opacity: 1;
     }
+}
+
+.edit-handle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 12px 0 12px 0;
+    cursor: pointer;
+    background: rgba(100, 100, 100, 0.1);
+    border: 2px solid white;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center; /* vertical center */
+    justify-content: center; /* horizontal center */
 }
