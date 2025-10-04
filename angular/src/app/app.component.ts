@@ -16,6 +16,7 @@ import {TextFieldModule} from '@angular/cdk/text-field';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
+import { ICON_LIST, WEATHER_INFO_LIST } from './models';
 
 @Component({
   selector: 'app-root',
@@ -62,6 +63,9 @@ export class AppComponent implements OnInit, OnDestroy {
   subscription = new Subscription();
   editForm: FormGroup;
 
+  iconList = ICON_LIST;
+  weatherList = WEATHER_INFO_LIST;
+
   @HostListener('document:keydown.escape', ['$event'])
   onEscKey() {
     this.isDragging = false;
@@ -94,7 +98,37 @@ export class AppComponent implements OnInit, OnDestroy {
       title: this.fb.control(''),
       icon: this.fb.control(''),
       measures: this.fb.control(''),
+      weather: this.fb.control(''),
     });
+
+    const titleSub = this.editForm.get('title')?.valueChanges.subscribe((value: string) => {
+      if (this.previousWidget?.data?.metadata?.title) {
+        this.previousWidget.data.metadata.title.value = value;
+      }
+    });
+
+    const iconSub = this.editForm.get('icon')?.valueChanges.subscribe((value: string) => {
+      if (this.previousWidget?.data?.metadata?.icon) {
+        this.previousWidget.data.metadata.icon.value = value;
+      }
+    });
+
+    const measuresSub = this.editForm.get('measures')?.valueChanges.subscribe((value: string) => {
+      if (this.previousWidget?.data?.metadata?.measures) {
+        this.previousWidget.data.metadata.measures.value = value;
+      }
+    });
+
+    const weatherSub = this.editForm.get('weather')?.valueChanges.subscribe((value: string) => {
+      if (this.previousWidget?.data?.metadata?.weather) {
+        this.previousWidget.data.metadata.weather.value = value;
+      }
+    });
+
+    this.subscription.add(titleSub);
+    this.subscription.add(iconSub);
+    this.subscription.add(measuresSub);
+    this.subscription.add(weatherSub);
   }
 
   ngOnInit(): void {
@@ -271,8 +305,8 @@ export class AppComponent implements OnInit, OnDestroy {
   isEditingWidget = false;
   previousWidget: GridWidget | null = null;
 
-  activateWidgetEdit(widget: GridWidget) {
-    this.isEditingWidget = true;
+  toggleWidgetEdit(widget: GridWidget) {
+    this.isEditingWidget = !this.isEditingWidget;
 
     if (this.previousWidget?.item.id === widget.item.id) {
       this.deactivateWidgetEdit();
@@ -284,6 +318,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   populateWidgetEditForm(widget: GridWidget) {
+    this.isEditingWidget = true;
     const title = widget.data.metadata?.title?.value;
     const icon = widget.data.metadata?.icon?.value;
     const measures = widget.data.metadata?.measures?.value;
@@ -294,7 +329,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   deactivateWidgetEdit() {
-    this.isEditingWidget = false;
+    this.previousWidget = null;
     this.editForm.reset();
   }
 }

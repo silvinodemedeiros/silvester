@@ -138,12 +138,11 @@
               >
               </div>
               
-              <!-- *ngIf="gridWidget.data.value == '#'" -->
               <div
                 [ngClass]="{
                   'edit-handle': true
                 }"
-                (mousedown)="activateWidgetEdit(gridWidget)"
+                (mousedown)="toggleWidgetEdit(gridWidget)"
               >
                 <ng-icon name="bootstrapPencil"></ng-icon>
               </div>
@@ -168,7 +167,9 @@
 
           <div class="config-panel">
 
-            <div class="config-panel-header"></div>
+            <div class="config-panel-header">
+              <span class="title">Editing widget - {{ previousWidget?.data?.metadata?.title?.value }}</span>
+            </div>
 
             <div class="config-panel-form">
 
@@ -180,31 +181,36 @@
                 
                 <mat-form-field appearance="outline">
                   <mat-label>Icon Name</mat-label>
-                  <mat-select formControlName="icon" value="16px">
-                    <mat-option value="10px">10px</mat-option>
-                    <mat-option value="12px">12px</mat-option>
-                    <mat-option value="14px">14px</mat-option>
-                    <mat-option value="16px">16px</mat-option>
-                    <mat-option value="18px">18px</mat-option>
-                    <mat-option value="20px">20px</mat-option>
+                  <mat-select formControlName="icon">
+                    @for(icon of iconList; track icon.id) {
+                      <mat-option [value]="icon.value">{{icon.name}}</mat-option>
+                    }
                   </mat-select>
                 </mat-form-field>
                 
                 <mat-form-field appearance="outline">
-                  <mat-label>Measures</mat-label>
-                  <mat-select formControlName="measures" value="16px">
-                    <mat-option value="10px">10px</mat-option>
-                    <mat-option value="12px">12px</mat-option>
-                    <mat-option value="14px">14px</mat-option>
-                    <mat-option value="16px">16px</mat-option>
-                    <mat-option value="18px">18px</mat-option>
-                    <mat-option value="20px">20px</mat-option>
+                  <mat-label>Weather Data</mat-label>
+                  <mat-select formControlName="weather">
+                    @for(weather of weatherList; track weather.id) {
+                      <mat-option [value]="weather.value">{{weather.name}}</mat-option>
+                    }
                   </mat-select>
                 </mat-form-field>
               </div>
             </div>
 
-            <div class="config-panel-actions"></div>
+            <div class="config-panel-actions">
+              
+              <div class="menu-item menu-item-button menu-item-button-header">
+                <ng-icon name="bootstrapCheck"></ng-icon>
+                Update Widget
+              </div>
+              
+              <div class="menu-item menu-item-button menu-item-button-header">
+                <ng-icon name="bootstrapSave"></ng-icon>
+                Save as Template
+              </div>
+            </div>
           </div>
         </div>
       }

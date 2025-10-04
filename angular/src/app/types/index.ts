@@ -31,7 +31,8 @@ export interface EntityData<T> {
     metadata?: {
         icon?: EntityMetadata<string>,
         measures?: EntityMetadata<string> | EntityMetadata<number>,
-        title?: EntityMetadata<string>
+        title?: EntityMetadata<string>,
+        weather?: EntityMetadata<string>
     }
 }
 
