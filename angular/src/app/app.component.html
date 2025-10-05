@@ -195,6 +195,15 @@
                 </mat-form-field>
                 
                 <mat-form-field appearance="outline">
+                  <mat-label>Measurement</mat-label>
+                  <mat-select formControlName="measures">
+                    @for(measures of measurementsList; track measures.id) {
+                      <mat-option [value]="measures.value">{{measures.title}}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
                   <mat-label>Data Source</mat-label>
                   <mat-select formControlName="weatherType">
                     @for(weather of weatherList; track weather.id) {

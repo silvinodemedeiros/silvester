@@ -19,7 +19,7 @@ export class GridWidgetService {
 
   constructor() {
     effect(() => {
-      // console.log('grid widget svc log', this._gridWidgets());
+      console.log('grid widget svc log', this._gridWidgets());
     });
   }
 
@@ -47,7 +47,10 @@ export class GridWidgetService {
       [`${row}${col}`]: {
         row,
         col,
-        item: {...widget.item},
+        item: {
+          ...widget.item,
+          id: 'wi_' + this.widgetIdCounter
+        },
         data: {...widget.data}
       }
     };
@@ -59,31 +62,35 @@ export class GridWidgetService {
     }
 
     this._gridWidgets.set(gridWidgets);
+
+    // increments widget counter
+    this.widgetIdCounter += 1;
   }
 
   updateGridWidgets(widgetSourceObj: any) {
-    let gridWidgets = {};
-      
-    // update grid widgets
-    Object.keys(this._gridWidgets()).forEach((key) => {
-      const gridWidget = this._gridWidgets()[key];
-      const widgetType = gridWidget.data.type.toLowerCase();
-      
-      const hasTypeMatch = Object.keys(widgetSourceObj).some(
-        (type) => type === widgetType
-      );
 
-      if (hasTypeMatch) {
-        gridWidgets = {
-          ...this._gridWidgets(),
-          [key]: {
-            ...gridWidget,
-            data: {...widgetSourceObj[widgetType]}
+    this._gridWidgets.update((gridWidgetSource: GridWidgetSource) => {
+      return Object.entries(gridWidgetSource).reduce((acc, [widgetRowCol, gridWidget]) => {
+        const widgetType = gridWidget.data.type.toLowerCase();
+
+        if (widgetType === gridWidget.data.type) {
+          return {
+            ...acc,
+            [widgetRowCol]: {
+              ...gridWidget,
+              data: {
+                ...gridWidget.data,
+                value: widgetSourceObj[widgetType].value
+              }
+            }
           }
+        }
+
+        return {
+          ...acc,
+          [widgetRowCol]: {...gridWidget}
         };
-      }
+      }, {});
     });
-    
-    this._gridWidgets.set(gridWidgets);
   }
 }

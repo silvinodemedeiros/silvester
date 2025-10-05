@@ -169,7 +169,53 @@ const WEATHER_INFO_LIST = [
     },
 ]
 
+const MEASUREMENTS_LIST = [
+    {
+        id: 1,
+        value: 'percentage',
+        title: 'Percentage',
+        suffix: '%',
+    },
+    {
+        id: 2,
+        value: 'temperature',
+        title: 'Temperature',
+        suffix: '°C',
+    },
+    {
+        id: 3,
+        value: 'angle',
+        title: 'Angle',
+        suffix: '°',
+    },
+    {
+        id: 4,
+        value: 'distance',
+        title: 'Distance',
+        suffix: 'km',
+    },
+    {
+        id: 5,
+        value: 'hectoPascal',
+        title: 'Pressure',
+        suffix: 'hPa',
+    },
+    {
+        id: 6,
+        value: 'velocity',
+        title: 'Velocity',
+        suffix: 'm/s',
+    },
+    {
+        id: 7,
+        value: '',
+        title: 'Scalar',
+        suffix: '',
+    }
+]
+
 export {
     ICON_LIST,
-    WEATHER_INFO_LIST
+    WEATHER_INFO_LIST,
+    MEASUREMENTS_LIST
 };

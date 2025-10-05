@@ -16,7 +16,7 @@ import {TextFieldModule} from '@angular/cdk/text-field';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
-import { ICON_LIST, WEATHER_INFO_LIST } from './models';
+import { ICON_LIST, MEASUREMENTS_LIST, WEATHER_INFO_LIST } from './models';
 
 @Component({
   selector: 'app-root',
@@ -65,6 +65,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   iconList = ICON_LIST;
   weatherList = WEATHER_INFO_LIST;
+  measurementsList = MEASUREMENTS_LIST;
 
   @HostListener('document:keydown.escape', ['$event'])
   onEscKey() {
@@ -85,8 +86,8 @@ export class AppComponent implements OnInit, OnDestroy {
     // EVENT SOURCE - receives notifications from subscription
     const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
-      console.log(event);
       const widgetSourceObj = JSON.parse(event.data).data[0];
+      console.log(widgetSourceObj);
 
       // update menu, grid and refresh
       this.menuItemService.updateMenuItems(widgetSourceObj);
@@ -98,6 +99,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.editForm = this.fb.group({
       title: this.fb.control(''),
       icon: this.fb.control(''),
+      measures: this.fb.control(''),
       weatherType: this.fb.control(''),
     });
 
@@ -113,6 +115,12 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
 
+    const measuresSub = this.editForm.get('measures')?.valueChanges.subscribe((value: string) => {
+      if (this.previousWidget?.data?.metadata?.measures) {
+        this.previousWidget.data.metadata.measures.value = value;
+      }
+    });
+
     const weatherTypeSub = this.editForm.get('weatherType')?.valueChanges.subscribe((value: string) => {
       if (this.previousWidget?.data.type) {
         this.previousWidget.data.type = value;
@@ -121,6 +129,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.subscription.add(titleSub);
     this.subscription.add(iconSub);
+    this.subscription.add(measuresSub);
     this.subscription.add(weatherTypeSub);
   }
 
@@ -321,10 +330,12 @@ export class AppComponent implements OnInit, OnDestroy {
   populateWidgetEditForm(widget: GridWidget) {
     const title = widget.data.metadata?.title?.value;
     const icon = widget.data.metadata?.icon?.value;
+    const measures = widget.data.metadata?.measures?.value;
     const weatherType = widget.data.type;
     
     this.editForm.get('title')?.patchValue(title);
     this.editForm.get('icon')?.patchValue(icon);
+    this.editForm.get('measures')?.patchValue(measures);
     this.editForm.get('weatherType')?.patchValue(weatherType);
   }
 
