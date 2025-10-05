@@ -95,7 +95,8 @@
               class="grid-widget cell monochromatic"
               [ngClass]="{
                 'grid-widget-map': gridWidget.data.type == 'Location',
-                'grid-widget-has-preview': gridPreview
+                'grid-widget-has-preview': gridPreview,
+                'grid-widget-selected': previousWidget?.item?.id == gridWidget.item.id
               }"
               [ngStyle]="{
                 'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.height + '/ span ' + gridWidget.item.width
@@ -143,7 +144,13 @@
                 }"
                 (mousedown)="toggleWidgetEdit(gridWidget)"
               >
-                <ng-icon name="bootstrapPencil"></ng-icon>
+                <ng-icon
+                  [name]="
+                    previousWidget?.item?.id == gridWidget.item.id
+                    ? 'bootstrapX'
+                    : 'bootstrapPencil'
+                  "
+                ></ng-icon>
               </div>
             </div>
           </ng-container>
@@ -188,8 +195,8 @@
                 </mat-form-field>
                 
                 <mat-form-field appearance="outline">
-                  <mat-label>Measures</mat-label>
-                  <mat-select formControlName="measures">
+                  <mat-label>Data Source</mat-label>
+                  <mat-select formControlName="weatherType">
                     @for(weather of weatherList; track weather.id) {
                       <mat-option [value]="weather.value">{{weather.name}}</mat-option>
                     }

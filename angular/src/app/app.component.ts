@@ -98,7 +98,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.editForm = this.fb.group({
       title: this.fb.control(''),
       icon: this.fb.control(''),
-      measures: this.fb.control(''),
+      weatherType: this.fb.control(''),
     });
 
     const titleSub = this.editForm.get('title')?.valueChanges.subscribe((value: string) => {
@@ -113,7 +113,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
 
-    const measuresSub = this.editForm.get('measures')?.valueChanges.subscribe((value: string) => {
+    const weatherTypeSub = this.editForm.get('weatherType')?.valueChanges.subscribe((value: string) => {
       if (this.previousWidget?.data.type) {
         this.previousWidget.data.type = value;
       }
@@ -121,7 +121,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.subscription.add(titleSub);
     this.subscription.add(iconSub);
-    this.subscription.add(measuresSub);
+    this.subscription.add(weatherTypeSub);
   }
 
   ngOnInit(): void {
@@ -299,29 +299,38 @@ export class AppComponent implements OnInit, OnDestroy {
   previousWidget: GridWidget | null = null;
 
   toggleWidgetEdit(widget: GridWidget) {
-    this.isEditingWidget = !this.isEditingWidget;
-
-    if (this.previousWidget?.item.id === widget.item.id) {
-      this.deactivateWidgetEdit();
+    if (this.isEditingWidget) {
+      if (this.previousWidget?.item.id === widget.item.id) {
+        this.deactivateWidgetEdit();
+      } else {
+        this.previousWidget = widget;
+        this.populateWidgetEditForm(widget);
+      }
     } else {
-      this.populateWidgetEditForm(widget);
+      this.isEditingWidget = !this.isEditingWidget;
+  
+      if (!this.isEditingWidget) {
+        this.deactivateWidgetEdit();
+      } else {
+        this.previousWidget = widget;
+        this.populateWidgetEditForm(widget);
+      }
     }
-
-    this.previousWidget = widget;
   }
 
   populateWidgetEditForm(widget: GridWidget) {
     const title = widget.data.metadata?.title?.value;
     const icon = widget.data.metadata?.icon?.value;
-    const measures = widget.data.metadata?.measures?.value;
+    const weatherType = widget.data.type;
     
     this.editForm.get('title')?.patchValue(title);
     this.editForm.get('icon')?.patchValue(icon);
-    this.editForm.get('measures')?.patchValue(measures);
+    this.editForm.get('weatherType')?.patchValue(weatherType);
   }
 
   deactivateWidgetEdit() {
     this.previousWidget = null;
+    this.isEditingWidget = false;
     this.editForm.reset();
   }
 }

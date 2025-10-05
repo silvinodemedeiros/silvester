@@ -15,10 +15,11 @@ export class GridWidgetService {
   eventsUrl = this.apiUrl + '/events';
 
   widgetIdCounter = 1;
+  widgetSource_ = signal<any>(null);
 
   constructor() {
     effect(() => {
-      console.log('grid widget svc log', this._gridWidgets());
+      // console.log('grid widget svc log', this._gridWidgets());
     });
   }
 
