@@ -96,7 +96,7 @@ app.post('/notify', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 
-  weatherService.getLocalWeather().then((localWeather) => {;
+  weatherService.getLocalWeather().then((localWeather) => {
 
     const orionEntity = weatherService.generateOrionEntity(localWeather);
 

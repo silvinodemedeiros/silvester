@@ -38,7 +38,7 @@ function generateOrionEntity(weatherObject) {
       metadata: {...WEATHER_DATA['timezone_offset'].metadata}
     },
     location: {
-      type: 'Location',
+      type: 'location',
       value: {
         lat: -5.837006,
         lng: -35.203026

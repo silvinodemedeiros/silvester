@@ -1,6 +1,6 @@
 const WEATHER_DATA = {
     clouds: {
-        type: 'Integer',
+        type: 'clouds',
         metadata: {
             title: {
                 value: 'Clouds',
@@ -17,7 +17,7 @@ const WEATHER_DATA = {
         }
     },
     dew_point: {
-        type: 'Float',
+        type: 'dew_point',
         metadata: {
             title: {
                 value: 'Dew Point',
@@ -34,7 +34,7 @@ const WEATHER_DATA = {
         }
     },
     dt: {
-        type: 'Time',
+        type: 'dt',
         metadata: {
             title: {
                 value: 'Current Time',
@@ -51,7 +51,7 @@ const WEATHER_DATA = {
         }
     },
     feels_like: {
-        type: 'Float',
+        type: 'feels_like',
         metadata: {
             title: {
                 value: 'Feels Like',
@@ -68,7 +68,7 @@ const WEATHER_DATA = {
         }
     },
     humidity: {
-        type: 'Integer',
+        type: 'humidity',
         metadata: {
             title: {
                 value: 'Humidity',
@@ -85,7 +85,7 @@ const WEATHER_DATA = {
         }
     },
     pressure: {
-        type: 'Integer',
+        type: 'pressure',
         metadata: {
             title: {
                 value: 'Pressure',
@@ -102,7 +102,7 @@ const WEATHER_DATA = {
         }
     },
     sunrise: {
-        type: 'Time',
+        type: 'sunrise',
         metadata: {
             title: {
                 value: 'Sunrise',
@@ -119,7 +119,7 @@ const WEATHER_DATA = {
         }
     },
     sunset: {
-        type: 'Time',
+        type: 'sunset',
         metadata: {
             title: {
                 value: 'Sunset',
@@ -136,7 +136,7 @@ const WEATHER_DATA = {
         }
     },
     temp: {
-        type: 'Float',
+        type: 'temp',
         metadata: {
             title: {
                 value: 'Temperature',
@@ -153,7 +153,7 @@ const WEATHER_DATA = {
         }
     },
     timezone: {
-        type: 'Timezone',
+        type: 'timezone',
         metadata: {
             title: {
                 value: 'Timezone',
@@ -170,7 +170,7 @@ const WEATHER_DATA = {
         }
     },
     timezone_offset: {
-        type: 'TimezoneOffset',
+        type: 'timezone_offset',
         metadata: {
             title: {
                 value: 'Timezone Offset',
@@ -187,7 +187,7 @@ const WEATHER_DATA = {
         }
     },
     uvi: {
-        type: 'Float',
+        type: 'uvi',
         metadata: {
             title: {
                 value: 'UVI',
@@ -204,7 +204,7 @@ const WEATHER_DATA = {
         }
     },
     visibility: {
-        type: 'Float',
+        type: 'visibility',
         metadata: {
             title: {
                 value: 'Visibility',
@@ -221,7 +221,7 @@ const WEATHER_DATA = {
         }
     },
     wind_deg: {
-        type: 'Float',
+        type: 'wind_deg',
         metadata: {
             title: {
                 value: 'Wind Angle',
@@ -238,7 +238,7 @@ const WEATHER_DATA = {
         }
     },
     wind_speed: {
-        type: 'Float',
+        type: 'wind_speed',
         metadata: {
             title: {
                 value: 'Wind Speed',
@@ -253,24 +253,7 @@ const WEATHER_DATA = {
                 type: 'WeatherValueUnit'
             }
         }
-    },
-    wind_gust: {
-        type: 'Float',
-        metadata: {
-            title: {
-                value: 'Wind Gust',
-                type: 'WeatherTitle'
-            },
-            icon: {
-                value: 'bootstrapWind',
-                type: 'WeatherIconName'
-            },
-            measures: {
-                value: 'velocity',
-                type: 'WeatherValueUnit'
-            }
-        }
-    },
+    }
 };
 
 module.exports = {

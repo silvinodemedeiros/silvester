@@ -85,6 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // EVENT SOURCE - receives notifications from subscription
     const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
+      console.log(event);
       const widgetSourceObj = JSON.parse(event.data).data[0];
 
       // update menu, grid and refresh
@@ -98,7 +99,6 @@ export class AppComponent implements OnInit, OnDestroy {
       title: this.fb.control(''),
       icon: this.fb.control(''),
       measures: this.fb.control(''),
-      weather: this.fb.control(''),
     });
 
     const titleSub = this.editForm.get('title')?.valueChanges.subscribe((value: string) => {
@@ -114,21 +114,14 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     const measuresSub = this.editForm.get('measures')?.valueChanges.subscribe((value: string) => {
-      if (this.previousWidget?.data?.metadata?.measures) {
-        this.previousWidget.data.metadata.measures.value = value;
-      }
-    });
-
-    const weatherSub = this.editForm.get('weather')?.valueChanges.subscribe((value: string) => {
-      if (this.previousWidget?.data?.metadata?.weather) {
-        this.previousWidget.data.metadata.weather.value = value;
+      if (this.previousWidget?.data.type) {
+        this.previousWidget.data.type = value;
       }
     });
 
     this.subscription.add(titleSub);
     this.subscription.add(iconSub);
     this.subscription.add(measuresSub);
-    this.subscription.add(weatherSub);
   }
 
   ngOnInit(): void {
@@ -318,7 +311,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   populateWidgetEditForm(widget: GridWidget) {
-    this.isEditingWidget = true;
     const title = widget.data.metadata?.title?.value;
     const icon = widget.data.metadata?.icon?.value;
     const measures = widget.data.metadata?.measures?.value;

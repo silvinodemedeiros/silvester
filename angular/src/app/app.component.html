@@ -109,7 +109,7 @@
               </p>
 
               <!-- # WIDGET DIFFERENTIATION # -->
-              @if (gridWidget.data.type == 'Location') {
+              @if (gridWidget.data.type == 'location') {
                 <app-map-widget
                   [ngClass]="'grid-widget-map-wrapper'"
                   [data]="gridWidget"
@@ -135,8 +135,7 @@
                 }"
                 (mousedown)="handleOnMouseDown($event)"
                 (mouseup)="handleOnMouseUp($event)"
-              >
-              </div>
+              ></div>
               
               <div
                 [ngClass]="{
@@ -189,8 +188,8 @@
                 </mat-form-field>
                 
                 <mat-form-field appearance="outline">
-                  <mat-label>Weather Data</mat-label>
-                  <mat-select formControlName="weather">
+                  <mat-label>Measures</mat-label>
+                  <mat-select formControlName="measures">
                     @for(weather of weatherList; track weather.id) {
                       <mat-option [value]="weather.value">{{weather.name}}</mat-option>
                     }

@@ -30,6 +30,7 @@ export class GridWidgetService {
     let gridWidgets: any = {};
     let widgetJsonStr;
 
+    // retrieves widget data FROM drag event data transfer OR FROM local storage)
     if (event.dataTransfer) {
       widgetJsonStr = event.dataTransfer?.getData('application/json');
     } else {
@@ -65,16 +66,18 @@ export class GridWidgetService {
     // update grid widgets
     Object.keys(this._gridWidgets()).forEach((key) => {
       const gridWidget = this._gridWidgets()[key];
-      const gridWidgetLabel = gridWidget.item.label.toLowerCase();
+      const widgetType = gridWidget.data.type.toLowerCase();
+      
+      const hasTypeMatch = Object.keys(widgetSourceObj).some(
+        (type) => type === widgetType
+      );
 
-      if (Object.keys(widgetSourceObj).some(
-        (label) => label === gridWidgetLabel
-      )) {
+      if (hasTypeMatch) {
         gridWidgets = {
           ...this._gridWidgets(),
           [key]: {
             ...gridWidget,
-            data: {...widgetSourceObj[gridWidgetLabel]}
+            data: {...widgetSourceObj[widgetType]}
           }
         };
       }
