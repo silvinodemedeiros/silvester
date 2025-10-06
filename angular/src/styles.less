@@ -1,5 +1,33 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
+.scroll-bar() {
+    /* Apply to all scrollable elements */
+    &::-webkit-scrollbar {
+        width: 8px;              /* slim width */
+        height: 8px;             /* slim height for horizontal scrollbar */
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;  /* no background */
+        margin: 2px;              /* spacing at ends */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(100, 100, 100, 0.2); /* semi-transparent */
+        border-radius: 10px;                   /* rounded */
+        transition: background 0.3s ease;      /* smooth hover effect */
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(100, 100, 100, 0.5);
+    }
+
+    /* Optional: hide scrollbar corner */
+    &::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+}
+
 .mat-select-panel {
   background: #fff;
 }
@@ -44,47 +72,6 @@ body, html {
     align-items: center;
     justify-content: flex-start;
     gap: .5rem;
-}
-
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    grid-area: sidebar;
-    background-color: #ccc;
-    padding: 1rem;
-    border-right: 1px solid #bbb;
-    overflow: auto;
-
-    .divider {
-        margin-top: auto;
-    }
-
-    /* Apply to all scrollable elements */
-    &::-webkit-scrollbar {
-        width: 8px;              /* slim width */
-        height: 8px;             /* slim height for horizontal scrollbar */
-    }
-
-    &::-webkit-scrollbar-track {
-        background: transparent;  /* no background */
-        margin: 2px;              /* spacing at ends */
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: rgba(100, 100, 100, 0.2); /* semi-transparent */
-        border-radius: 10px;                   /* rounded */
-        transition: background 0.3s ease;      /* smooth hover effect */
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-        background: rgba(100, 100, 100, 0.5);
-    }
-
-    /* Optional: hide scrollbar corner */
-    &::-webkit-scrollbar-corner {
-        background: transparent;
-    }
-
 }
 
 .content {
@@ -158,6 +145,8 @@ body, html {
                 flex-direction: column;
                 padding: 1rem;
                 overflow: auto;
+
+                .scroll-bar();
             }
         }
 
@@ -173,6 +162,45 @@ body, html {
 }
 
 // SIDEBAR
+
+.sidebar {
+    display: grid;
+    grid-template-rows: 1fr auto auto;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "sidebarList"
+        "exportGrid"
+        "importGrid";
+    grid-area: sidebar;
+    background-color: #ccc;
+    gap: .5rem;
+    padding: 1rem;
+    border-right: 1px solid #bbb;
+    overflow: auto;
+
+    .divider {
+        margin-top: auto;
+    }
+
+    .scroll-bar();
+}
+
+.menu-items-wrapper {
+    grid-area: sidebarList;
+    position: relative;
+    
+    &-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0 .5rem 0 0;
+        overflow: auto;
+
+        .scroll-bar();
+    }
+}
 
 .menu-item {
     padding: 0.75rem;
@@ -216,6 +244,16 @@ body, html {
         &:active {
             cursor: pointer;
         }
+
+        &-export {
+            grid-area: exportGrid;
+            margin: 0;
+        }
+
+        &-import {
+            grid-area: importGrid;
+            margin: 0;
+        }
     }
 }
 
@@ -231,28 +269,23 @@ body, html {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-template-rows: repeat(6, 1fr);
-    gap: .5rem;
     width: 100%;
     aspect-ratio: 6 / 3;
     max-width: 1080px;
+    background: #ddd;
 }
 
 .cell {
     position: relative;
-    border: 3px solid #ddd;
+    border: 3px solid #ccc;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 12px;
     box-sizing: border-box;
-    background: rgba(211, 192, 192, 0.15);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(200, 200, 200, 0.8);
-    border-radius: 12px;
-    box-shadow: 0 4px 30px rgba(136, 106, 106, 0.1);
 
     &.has-widget-preview {
-        background: rgba(200, 200, 200, 0.8);
+        background: rgba(200, 200, 200, 1);
     }
 
     &.has-grid-preview {
@@ -260,7 +293,7 @@ body, html {
     }
 
     &.is-creating-widget {
-        border: 3px dashed rgb(200, 200, 200);
+        border: 3px dashed rgb(175, 175, 175);
         cursor: pointer;
 
         &:hover {
@@ -294,6 +327,12 @@ body, html {
         padding: .5rem;
         background-color: white;
 
+        &.cell {
+            box-shadow: 0 4px 30px rgba(136, 106, 106, 0.1);
+            border-radius: 12px;
+            border-width: 1px;
+        }
+
         & > * {
             margin: 0;
         }
@@ -304,6 +343,7 @@ body, html {
 
         &-selected {
             border: 2px dashed black;
+            border-width: 2px !important;
         }
 
         &.grid-widget-map {
@@ -324,7 +364,7 @@ body, html {
 
         &-value {
             grid-area: value;
-            font-size: 3.5rem;
+            font-size: 3rem;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -339,7 +379,7 @@ body, html {
 
         &-icon {
             grid-area: icon;
-            font-size: 1.3rem;
+            font-size: 1rem;
             line-height: 1rem;
         }
     }

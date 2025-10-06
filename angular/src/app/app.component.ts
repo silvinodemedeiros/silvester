@@ -54,7 +54,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   _gridWidgets = computed(() => this.gridWidgetService._gridWidgets());
   gridWidgets = computed(() => Object.values(this._gridWidgets()));
-  gridPreview = false;
 
   isDragging = false;
   isDraggingFile = false;
@@ -71,9 +70,10 @@ export class AppComponent implements OnInit, OnDestroy {
   onEscKey() {
     this.isDragging = false;
     this.isDraggingFile = false;
-    this.gridPreview = false;
     this.isCreatingWidget = false;
-    this.isEditingWidget = false;
+    
+    this.deactivateWidgetEdit();
+    this.viewMode_.set(false);
   }
 
   constructor(
@@ -276,11 +276,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /*# VIEW MODE #*/
 
-  viewMode = signal(false);
+  viewMode_ = signal(false);
+  darkMode_ = signal(false);
 
   toggleViewMode() {
-    const viewModeValue = this.viewMode();
-    this.viewMode.set(!viewModeValue);
+    const viewModeValue = this.viewMode_();
+    this.viewMode_.set(!viewModeValue);
+
+    if (!viewModeValue) {
+      this.deactivateWidgetEdit();
+    }
   }
 
   /*# DRAG HANDLE SHENANIGANS #*/
@@ -301,6 +306,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.transferEmptyWidget(event, row, col);
     this.onDrop(event, row, col);
     this.isCreatingWidget = false;
+  }
+
+  /*# REMOVE WIDGET #*/
+  removeWidget() {
+    this.gridWidgetService.removeWidget(this.previousWidget);
+    this.deactivateWidgetEdit();
   }
 
   /*# EDIT WIDGET INSTRUCTIONS #*/

@@ -1,6 +1,6 @@
 import { effect, Injectable, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { GridWidgetSource } from '../../types';
+import { GridWidget, GridWidgetSource } from '../../types';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +65,22 @@ export class GridWidgetService {
 
     // increments widget counter
     this.widgetIdCounter += 1;
+  }
+
+  removeWidget(widget: GridWidget | null) {
+
+    this._gridWidgets.update((gridWidgetSource: GridWidgetSource) => {
+      return Object.entries(gridWidgetSource).reduce((acc, [widgetRowCol, gridWidget]) => {
+        if (widget?.item.id === gridWidget.item.id) {
+          return acc;
+        }
+
+        return {
+          ...acc,
+          [widgetRowCol]: {...gridWidget}
+        };
+      }, {});
+    });
   }
 
   updateGridWidgets(widgetSourceObj: any) {

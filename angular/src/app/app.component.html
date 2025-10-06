@@ -2,24 +2,24 @@
 <div
   [ngClass]="{
     'layout': true,
-    'layout-preview': gridPreview
+    'layout-preview': viewMode_()
   }"
   (dragover)="onDragOver($event, -1, -1)"
   (drop)="onDrop($event, -1, -1)"
 >
     <header
-      *ngIf="!gridPreview"
+      *ngIf="!viewMode_()"
       class="topbar"
     >
-      <div class="menu-item menu-item-button menu-item-button-header" (click)="gridPreview = !gridPreview">
+      <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleViewMode()">
         <ng-icon name="bootstrapEye"></ng-icon>
         Preview
       </div>
-      <div class="menu-item menu-item-button menu-item-button-header" (click)="gridPreview = !gridPreview">
+      <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleViewMode()">
         <ng-icon name="bootstrapMoonStarsFill"></ng-icon>
         Dark Mode
       </div>
-      <div class="menu-item menu-item-button menu-item-button-header" (click)="gridPreview = !gridPreview">
+      <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleViewMode()">
         <ng-icon name="bootstrapEyeglasses"></ng-icon>
         High Contrast
       </div>
@@ -32,28 +32,31 @@
 
     <!-- SIDEBAR -->
     <aside
-      *ngIf="!gridPreview"
+      *ngIf="!viewMode_()"
       class="sidebar"
     >
-      @for (menuItem of menuItems(); track menuItem.item.id) {
-        <div
-          class="menu-item"
-          draggable="true"
-          (dragstart)="onDragStart($event, menuItem)"
-        >
-          <ng-icon [name]="menuItem.data.metadata?.icon?.value"></ng-icon>
-          {{ menuItem.item.label }}
+      <div class="menu-items-wrapper"> 
+        <div class="menu-items-wrapper-content">
+          @for (menuItem of menuItems(); track menuItem.item.id) {
+            <div
+              class="menu-item"
+              draggable="true"
+              (dragstart)="onDragStart($event, menuItem)"
+            >
+              <ng-icon [name]="menuItem.data.metadata?.icon?.value"></ng-icon>
+              {{ menuItem.item.label }}
+            </div>
+          }
         </div>
-      }
-      <div class="divider"></div>
+      </div>
       <div
-        class="menu-item menu-item-button"
+        class="menu-item menu-item-button menu-item-button-export"
         (click)="exportGrid()"
       >
         Export Grid
       </div>
       <div
-        class="menu-item menu-item-button"
+        class="menu-item menu-item-button menu-item-button-import"
         (click)="importGrid()"
       >
         Import Grid
@@ -64,7 +67,7 @@
     <main
       [ngClass]="{
         'content': true,
-        'content-preview': gridPreview,
+        'content-preview': viewMode_(),
         'content-edit': isEditingWidget
       }"
       role="main"
@@ -77,7 +80,7 @@
           [ngClass]="{
             'cell': true,
             'has-widget-preview': previewWidget && hasPreview(cell.row, cell.col),
-            'has-grid-preview': gridPreview,
+            'has-grid-preview': viewMode_(),
             'is-creating-widget': isCreatingWidget
           }"
           (dragover)="onDragOver($event, cell.row, cell.col)"
@@ -95,7 +98,7 @@
               class="grid-widget cell monochromatic"
               [ngClass]="{
                 'grid-widget-map': gridWidget.data.type == 'Location',
-                'grid-widget-has-preview': gridPreview,
+                'grid-widget-has-preview': viewMode_(),
                 'grid-widget-selected': previousWidget?.item?.id == gridWidget.item.id
               }"
               [ngStyle]="{
@@ -114,7 +117,7 @@
                 <app-map-widget
                   [ngClass]="'grid-widget-map-wrapper'"
                   [data]="gridWidget"
-                  [has-preview]="gridPreview"
+                  [has-preview]="viewMode_()"
                 ></app-map-widget>
               } @else {
                 <span class="grid-widget-value">
@@ -130,7 +133,7 @@
               </p>
               
               <div
-                *ngIf="!gridPreview"
+                *ngIf="!viewMode_()"
                 [ngClass]="{
                   'drag-handle': true
                 }"
@@ -139,6 +142,7 @@
               ></div>
               
               <div
+                *ngIf="!viewMode_()"
                 [ngClass]="{
                   'edit-handle': true
                 }"
@@ -224,6 +228,11 @@
               <div class="menu-item menu-item-button menu-item-button-header">
                 <ng-icon name="bootstrapSave"></ng-icon>
                 Save as Template
+              </div>
+              
+              <div class="menu-item menu-item-button menu-item-button-header" (click)="removeWidget()">
+                <ng-icon name="bootstrapTrash"></ng-icon>
+                Remove Widget
               </div>
             </div>
           </div>
