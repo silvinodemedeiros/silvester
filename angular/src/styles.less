@@ -193,19 +193,22 @@ body, html {
             padding: 0.5rem 1rem;
             opacity: 0.5;
             text-transform: uppercase;
+            border: 1px solid transparent;
             border-radius: 4px;
             transition: all .15s ease;
 
             &.active {
+                color: white;
+                background: grey;
                 opacity: 1;
                 font-weight: bold;
                 border: 1px solid grey;
             }
 
             &:hover {
-                color: white;
-                background: grey;
                 cursor: pointer;
+                opacity: 1;
+                border: 1px solid grey;
             }
         }
     }
@@ -225,6 +228,27 @@ body, html {
         overflow: auto;
 
         .scroll-bar();
+
+        &--empty {
+            width: calc(100% - 2rem - 4px);
+            height: calc(100% - 2rem - 4px);
+            border: 1px dotted #777;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            font-size: .7rem;
+            text-align: center;
+            color: #777;
+            text-transform: uppercase;
+            transition: all .15s ease;
+
+            &:hover {
+                background: #ddd;
+                cursor: pointer;
+            }
+        }
     }
 }
 
@@ -252,6 +276,14 @@ body, html {
         font-weight: bold;
     }
 
+    &.widget-list-item {
+        cursor: pointer;
+
+        &.selected {
+            border: 2px dashed black;
+        }
+    }
+
     &-button {
         border: none;
         cursor: pointer;
@@ -269,6 +301,14 @@ body, html {
         
         &:active {
             cursor: pointer;
+        }
+
+        &-export, &-import {
+            &.inactive {
+                opacity: 0.5;
+                cursor: not-allowed;
+                pointer-events: none;
+            }
         }
 
         &-export {

@@ -24,7 +24,7 @@
         High Contrast
       </div>
       <div style="margin-left: auto;"></div>
-      <div class="menu-item menu-item-button menu-item-button-header" (click)="isCreatingWidget = !isCreatingWidget">
+      <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleWidgetCreation()">
         <ng-icon name="bootstrapPlus"></ng-icon>
         Create Widget
       </div>
@@ -36,36 +36,89 @@
       class="sidebar"
     >
       <div class="sidebar-title">
-        <div class="sidebar-title-tab active">
+        <div 
+          [ngClass]="{
+            'sidebar-title-tab': true,
+            'active': currentTab_() == 'widgets'
+          }"
+          (click)="setTab('widgets')"
+        >
           Widgets
         </div> 
-        <div class="sidebar-title-tab">
+        <div 
+          [ngClass]="{
+            'sidebar-title-tab': true,
+            'active': currentTab_() == 'templates'
+          }" 
+          (click)="setTab('templates')"
+        >
           Templates
         </div> 
       </div>
       <div class="menu-items-wrapper">
         <div class="menu-items-wrapper-content">
-          @for (menuItem of menuItems(); track menuItem.item.id) {
-            <div
-              class="menu-item"
-              draggable="true"
-              (dragstart)="onDragStart($event, menuItem)"
-            >
-              <ng-icon [name]="menuItem.data.metadata?.icon?.value"></ng-icon>
-              {{ menuItem.item.label }}
-            </div>
+          @if (currentTab_() == 'widgets') {
+            @for (widget of gridWidgets(); track widget.item.id) {
+              <div
+                class="menu-item widget-list-item"
+                [ngClass]="{
+                  'menu-item': true,
+                  'widget-list-item': true,
+                  'selected': previousWidget?.item?.id == widget.item.id
+                }"
+                (click)="toggleWidgetEdit(widget)"
+              >
+                <ng-icon [name]="widget.data.metadata?.icon?.value"></ng-icon>
+                {{ widget.item.label }}
+              </div>
+            }
+
+            @empty {
+              <div class="menu-items-wrapper-content--empty" (click)="toggleWidgetCreation()">
+                This list is empty. Create a widget to populate.
+              </div>
+            }
+          } @else {
+            @for (menuItem of menuItems(); track menuItem.item.id) {
+              <div
+                class="menu-item"
+                draggable="true"
+                (dragstart)="onDragStart($event, menuItem)"
+              >
+                <ng-icon [name]="menuItem.data.metadata?.icon?.value"></ng-icon>
+                {{ menuItem.item.label }}
+              </div>
+            }
+
+            @empty {
+              <div class="menu-items-wrapper-content--empty">
+                This list is empty. Save a widget as template populate.
+              </div>
+            }
           }
         </div>
       </div>
       <div
-        class="menu-item menu-item-button menu-item-button-export"
+        [ngClass]="{
+          'menu-item': true,
+          'menu-item-button': true,
+          'menu-item-button-export': true,
+          'inactive': gridWidgets().length == 0
+        }"
         (click)="exportGrid()"
+        [matTooltip]="gridWidgets().length == 0 ? 'Grid is Empty' : ''"
       >
         Export Grid
       </div>
       <div
-        class="menu-item menu-item-button menu-item-button-import"
+        [ngClass]="{
+          'menu-item': true,
+          'menu-item-button': true,
+          'menu-item-button-import': true,
+          'inactive': gridWidgets().length == 0
+        }"
         (click)="importGrid()"
+        [matTooltip]="gridWidgets().length == 0 ? 'Grid is Empty' : ''"
       >
         Import Grid
       </div>

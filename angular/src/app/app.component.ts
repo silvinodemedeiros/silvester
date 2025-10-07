@@ -16,6 +16,7 @@ import {TextFieldModule} from '@angular/cdk/text-field';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { ICON_LIST, MEASUREMENTS_LIST, WEATHER_INFO_LIST } from './models';
 
 @Component({
@@ -30,6 +31,7 @@ import { ICON_LIST, MEASUREMENTS_LIST, WEATHER_INFO_LIST } from './models';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatTooltipModule,
     NgIcon,
     WidgetComponent,
     WidgetSuffixPipe,
@@ -65,6 +67,10 @@ export class AppComponent implements OnInit, OnDestroy {
   iconList = ICON_LIST;
   weatherList = WEATHER_INFO_LIST;
   measurementsList = MEASUREMENTS_LIST;
+
+  currentTab_= signal<string>('widgets');
+
+  currentWidgetSource: any;
 
   @HostListener('document:keydown.escape', ['$event'])
   onEscKey() {
@@ -156,6 +162,10 @@ export class AppComponent implements OnInit, OnDestroy {
       cellRow >= row && cellRow < row + height &&
       cellCol >= col && cellCol < col + width
     );
+  }
+
+  setTab(tab: string) {
+    this.currentTab_.set(tab);
   }
 
   setWidgetTransfer(event: DragEvent, widget: any, moved = false) {
@@ -301,6 +311,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   isCreatingWidget = false;
   creationWidget: any = null;
+
+  toggleWidgetCreation() {
+    this.isCreatingWidget = !this.isCreatingWidget;
+  }
 
   handleCellClick(event: any, row: number, col: number) {
     this.transferEmptyWidget(event, row, col);
