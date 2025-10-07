@@ -165,24 +165,50 @@ body, html {
 
 .sidebar {
     display: grid;
-    grid-template-rows: 1fr auto auto;
+    grid-template-rows: 2rem 1fr auto auto;
     grid-template-columns: 1fr;
     grid-template-areas:
+        "sidebarTitle"
         "sidebarList"
         "exportGrid"
         "importGrid";
     grid-area: sidebar;
     background-color: #ccc;
     gap: .5rem;
-    padding: 1rem;
+    padding: .5rem 1rem 1rem 1rem;
     border-right: 1px solid #bbb;
     overflow: auto;
 
-    .divider {
-        margin-top: auto;
-    }
-
     .scroll-bar();
+
+    &-title {
+        grid-area: sidebarTitle;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        &-tab {
+            font-size: 0.8rem;
+            color: rgb(100, 100, 100);
+            padding: 0.5rem 1rem;
+            opacity: 0.5;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all .15s ease;
+
+            &.active {
+                opacity: 1;
+                font-weight: bold;
+                border: 1px solid grey;
+            }
+
+            &:hover {
+                color: white;
+                background: grey;
+                cursor: pointer;
+            }
+        }
+    }
 }
 
 .menu-items-wrapper {
@@ -272,7 +298,8 @@ body, html {
     width: 100%;
     aspect-ratio: 6 / 3;
     max-width: 1080px;
-    background: #ddd;
+    background: rgba(200, 200, 200, 0.5);
+    border: 3px solid #ccc;
 }
 
 .cell {
@@ -344,6 +371,7 @@ body, html {
         &-selected {
             border: 2px dashed black;
             border-width: 2px !important;
+            border-radius: 0;
         }
 
         &.grid-widget-map {

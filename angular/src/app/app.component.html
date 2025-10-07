@@ -35,7 +35,15 @@
       *ngIf="!viewMode_()"
       class="sidebar"
     >
-      <div class="menu-items-wrapper"> 
+      <div class="sidebar-title">
+        <div class="sidebar-title-tab active">
+          Widgets
+        </div> 
+        <div class="sidebar-title-tab">
+          Templates
+        </div> 
+      </div>
+      <div class="menu-items-wrapper">
         <div class="menu-items-wrapper-content">
           @for (menuItem of menuItems(); track menuItem.item.id) {
             <div
