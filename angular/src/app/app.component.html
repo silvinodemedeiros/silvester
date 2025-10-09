@@ -133,8 +133,13 @@
       }"
       role="main"
     >
-      <div class="grid">
+      @if (isCreatingWidget && creatingWidgetMsg) {
+        <div class="content-alert">
+          {{ creatingWidgetMsg }}
+        </div>
+      }
 
+      <div class="grid">
         <!--# CELLS LAYER #-->
         <div
           *ngFor="let cell of cells"

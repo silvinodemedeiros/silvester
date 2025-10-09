@@ -77,6 +77,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isDragging = false;
     this.isDraggingFile = false;
     this.isCreatingWidget = false;
+    this.creatingWidgetMsg = '';
     
     this.deactivateWidgetEdit();
     this.viewMode_.set(false);
@@ -93,7 +94,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
       const widgetSourceObj = JSON.parse(event.data).data[0];
-      console.log(widgetSourceObj);
+      this.currentWidgetSource = widgetSourceObj;
 
       // update menu, grid and refresh
       this.menuItemService.updateMenuItems(widgetSourceObj);
@@ -224,7 +225,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     // adds widget to grid
-    this.gridWidgetService.addGridWidget(event, row, col);
+    const addedWidget = this.gridWidgetService.addGridWidget(event, row, col);
+
+    if (addedWidget.data.type === 'EMPTY') {
+      this.toggleWidgetEdit(addedWidget);
+    }
 
     // cleans up after drop
     this.previewWidget = null;
@@ -311,9 +316,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   isCreatingWidget = false;
   creationWidget: any = null;
+  creatingWidgetMsg = '';
 
   toggleWidgetCreation() {
     this.isCreatingWidget = !this.isCreatingWidget;
+
+    this.creatingWidgetMsg = this.isCreatingWidget 
+      ? 'Click on the grid to add a widget'
+      : '';
   }
 
   handleCellClick(event: any, row: number, col: number) {
@@ -365,7 +375,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   deactivateWidgetEdit() {
-    this.previousWidget = null;
+    this.previousWidget = null; 
     this.isEditingWidget = false;
     this.editForm.reset();
   }

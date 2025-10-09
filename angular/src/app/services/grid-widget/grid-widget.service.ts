@@ -65,6 +65,8 @@ export class GridWidgetService {
 
     // increments widget counter
     this.widgetIdCounter += 1;
+
+    return gridWidgets[`${row}${col}`];
   }
 
   removeWidget(widget: GridWidget | null) {
