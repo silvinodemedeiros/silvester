@@ -19,7 +19,7 @@ export class GridWidgetService {
 
   constructor() {
     effect(() => {
-      console.log('grid widget svc log', this._gridWidgets());
+      // console.log('grid widget svc log', this._gridWidgets());
     });
   }
 

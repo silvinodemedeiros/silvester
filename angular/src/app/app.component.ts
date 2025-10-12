@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, computed, HostListener, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, effect, HostListener, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
@@ -56,6 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   _gridWidgets = computed(() => this.gridWidgetService._gridWidgets());
   gridWidgets = computed(() => Object.values(this._gridWidgets()));
+  isGridEmpty_ = computed(() => Array.isArray(this.gridWidgets()) && this.gridWidgets().length === 0);
 
   isDragging = false;
   isDraggingFile = false;
@@ -90,24 +91,33 @@ export class AppComponent implements OnInit, OnDestroy {
     private fb: UntypedFormBuilder
   ) {
     
-    // EVENT SOURCE - receives notifications from subscription
+    // SUBSCRIBES TO WIDGET SOURCE - receives notifications from subscription
     const widgetSource = new EventSource(this.apiUrl + '/events');
     widgetSource.onmessage = (event) => {
-      const widgetSourceObj = JSON.parse(event.data).data[0];
-      this.currentWidgetSource = widgetSourceObj;
+      this.currentWidgetSource = JSON.parse(event.data).data[0];
 
       // update menu, grid and refresh
-      this.menuItemService.updateMenuItems(widgetSourceObj);
-      this.gridWidgetService.updateGridWidgets(widgetSourceObj);
-      
-      this.cd.detectChanges();
+      this.updateGridWidgets();
     };
+
+    effect(() => {
+      this.currentWidgetSource = this.menuItemService.widgetSource_();
+    });
 
     this.editForm = this.fb.group({
       title: this.fb.control(''),
       icon: this.fb.control(''),
       measures: this.fb.control(''),
       weatherType: this.fb.control(''),
+    });
+
+    effect(() => {
+      const isGridEmpty = this.isGridEmpty_();
+
+      if (isGridEmpty) {
+        this.isCreatingWidget = false;
+        this.toggleWidgetCreation();
+      }
     });
 
     const titleSub = this.editForm.get('title')?.valueChanges.subscribe((value: string) => {
@@ -153,6 +163,13 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.menuItemService.destroy();
     this.subscription.unsubscribe();
+  }
+
+  updateGridWidgets() {
+    this.gridWidgetService.updateGridWidgets(this.currentWidgetSource);
+    this.menuItemService.updateMenuItems(this.currentWidgetSource);
+  
+    this.cd.detectChanges();
   }
 
   hasPreview(cellRow: number, cellCol: number): boolean {
@@ -224,10 +241,12 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.deactivateWidgetCreation();
+
     // adds widget to grid
     const addedWidget = this.gridWidgetService.addGridWidget(event, row, col);
 
-    if (addedWidget.data.type === 'EMPTY') {
+    if (addedWidget?.data.type === 'EMPTY') {
       this.toggleWidgetEdit(addedWidget);
     }
 
@@ -317,6 +336,11 @@ export class AppComponent implements OnInit, OnDestroy {
   isCreatingWidget = false;
   creationWidget: any = null;
   creatingWidgetMsg = '';
+
+  deactivateWidgetCreation() {
+    this.isCreatingWidget = true;
+    this.toggleWidgetCreation();
+  }
 
   toggleWidgetCreation() {
     this.isCreatingWidget = !this.isCreatingWidget;

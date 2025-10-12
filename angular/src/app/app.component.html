@@ -69,13 +69,13 @@
                 (click)="toggleWidgetEdit(widget)"
               >
                 <ng-icon [name]="widget.data.metadata?.icon?.value"></ng-icon>
-                {{ widget.item.label }}
+                {{ widget.data.metadata?.title?.value }}
               </div>
             }
 
             @empty {
-              <div class="menu-items-wrapper-content--empty" (click)="toggleWidgetCreation()">
-                This list is empty. Create a widget to populate.
+              <div class="menu-items-wrapper-content--empty">
+                This list is empty. Create on the grid to create a widget.
               </div>
             }
           } @else {
@@ -286,7 +286,7 @@
 
             <div class="config-panel-actions">
               
-              <div class="menu-item menu-item-button menu-item-button-header">
+              <div class="menu-item menu-item-button menu-item-button-header" (click)="updateGridWidgets()">
                 <ng-icon name="bootstrapCheck"></ng-icon>
                 Update Widget
               </div>

@@ -13,15 +13,18 @@ export class MenuItemService {
   entitiesUrl = this.apiUrl + '/entities';
   menuItems = signal<MenuItem[]>([]);
 
+  widgetSource_ = signal<any>({});
+
   constructor(
     private httpClient: HttpClient
   ) {
     effect(() => {
-      // console.log('menu items svc log', this.menuItems());
+      console.log('menu items svc log', this.menuItems());
     });
 
     const sub = this.httpClient.get<any>(this.entitiesUrl).subscribe((response) => {
       this.updateMenuItems(response[0]);
+      this.widgetSource_.set(response[0]);
     });
 
     this.sub.add(sub);
