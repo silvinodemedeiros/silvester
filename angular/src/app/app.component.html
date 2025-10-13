@@ -74,9 +74,11 @@
             }
 
             @empty {
-              <div class="menu-items-wrapper-content--empty">
-                This list is empty. Create a widget to start.
-              </div>
+              @if (!this.isDragging) {
+                <div class="menu-items-wrapper-content--empty">
+                  This list is empty. Create a widget to start.
+                </div>
+              }
             }
           } @else {
             @for (menuItem of menuItems(); track menuItem.item.id) {
@@ -137,7 +139,10 @@
         </div>
       }
 
-      <div class="grid">
+      <div class="grid" [ngClass]="{
+        'grid': true,
+        'grid-preview': viewMode_()
+      }">
         <!--# CELLS LAYER #-->
         <div
           *ngFor="let cell of cells"

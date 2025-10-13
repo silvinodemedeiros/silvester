@@ -114,7 +114,7 @@ export class AppComponent implements OnInit, OnDestroy {
     effect(() => {
       const isGridEmpty = this.isGridEmpty_();
 
-      if (isGridEmpty) {
+      if (isGridEmpty && !this.isDragging) {
         this.deactivateWidgetEdit();
         this.activateWidgetCreation();
       }
