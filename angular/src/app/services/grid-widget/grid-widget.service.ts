@@ -55,12 +55,6 @@ export class GridWidgetService {
       }
     };
 
-    // if widget as moved instead of added, delete previous widget
-    if (widget.moved) {
-      const widgetKey = `${widget.row}${widget.col}`;
-      delete gridWidgets[widgetKey];
-    }
-
     this._gridWidgets.set(gridWidgets);
 
     // increments widget counter

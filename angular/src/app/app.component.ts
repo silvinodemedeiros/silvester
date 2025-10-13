@@ -194,6 +194,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // populates preview widget
     this.previewWidget = {...widget};
+
+    // if widget as moved instead of added, delete previous widget
+    if (widget.moved) {
+      this.gridWidgetService.removeWidget(widget);
+    }
     
     if (event.dataTransfer) {
       event.dataTransfer.setData('application/json', JSON.stringify(widget));
@@ -243,10 +248,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // adds widget to grid
     const addedWidget = this.gridWidgetService.addGridWidget(event, row, col);
-
-    if (addedWidget?.data.type === 'EMPTY') {
-      this.toggleWidgetEdit(addedWidget);
-    }
 
     // cleans up after drop
     this.previewWidget = null;
