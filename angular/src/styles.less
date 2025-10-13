@@ -353,8 +353,15 @@ body, html {
 
     &-preview {
         background: none;
-        border: 1px solid #ccc;
-        border-radius: 12px
+        border: none;
+
+        &:after {
+            content: '';
+            position: absolute;
+            inset: -1rem -1rem -1rem -1rem;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+        }
     }
 }
 
