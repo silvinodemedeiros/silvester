@@ -19,7 +19,7 @@ export class MenuItemService {
     private httpClient: HttpClient
   ) {
     effect(() => {
-      console.log('menu items svc log', this.menuItems());
+      // console.log('menu items svc log', this.menuItems());
     });
 
     const sub = this.httpClient.get<any>(this.entitiesUrl).subscribe((response) => {

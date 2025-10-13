@@ -49,7 +49,7 @@ export class GridWidgetService {
         col,
         item: {
           ...widget.item,
-          id: 'wi_' + this.widgetIdCounter
+          id: widget.moved ? widget.item.id : 'wi_' + this.widgetIdCounter
         },
         data: {...widget.data}
       }

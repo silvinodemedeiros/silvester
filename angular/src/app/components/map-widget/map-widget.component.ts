@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { GridWidget, LocationValue, MenuItem } from '../../types';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
 import { MapOptions, tileLayer, Layer, Map, marker, icon, latLng } from 'leaflet';
@@ -37,7 +37,9 @@ export class WidgetComponent implements OnInit {
   mapCenter: any;
   mapZoom: any;
 
-  constructor() {}
+  private cd = inject(ChangeDetectorRef);
+
+  // METHODS
 
   ngOnInit(): void {
     const {lat, lng} = this.gridWidget.data.value as LocationValue;
@@ -71,6 +73,7 @@ export class WidgetComponent implements OnInit {
 
   handleMapReady(map: Map) {
     this.map = map;
+    this.cd.detectChanges();
   }
 
   handleMapMoveEnd() {

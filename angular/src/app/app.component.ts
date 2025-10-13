@@ -115,8 +115,8 @@ export class AppComponent implements OnInit, OnDestroy {
       const isGridEmpty = this.isGridEmpty_();
 
       if (isGridEmpty) {
-        this.isCreatingWidget = false;
-        this.toggleWidgetCreation();
+        this.deactivateWidgetEdit();
+        this.activateWidgetCreation();
       }
     });
 
@@ -205,8 +205,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onDragStart(event: DragEvent, widget: any, moved = false): void {
     this.isDragging = true;
-
-    // adds moved attribute to widget so it's retrieved on drop
     this.setWidgetTransfer(event, widget, moved);
   }
 
@@ -259,11 +257,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   importGrid() {
     this.isDraggingFile = true;
+    this.isCreatingWidget = false;
+    this.isEditingWidget = false;
   }
 
   exportGrid() {
 
-    if (this.gridWidgets.length === 0) {
+    if (this.gridWidgets().length === 0) {
       console.log('No widgets detected...');
       return;
     }
@@ -336,6 +336,11 @@ export class AppComponent implements OnInit, OnDestroy {
   isCreatingWidget = false;
   creationWidget: any = null;
   creatingWidgetMsg = '';
+
+  activateWidgetCreation() {
+    this.isCreatingWidget = false;
+    this.toggleWidgetCreation();
+  }
 
   deactivateWidgetCreation() {
     this.isCreatingWidget = true;

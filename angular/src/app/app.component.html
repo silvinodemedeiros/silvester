@@ -11,20 +11,20 @@
       *ngIf="!viewMode_()"
       class="topbar"
     >
-      <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleViewMode()">
+      <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleViewMode()" [ngClass]="{'inactive': isCreatingWidget || isDraggingFile || gridWidgets().length === 0}">
         <ng-icon name="bootstrapEye"></ng-icon>
         Preview
       </div>
-      <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleViewMode()">
+      <!-- <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleViewMode()">
         <ng-icon name="bootstrapMoonStarsFill"></ng-icon>
         Dark Mode
       </div>
       <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleViewMode()">
         <ng-icon name="bootstrapEyeglasses"></ng-icon>
         High Contrast
-      </div>
+      </div> -->
       <div style="margin-left: auto;"></div>
-      <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleWidgetCreation()">
+      <div class="menu-item menu-item-button menu-item-button-header" (click)="activateWidgetCreation()" [ngClass]="{'inactive': isCreatingWidget || isDraggingFile}">
         <ng-icon name="bootstrapPlus"></ng-icon>
         Create Widget
       </div>
@@ -75,7 +75,7 @@
 
             @empty {
               <div class="menu-items-wrapper-content--empty">
-                This list is empty. Create on the grid to create a widget.
+                This list is empty. Create a widget to start.
               </div>
             }
           } @else {
@@ -114,11 +114,9 @@
         [ngClass]="{
           'menu-item': true,
           'menu-item-button': true,
-          'menu-item-button-import': true,
-          'inactive': gridWidgets().length == 0
+          'menu-item-button-import': true
         }"
         (click)="importGrid()"
-        [matTooltip]="gridWidgets().length == 0 ? 'Grid is Empty' : ''"
       >
         Import Grid
       </div>
@@ -181,7 +179,6 @@
               <!-- # WIDGET DIFFERENTIATION # -->
               @if (gridWidget.data.type == 'location') {
                 <app-map-widget
-                  [ngClass]="'grid-widget-map-wrapper'"
                   [data]="gridWidget"
                   [has-preview]="viewMode_()"
                 ></app-map-widget>
