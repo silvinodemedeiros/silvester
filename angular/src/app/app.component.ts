@@ -373,6 +373,7 @@ export class AppComponent implements OnInit, OnDestroy {
   previousWidget: GridWidget | null = null;
 
   toggleWidgetEdit(widget: GridWidget) {
+    debugger
     if (this.isEditingWidget) {
       if (this.previousWidget?.item.id === widget.item.id) {
         this.deactivateWidgetEdit();
@@ -402,6 +403,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.editForm.get('icon')?.patchValue(icon);
     this.editForm.get('measures')?.patchValue(measures);
     this.editForm.get('weatherType')?.patchValue(weatherType);
+
+    this.cd.detectChanges();
   }
 
   deactivateWidgetEdit() {
