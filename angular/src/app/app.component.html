@@ -144,88 +144,90 @@
         'grid-preview': viewMode_()
       }">
         <!--# CELLS LAYER #-->
-        <div
-          *ngFor="let cell of cells"
-          [ngClass]="{
-            'cell': true,
-            'has-widget-preview': previewWidget && hasPreview(cell.row, cell.col),
-            'has-grid-preview': viewMode_(),
-            'is-creating-widget': isCreatingWidget
-          }"
-          (dragover)="onDragOver($event, cell.row, cell.col)"
-          (dragleave)="onDragLeave()"
-          (drop)="onDrop($event, cell.row, cell.col)"
-          (click)="handleCellClick($event, cell.row, cell.col)"
-        ></div>
+        <ng-container *ngIf="!viewMode_()">
+          <div
+            *ngFor="let cell of cells"
+            [ngClass]="{
+              'cell': true,
+              'has-widget-preview': previewWidget && hasPreview(cell.row, cell.col),
+              'has-grid-preview': viewMode_(),
+              'is-creating-widget': isCreatingWidget
+            }"
+            (dragover)="onDragOver($event, cell.row, cell.col)"
+            (dragleave)="onDragLeave()"
+            (drop)="onDrop($event, cell.row, cell.col)"
+            (click)="handleCellClick($event, cell.row, cell.col)"
+          ></div>
+        </ng-container>
 
         <!--# WIDGETS LAYER #-->
         <div class="grid-widgets-wrapper" *ngIf="!(isDragging || isCreatingWidget)">
-          <ng-container
+          <div
             *ngFor="let gridWidget of gridWidgets()"
+            class="grid-widget cell monochromatic"
+            [ngClass]="{
+              'grid-widget-map': gridWidget.data.type == 'Location',
+              'grid-widget-has-preview': viewMode_(),
+              'grid-widget-selected': previousWidget?.item?.id == gridWidget.item.id
+            }"
+            [ngStyle]="{
+              'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.height + '/ span ' + gridWidget.item.width
+            }"
+            (dragstart)="onDragStart($event, gridWidget, true)"
+            [tabIndex]="1"
+            (focus)="onWidgetFocus($event)"
+            (blur)="onWidgetBlur($event)"
+            (mouseover)="terminateWidgetFocus()"
           >
-            <div
-              class="grid-widget cell monochromatic"
-              [ngClass]="{
-                'grid-widget-map': gridWidget.data.type == 'Location',
-                'grid-widget-has-preview': viewMode_(),
-                'grid-widget-selected': previousWidget?.item?.id == gridWidget.item.id
-              }"
-              [ngStyle]="{
-                'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.height + '/ span ' + gridWidget.item.width
-              }"
-              (dragstart)="onDragStart($event, gridWidget, true)"
-              [tabIndex]="1"
-            >
-            
-              <p class="grid-widget-title">
-                {{ gridWidget.data.metadata?.title?.value }}
-              </p>
+          
+            <p class="grid-widget-title">
+              {{ gridWidget.data.metadata?.title?.value }}
+            </p>
 
-              <!-- # WIDGET DIFFERENTIATION # -->
-              @if (gridWidget.data.type == 'location') {
-                <app-map-widget
-                  [data]="gridWidget"
-                  [has-preview]="viewMode_()"
-                ></app-map-widget>
-              } @else {
-                <span class="grid-widget-value">
-                  {{ gridWidget | widgetValue }}
-                  <span class="grid-widget-value-suffix">
-                    {{ gridWidget.data.metadata?.measures?.value | widgetSuffix }}
-                  </span>
+            <!-- # WIDGET DIFFERENTIATION # -->
+            @if (gridWidget.data.type == 'location') {
+              <app-map-widget
+                [data]="gridWidget"
+                [has-preview]="viewMode_()"
+              ></app-map-widget>
+            } @else {
+              <span class="grid-widget-value">
+                {{ gridWidget | widgetValue }}
+                <span class="grid-widget-value-suffix">
+                  {{ gridWidget.data.metadata?.measures?.value | widgetSuffix }}
                 </span>
-              }
+              </span>
+            }
 
-              <p class="grid-widget-icon">
-                <ng-icon [name]="gridWidget.data.metadata?.icon?.value"></ng-icon>
-              </p>
-              
-              <div
-                *ngIf="!viewMode_()"
-                [ngClass]="{
-                  'drag-handle': true
-                }"
-                (mousedown)="handleOnMouseDown($event)"
-                (mouseup)="handleOnMouseUp($event)"
-              ></div>
-              
-              <div
-                *ngIf="!viewMode_()"
-                [ngClass]="{
-                  'edit-handle': true
-                }"
-                (mousedown)="toggleWidgetEdit(gridWidget)"
-              >
-                <ng-icon
-                  [name]="
-                    previousWidget?.item?.id == gridWidget.item.id
-                    ? 'bootstrapX'
-                    : 'bootstrapPencil'
-                  "
-                ></ng-icon>
-              </div>
+            <p class="grid-widget-icon">
+              <ng-icon [name]="gridWidget.data.metadata?.icon?.value"></ng-icon>
+            </p>
+            
+            <div
+              *ngIf="!viewMode_()"
+              [ngClass]="{
+                'drag-handle': true
+              }"
+              (mousedown)="handleOnMouseDown($event)"
+              (mouseup)="handleOnMouseUp($event)"
+            ></div>
+            
+            <div
+              *ngIf="!viewMode_()"
+              [ngClass]="{
+                'edit-handle': true
+              }"
+              (mousedown)="toggleWidgetEdit(gridWidget)"
+            >
+              <ng-icon
+                [name]="
+                  previousWidget?.item?.id == gridWidget.item.id
+                  ? 'bootstrapX'
+                  : 'bootstrapPencil'
+                "
+              ></ng-icon>
             </div>
-          </ng-container>
+          </div>
         </div>
 
         <!--# UPLOADER LAYER #-->

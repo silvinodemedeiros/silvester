@@ -1,6 +1,7 @@
 import { effect, Injectable, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GridWidget, GridWidgetSource } from '../../types';
+import { GRID_TEMPLATE } from './grid-widget.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,10 @@ export class GridWidgetService {
     effect(() => {
       // console.log('grid widget svc log', this._gridWidgets());
     });
+  }
+
+  loadGridTemplate() {
+    this._gridWidgets.set(GRID_TEMPLATE);
   }
 
   setGridWidgets(data: any) {

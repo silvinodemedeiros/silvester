@@ -73,8 +73,22 @@ export class AppComponent implements OnInit, OnDestroy {
 
   currentWidgetSource: any;
 
+  // Magnification Properties
+  focusedWidget: any = null;
+
+  terminateWidgetFocus() {
+    this.focusedWidget?.classList.remove('magnified');
+    this.focusedWidget = null;
+  }
+
   @HostListener('document:keydown.escape', ['$event'])
   onEscKey() {
+
+    if (this.focusedWidget) {
+      this.terminateWidgetFocus();
+      return;
+    }
+    
     this.isDragging = false;
     this.isDraggingFile = false;
     this.isCreatingWidget = false;
@@ -82,6 +96,44 @@ export class AppComponent implements OnInit, OnDestroy {
     
     this.deactivateWidgetEdit();
     this.viewMode_.set(false);
+  }
+
+  @HostListener('document:keydown.tab', ['$event'])
+  onTabKey(event: KeyboardEvent) {
+    const container: any = document.querySelector('.grid-widgets-wrapper');
+    const focusableElements = container.querySelectorAll('[tabindex="1"]');
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey) { // Shift + Tab
+      if (document.activeElement === firstElement) {
+        lastElement.focus();
+        event.preventDefault();
+      }
+    } else { // Tab
+      if (document.activeElement === lastElement) {
+        firstElement.focus();
+        event.preventDefault();
+      }
+    }
+  }
+
+  onWidgetFocus(event: any) {
+    if (this.viewMode_()) {
+      event.target.classList.add('magnified');
+      this.focusedWidget = event.target;
+    }
+  }
+
+  onWidgetBlur(event: any) {
+    if (this.viewMode_()) {
+      event.target.classList.remove('magnified');
+    }
+  }
+
+  load() {
+    this.onEscKey();
+    this.gridWidgetService.loadGridTemplate();
   }
 
   constructor(
@@ -118,8 +170,10 @@ export class AppComponent implements OnInit, OnDestroy {
         this.deactivateWidgetEdit();
         this.activateWidgetCreation();
       }
-    });
 
+      this.load();
+    });
+    
     const titleSub = this.editForm.get('title')?.valueChanges.subscribe((value: string) => {
       if (this.previousWidget?.data?.metadata?.title) {
         this.previousWidget.data.metadata.title.value = value;
@@ -373,7 +427,6 @@ export class AppComponent implements OnInit, OnDestroy {
   previousWidget: GridWidget | null = null;
 
   toggleWidgetEdit(widget: GridWidget) {
-    debugger
     if (this.isEditingWidget) {
       if (this.previousWidget?.item.id === widget.item.id) {
         this.deactivateWidgetEdit();
