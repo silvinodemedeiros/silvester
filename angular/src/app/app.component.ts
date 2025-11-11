@@ -73,68 +73,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
   currentWidgetSource: any;
 
-  // Magnification Properties
-  focusedWidget: any = null;
+  // MAGNIFICATION PROPERTIES
+  focusedWidgetElem: any = null;
 
-  terminateWidgetFocus() {
-    this.focusedWidget?.classList.remove('magnified');
-    this.focusedWidget = null;
-  }
+  // COLOR PROPERTIES
+  previewMode_ = signal(false);
+  darkMode_ = signal(false);
 
-  @HostListener('document:keydown.escape', ['$event'])
-  onEscKey() {
+  // EDIT WIDGET PROPERTIES
+  isEditingWidget = false;
+  previousWidget: GridWidget | null = null;
 
-    if (this.focusedWidget) {
-      this.terminateWidgetFocus();
-      return;
-    }
-    
-    this.isDragging = false;
-    this.isDraggingFile = false;
-    this.isCreatingWidget = false;
-    this.creatingWidgetMsg = '';
-    
-    this.deactivateWidgetEdit();
-    this.viewMode_.set(false);
-  }
-
-  @HostListener('document:keydown.tab', ['$event'])
-  onTabKey(event: KeyboardEvent) {
-    const container: any = document.querySelector('.grid-widgets-wrapper');
-    const focusableElements = container.querySelectorAll('[tabindex="1"]');
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    if (event.shiftKey) { // Shift + Tab
-      if (document.activeElement === firstElement) {
-        lastElement.focus();
-        event.preventDefault();
-      }
-    } else { // Tab
-      if (document.activeElement === lastElement) {
-        firstElement.focus();
-        event.preventDefault();
-      }
-    }
-  }
-
-  onWidgetFocus(event: any) {
-    if (this.viewMode_()) {
-      event.target.classList.add('magnified');
-      this.focusedWidget = event.target;
-    }
-  }
-
-  onWidgetBlur(event: any) {
-    if (this.viewMode_()) {
-      event.target.classList.remove('magnified');
-    }
-  }
-
-  load() {
-    this.onEscKey();
-    this.gridWidgetService.loadGridTemplate();
-  }
+  // CREATE WIDGET INSTRUCTIONS
+  isCreatingWidget = false;
+  creationWidget: any = null;
+  creatingWidgetMsg = '';
 
   constructor(
     private menuItemService: MenuItemService,
@@ -173,6 +126,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
       this.load();
     });
+
+    effect(() => {
+      const previewMode = this.previewMode_();
+
+      if (!previewMode) {
+        this.darkMode_.set(false);
+      }
+    })
     
     const titleSub = this.editForm.get('title')?.valueChanges.subscribe((value: string) => {
       if (this.previousWidget?.data?.metadata?.title) {
@@ -202,6 +163,71 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscription.add(iconSub);
     this.subscription.add(measuresSub);
     this.subscription.add(weatherTypeSub);
+  }
+
+  terminateWidgetFocus() {
+    this.focusedWidgetElem?.classList.remove('magnified');
+    this.focusedWidgetElem = null;
+  }
+
+  focusWidget(event: any) {
+    event.target.focus();
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscKey() {
+
+    if (this.focusedWidgetElem) {
+      this.terminateWidgetFocus();
+      return;
+    }
+    
+    this.isDragging = false;
+    this.isDraggingFile = false;
+    this.isCreatingWidget = false;
+    this.creatingWidgetMsg = '';
+    
+    this.deactivateWidgetEdit();
+    this.previewMode_.set(false);
+  }
+
+  @HostListener('document:keydown.tab', ['$event'])
+  onTabKey(event: KeyboardEvent) {
+    const container: any = document.querySelector('.grid-widgets-wrapper');
+    const focusableElements = container.querySelectorAll('[tabindex="1"]');
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey) { // Shift + Tab
+      if (document.activeElement === firstElement) {
+        lastElement.focus();
+        event.preventDefault();
+      }
+    } else { // Tab
+      if (document.activeElement === lastElement) {
+        firstElement.focus();
+        event.preventDefault();
+      }
+    }
+  }
+
+  onWidgetFocus(event: any) {
+    if (this.previewMode_()) {
+      event.target.classList.add('magnified');
+      this.focusedWidgetElem = event.target;
+    }
+  }
+
+  onWidgetBlur(event: any) {
+    if (this.previewMode_()) {
+      event.target.classList.remove('magnified');
+      this.focusedWidgetElem = null;
+    }
+  }
+
+  load() {
+    this.onEscKey();
+    this.gridWidgetService.loadGridTemplate();
   }
 
   ngOnInit(): void {
@@ -363,18 +389,20 @@ export class AppComponent implements OnInit, OnDestroy {
     reader.readAsText(file);
   }
 
-  /*# VIEW MODE #*/
+  /*# COLOR METHODS #*/
 
-  viewMode_ = signal(false);
-  darkMode_ = signal(false);
+  togglePreview() {
+    const previewModeValue = this.previewMode_();
+    this.previewMode_.set(!previewModeValue);
 
-  toggleViewMode() {
-    const viewModeValue = this.viewMode_();
-    this.viewMode_.set(!viewModeValue);
-
-    if (!viewModeValue) {
+    if (!previewModeValue) {
       this.deactivateWidgetEdit();
     }
+  }
+
+  toggleDarkMode() {
+    const darkModeValue = this.darkMode_();
+    this.darkMode_.set(!darkModeValue);
   }
 
   /*# DRAG HANDLE SHENANIGANS #*/
@@ -386,11 +414,7 @@ export class AppComponent implements OnInit, OnDestroy {
     (event.target as any)?.parentNode.setAttribute('draggable', 'false')
   }
 
-  /*# CREATE WIDGET INSTRUCTIONS #*/
-
-  isCreatingWidget = false;
-  creationWidget: any = null;
-  creatingWidgetMsg = '';
+  /*# CREATE WIDGET METHOD #*/
 
   activateWidgetCreation() {
     this.isCreatingWidget = false;
@@ -422,10 +446,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.deactivateWidgetEdit();
   }
 
-  /*# EDIT WIDGET INSTRUCTIONS #*/
-  isEditingWidget = false;
-  previousWidget: GridWidget | null = null;
-
+  /*# EDIT WIDGET METHODS #*/
   toggleWidgetEdit(widget: GridWidget) {
     if (this.isEditingWidget) {
       if (this.previousWidget?.item.id === widget.item.id) {

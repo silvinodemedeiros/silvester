@@ -41,6 +41,7 @@ body, html {
     padding: 0;
     height: 100%;
     font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow: hidden;
 }/* You can add global styles to this file, and also import other style files */
 
 /* styles.css */
@@ -53,6 +54,7 @@ body, html {
         "topbar topbar"
         "sidebar content";
     height: 100vh;
+    background: white;
 
     &-preview {
         grid-template-rows: 1fr;
@@ -60,6 +62,9 @@ body, html {
         grid-template-areas: "content";
     }
     
+    &-dark {
+        filter: invert(1);
+    }
 }
 
 .topbar {
@@ -354,21 +359,15 @@ body, html {
         background: none;
         border: none;
         width: 100%;
-        max-width: 1080px;
-
-        &:before {
-            content: '';
-            position: absolute;
-            inset: -1rem -1rem -1rem -1rem;
-            border: 1px solid #ccc;
-            border-radius: 12px;
-        }
     }
 }
 
 .cell {
     position: relative;
     border: 3px solid #ccc;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #ccc;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -422,6 +421,22 @@ body, html {
             box-shadow: 0 4px 30px rgba(136, 106, 106, 0.1);
             border-radius: 12px;
             border-width: 1px;
+
+            &:focus {
+                outline: 2px solid black !important;
+                outline-offset: 3px !important;
+            }
+        }
+
+        &.cell-dark {
+            border-style: solid !important;
+            border-width: 3px !important;
+            border-color: black !important;
+
+            &:focus {
+                outline: 2px dashed black !important;
+                outline-offset: 3px !important;
+            }
         }
 
         & > * {
@@ -430,11 +445,6 @@ body, html {
 
         &-has-preview {
             box-shadow: none !important;
-
-            &:hover {
-                .magnification();
-            }
-            
         }
 
         &-selected {
@@ -451,21 +461,32 @@ body, html {
         &-title {
             grid-area: title;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            font-size: 1.3vw;
+
+            &-dark {
+                font-weight: bold;
+                letter-spacing: 1px;
+                font-size: 1.5vw;
+            }
         }
 
         &-value {
             grid-area: value;
-            font-size: 3rem;
+            font-size: 3.6vw;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: .25rem;
             text-align: center;
             pointer-events: none;
+            width: 100%;
+
+            &-dark {
+                font-size: 4.2vw;
+            }
 
             &-suffix {
-                font-size: 1.5rem;
+                font-size: 1.7vw;
             }
         }
 
@@ -582,10 +603,42 @@ body, html {
 .magnification() {
     z-index: 10;
     transform-origin: center center;
-    transform: scale(2);
+    transform: scale(1.4);
     transition: .1s transform ease;
 }
 
 .magnified {
     .magnification();
+}
+
+// Accessibility
+
+.accessibility {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    opacity: 0.7;
+    background: grey;
+    cursor: pointer;
+    color: black;
+    transform-origin: center center;
+    transition: .1s all ease;
+    border: 2px solid transparent;
+
+    &-high-contrast {
+        color: white;
+        border: 2px solid white;
+        opacity: 1;
+    }
+    
+    &:hover {
+        opacity: 1;
+        transform: scale(1.2);
+    }
 }

@@ -2,16 +2,17 @@
 <div
   [ngClass]="{
     'layout': true,
-    'layout-preview': viewMode_()
+    'layout-preview': previewMode_(),
+    'layout-dark': darkMode_()
   }"
   (dragover)="onDragOver($event, -1, -1)"
   (drop)="onDrop($event, -1, -1)"
 >
     <header
-      *ngIf="!viewMode_()"
+      *ngIf="!previewMode_()"
       class="topbar"
     >
-      <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleViewMode()" [ngClass]="{'inactive': isCreatingWidget || isDraggingFile || gridWidgets().length === 0}">
+      <div class="menu-item menu-item-button menu-item-button-header" (click)="togglePreview()" [ngClass]="{'inactive': isCreatingWidget || isDraggingFile || gridWidgets().length === 0}">
         <ng-icon name="bootstrapEye"></ng-icon>
         Preview
       </div>
@@ -32,7 +33,7 @@
 
     <!-- SIDEBAR -->
     <aside
-      *ngIf="!viewMode_()"
+      *ngIf="!previewMode_()"
       class="sidebar"
     >
       <div class="sidebar-title">
@@ -128,7 +129,7 @@
     <main
       [ngClass]="{
         'content': true,
-        'content-preview': viewMode_(),
+        'content-preview': previewMode_(),
         'content-edit': isEditingWidget
       }"
       role="main"
@@ -141,16 +142,16 @@
 
       <div class="grid" [ngClass]="{
         'grid': true,
-        'grid-preview': viewMode_()
+        'grid-preview': previewMode_()
       }">
         <!--# CELLS LAYER #-->
-        <ng-container *ngIf="!viewMode_()">
+        <ng-container *ngIf="!previewMode_()">
           <div
             *ngFor="let cell of cells"
             [ngClass]="{
               'cell': true,
               'has-widget-preview': previewWidget && hasPreview(cell.row, cell.col),
-              'has-grid-preview': viewMode_(),
+              'has-grid-preview': previewMode_(),
               'is-creating-widget': isCreatingWidget
             }"
             (dragover)="onDragOver($event, cell.row, cell.col)"
@@ -164,10 +165,13 @@
         <div class="grid-widgets-wrapper" *ngIf="!(isDragging || isCreatingWidget)">
           <div
             *ngFor="let gridWidget of gridWidgets()"
-            class="grid-widget cell monochromatic"
             [ngClass]="{
+              'grid-widget': true,
+              'cell': true,
+              'cell-dark': darkMode_(),
+              'monochromatic': true,
               'grid-widget-map': gridWidget.data.type == 'Location',
-              'grid-widget-has-preview': viewMode_(),
+              'grid-widget-has-preview': previewMode_(),
               'grid-widget-selected': previousWidget?.item?.id == gridWidget.item.id
             }"
             [ngStyle]="{
@@ -177,21 +181,32 @@
             [tabIndex]="1"
             (focus)="onWidgetFocus($event)"
             (blur)="onWidgetBlur($event)"
-            (mouseover)="terminateWidgetFocus()"
+            (click)="focusWidget($event)"
           >
           
-            <p class="grid-widget-title">
+          <!-- # WIDGET TITLE # -->
+            <p
+              [ngClass]="{
+                'grid-widget-title': true,
+                'grid-widget-title-dark': darkMode_()
+              }"
+            >
               {{ gridWidget.data.metadata?.title?.value }}
             </p>
 
-            <!-- # WIDGET DIFFERENTIATION # -->
+            <!-- # WIDGET VALUE # -->
             @if (gridWidget.data.type == 'location') {
               <app-map-widget
                 [data]="gridWidget"
-                [has-preview]="viewMode_()"
+                [has-preview]="previewMode_()"
               ></app-map-widget>
             } @else {
-              <span class="grid-widget-value">
+              <span
+                [ngClass]="{
+                  'grid-widget-value': true,
+                  'grid-widget-value-dark': darkMode_()
+                }"
+              >
                 {{ gridWidget | widgetValue }}
                 <span class="grid-widget-value-suffix">
                   {{ gridWidget.data.metadata?.measures?.value | widgetSuffix }}
@@ -199,12 +214,13 @@
               </span>
             }
 
+            <!-- # WIDGET ICON # -->
             <p class="grid-widget-icon">
               <ng-icon [name]="gridWidget.data.metadata?.icon?.value"></ng-icon>
             </p>
             
             <div
-              *ngIf="!viewMode_()"
+              *ngIf="!previewMode_()"
               [ngClass]="{
                 'drag-handle': true
               }"
@@ -213,7 +229,7 @@
             ></div>
             
             <div
-              *ngIf="!viewMode_()"
+              *ngIf="!previewMode_()"
               [ngClass]="{
                 'edit-handle': true
               }"
@@ -311,3 +327,14 @@
     </main>
 </div>
 
+<div
+  *ngIf="previewMode_()"
+  [ngClass]="{
+    'accessibility': true,
+    'accessibility-high-contrast': darkMode_()
+  }"
+  [matTooltip]="'Dark Mode ' + (darkMode_() ? 'Active' : 'Inactive') + '. Click to toggle.'"
+  (click)="toggleDarkMode()"
+>
+  <ng-icon name="bootstrapMoonStars"></ng-icon>
+</div>
