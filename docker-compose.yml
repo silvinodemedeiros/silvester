@@ -26,6 +26,7 @@ services:
       - ORION_LOG_LEVEL=INFO
 
   node:
+    image: silvinodemedeiros/silvester-node:latest
     build:
       context: ./node
       dockerfile: Dockerfile
@@ -41,6 +42,7 @@ services:
       - MONGO_URL=mongodb://mongo-db:27017
 
   angular:
+    image: silvinodemedeiros/silvester-angular:latest
     build:
       context: ./angular
       dockerfile: Dockerfile
