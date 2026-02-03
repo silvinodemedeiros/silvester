@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "docker:image": "docker buildx build -t silvester-node .",
+    "docker:tag": "docker tag silvester-node silvinodemedeiros/silvester-node:latest",
+    "docker:tag:push": "docker push silvinodemedeiros/silvester-node:latest"
   },
   "keywords": [],
   "author": "",

@@ -5,6 +5,9 @@
     "ng": "ng",
     "start": "ng serve --no-hmr",
     "build": "ng build",
+    "docker:image": "docker buildx build -t silvester-angular .",
+    "docker:tag": "docker tag silvester-angular silvinodemedeiros/silvester-angular:latest",
+    "docker:tag:push": "docker push silvinodemedeiros/silvester-angular:latest",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
