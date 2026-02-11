@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-// const ORION_URL = 'http://localhost:1026/v2';
-const ORION_URL = 'http://silvester-orion:1026/v2';
+const ORION_URL = 'http://localhost:1026/v2';
+// const ORION_URL = 'http://silvester-orion:1026/v2';
 
 async function getEntities() {
   try {
@@ -48,6 +48,19 @@ async function getSubscriptions() {
   }
 }
 
+async function createSubscription(subscription) {
+  try {
+    const response = await axios.post(`${ORION_URL}/subscriptions`, subscription, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function updateSubscription(subscriptionId, subscription) {
   try {
     const response = await axios.patch(`${ORION_URL}/subscriptions/${subscriptionId}`, subscription, {
@@ -67,4 +80,5 @@ module.exports = {
   updateEntity,
   getSubscriptions,
   updateSubscription,
+  createSubscription
 };

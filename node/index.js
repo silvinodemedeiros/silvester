@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const orionService = require('./orion.service');
 const weatherService = require('./weather/weather.service');
+const { SUBSCRIPTION_TEMPLATE } = require('./models/subscription');
 const app = express();
 
 const PORT = 3000;
@@ -95,6 +96,8 @@ app.post('/notify', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+
+  orionService.createSubscription(SUBSCRIPTION_TEMPLATE);
 
   weatherService.getLocalWeather().then((localWeather) => {
 
