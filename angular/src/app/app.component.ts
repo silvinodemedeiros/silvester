@@ -227,7 +227,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   load() {
     this.onEscKey();
-    this.gridWidgetService.loadGridTemplate();
+    // this.gridWidgetService.loadGridTemplate();
   }
 
   ngOnInit(): void {
