@@ -17,8 +17,8 @@ RUN git clone https://github.com/silvinodemedeiros/silvester.git
 # Set working directory to cloned repo
 WORKDIR /home/project/silvester
 
-# Expose port 8080
-EXPOSE 8080
+# Expose port 5200
+EXPOSE 5200
 
 # Default command
 CMD ["docker", "compose", "up", "-d"]
