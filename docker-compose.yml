@@ -48,7 +48,7 @@ services:
     #   dockerfile: Dockerfile
     container_name: silvester-angular
     ports:
-      - "8080:80"
+      - "4200:4200"
     networks:
       - fiware
     depends_on:

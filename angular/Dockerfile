@@ -16,5 +16,5 @@ COPY --from=build /usr/src/app/silvester-angular/dist/silvester-angular/browser 
 # Copy custom Nginx config (optional, for SPA routing)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 4200
 CMD ["nginx", "-g", "daemon off;"]
