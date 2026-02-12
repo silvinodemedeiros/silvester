@@ -9,5 +9,5 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - "8080:80"
+      - "5200:5200"
     tty: true
