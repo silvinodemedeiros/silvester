@@ -27,9 +27,9 @@ services:
 
   node:
     image: silvinodemedeiros/silvester-node:latest
-    build:
-      context: ./node
-      dockerfile: Dockerfile
+    # build:
+    #   context: ./node
+    #   dockerfile: Dockerfile
     container_name: silvester-node
     ports:
       - "3000:3000"
@@ -43,9 +43,9 @@ services:
 
   angular:
     image: silvinodemedeiros/silvester-angular:latest
-    build:
-      context: ./angular
-      dockerfile: Dockerfile
+    # build:
+    #   context: ./angular
+    #   dockerfile: Dockerfile
     container_name: silvester-angular
     ports:
       - "8080:80"
