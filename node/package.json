@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js",
+    "docker:start": "docker compose up -d",
     "docker:build": "docker buildx build -t silvinodemedeiros/silvester-node:latest .",
     "docker:push": "docker push silvinodemedeiros/silvester-node:latest"
   },
