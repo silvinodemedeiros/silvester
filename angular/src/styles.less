@@ -183,13 +183,14 @@ body, html {
 
 .sidebar {
     display: grid;
-    grid-template-rows: 2rem 1fr auto auto;
+    grid-template-rows: 2rem 1fr auto auto auto;
     grid-template-columns: 1fr;
     grid-template-areas:
         "sidebarTitle"
         "sidebarList"
         "exportGrid"
-        "importGrid";
+        "importGrid"
+        "exportProject";
     grid-area: sidebar;
     background-color: #ccc;
     gap: .5rem;
@@ -333,6 +334,11 @@ body, html {
 
         &-import {
             grid-area: importGrid;
+            margin: 0;
+        }
+
+        &-export-project {
+            grid-area: exportProject;
             margin: 0;
         }
     }

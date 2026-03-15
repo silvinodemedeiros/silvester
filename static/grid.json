@@ -1,0 +1,176 @@
+{
+  "13": {
+    "row": 1,
+    "col": 3,
+    "item": {
+      "id": "wi_1",
+      "type": "clouds",
+      "label": "Clouds",
+      "width": 2,
+      "height": 2
+    },
+    "data": {
+      "type": "clouds",
+      "value": 33,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapClouds"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "percentage"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "nuvens"
+        }
+      }
+    }
+  },
+  "15": {
+    "row": 1,
+    "col": 5,
+    "item": {
+      "id": "wi_2",
+      "type": "feels_like",
+      "label": "Feels Like",
+      "width": 2,
+      "height": 2
+    },
+    "data": {
+      "type": "feels_like",
+      "value": 33.54,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapEmojiSunglasses"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "temperature"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "sensação"
+        }
+      }
+    }
+  },
+  "17": {
+    "row": 1,
+    "col": 7,
+    "item": {
+      "id": "wi_3",
+      "type": "dew_point",
+      "label": "Dew Point",
+      "width": 2,
+      "height": 2
+    },
+    "data": {
+      "type": "dew_point",
+      "value": 23.91,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapDropletHalf"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "temperature"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "orvalho"
+        }
+      }
+    }
+  },
+  "33": {
+    "row": 3,
+    "col": 3,
+    "item": {
+      "id": "wi_4",
+      "type": "sunrise",
+      "label": "Sunrise",
+      "width": 2,
+      "height": 2
+    },
+    "data": {
+      "type": "sunrise",
+      "value": 1772440014,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapSunrise"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "time"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Nascer do sol"
+        }
+      }
+    }
+  },
+  "35": {
+    "row": 3,
+    "col": 5,
+    "item": {
+      "id": "wi_5",
+      "type": "sunset",
+      "label": "Sunset",
+      "width": 2,
+      "height": 2
+    },
+    "data": {
+      "type": "sunset",
+      "value": 1772483976,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapSunset"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "time"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Por do Sol"
+        }
+      }
+    }
+  },
+  "37": {
+    "row": 3,
+    "col": 7,
+    "item": {
+      "id": "wi_6",
+      "type": "temp",
+      "label": "Temperature",
+      "width": 2,
+      "height": 2
+    },
+    "data": {
+      "type": "temp",
+      "value": 29.02,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapThermometerHalf"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "temperature"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Temperatura"
+        }
+      }
+    }
+  }
+}

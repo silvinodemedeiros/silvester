@@ -16,14 +16,6 @@
         <ng-icon name="bootstrapEye"></ng-icon>
         Preview
       </div>
-      <!-- <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleViewMode()">
-        <ng-icon name="bootstrapMoonStarsFill"></ng-icon>
-        Dark Mode
-      </div>
-      <div class="menu-item menu-item-button menu-item-button-header" (click)="toggleViewMode()">
-        <ng-icon name="bootstrapEyeglasses"></ng-icon>
-        High Contrast
-      </div> -->
       <div style="margin-left: auto;"></div>
       <div class="menu-item menu-item-button menu-item-button-header" (click)="activateWidgetCreation()" [ngClass]="{'inactive': isCreatingWidget || isDraggingFile}">
         <ng-icon name="bootstrapPlus"></ng-icon>
@@ -123,6 +115,16 @@
       >
         Import Grid
       </div>
+      <div
+        [ngClass]="{
+          'menu-item': true,
+          'menu-item-button': true,
+          'menu-item-button-export-project': true
+        }"
+        (click)="exportProject()"
+      >
+        Export Project
+      </div>
     </aside>
 
     <!--# GRID #-->
@@ -146,19 +148,20 @@
       }">
         <!--# CELLS LAYER #-->
         <ng-container *ngIf="!previewMode_()">
-          <div
-            *ngFor="let cell of cells"
-            [ngClass]="{
-              'cell': true,
-              'has-widget-preview': previewWidget && hasPreview(cell.row, cell.col),
-              'has-grid-preview': previewMode_(),
-              'is-creating-widget': isCreatingWidget
-            }"
-            (dragover)="onDragOver($event, cell.row, cell.col)"
-            (dragleave)="onDragLeave()"
-            (drop)="onDrop($event, cell.row, cell.col)"
-            (click)="handleCellClick($event, cell.row, cell.col)"
-          ></div>
+          <ng-container *ngFor="let cell of cells">
+            <div
+              [ngClass]="{
+                'cell': true,
+                'has-widget-preview': previewWidget && hasPreview(cell.row, cell.col),
+                'has-grid-preview': previewMode_(),
+                'is-creating-widget': isCreatingWidget
+              }"
+              (dragover)="onDragOver($event, cell.row, cell.col)"
+              (dragleave)="onDragLeave()"
+              (drop)="onDrop($event, cell.row, cell.col)"
+              (click)="handleCellClick($event, cell.row, cell.col)"
+            ></div>
+          </ng-container>
         </ng-container>
 
         <!--# WIDGETS LAYER #-->

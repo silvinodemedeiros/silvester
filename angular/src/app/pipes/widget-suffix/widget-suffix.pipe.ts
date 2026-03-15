@@ -1,11 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-  name: 'widgetSuffix'
-})
-export class WidgetSuffixPipe implements PipeTransform {
-
-  transform(unit: unknown, ...args: unknown[]): unknown {
+export const widget_suffix = (unit: unknown): string => {
     let suffix = '';
 
     switch (unit) {
@@ -33,6 +28,15 @@ export class WidgetSuffixPipe implements PipeTransform {
     }
     
     return suffix;
+  }
+
+@Pipe({
+  name: 'widgetSuffix'
+})
+export class WidgetSuffixPipe implements PipeTransform {
+
+  transform(unit: unknown): unknown {
+    return widget_suffix(unit);
   }
 
 }

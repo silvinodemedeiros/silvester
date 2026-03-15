@@ -5,19 +5,18 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
 import { WidgetSuffixPipe } from './pipes/widget-suffix/widget-suffix.pipe';
 import { WidgetValuePipe } from './pipes/widget-value/widget-value.pipe';
-import { Cell, EMPTY_WIDGET, GridWidget, LocationValue, MenuItem } from './types';
+import { Cell, EMPTY_WIDGET, GridWidget } from './types';
 import { MenuItemService } from './services/menu-item/menu-item.service';
 import { GridWidgetService } from './services/grid-widget/grid-widget.service';
 import { LeafletModule } from '@bluehalo/ngx-leaflet';
-import { icon, latLng, Layer, Map, MapOptions, marker, tileLayer } from 'leaflet';
 import { WidgetComponent } from './components/map-widget/map-widget.component';
-import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
-import {TextFieldModule} from '@angular/cdk/text-field';
+import { FormGroup, FormsModule, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { ICON_LIST, MEASUREMENTS_LIST, WEATHER_INFO_LIST } from './models';
+import { HtmlGeneratorService } from './services/html-generator/html-generator.service';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +38,7 @@ import { ICON_LIST, MEASUREMENTS_LIST, WEATHER_INFO_LIST } from './models';
   ],
   providers: [
     DatePipe,
+    HtmlGeneratorService,
     provideIcons(bootstrapIcons)
   ],
   styleUrl: './app.component.less'
@@ -92,6 +92,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private menuItemService: MenuItemService,
     private gridWidgetService: GridWidgetService,
+    private htmlGeneratorService: HtmlGeneratorService,
     private cd: ChangeDetectorRef,
     private fb: UntypedFormBuilder
   ) {
@@ -114,17 +115,6 @@ export class AppComponent implements OnInit, OnDestroy {
       icon: this.fb.control(''),
       measures: this.fb.control(''),
       weatherType: this.fb.control(''),
-    });
-
-    effect(() => {
-      const isGridEmpty = this.isGridEmpty_();
-
-      if (isGridEmpty && !this.isDragging) {
-        this.deactivateWidgetEdit();
-        this.activateWidgetCreation();
-      }
-
-      this.load();
     });
 
     effect(() => {
@@ -356,6 +346,20 @@ export class AppComponent implements OnInit, OnDestroy {
     const anchor = document.createElement('a');
     anchor.href = url;
     anchor.download = 'grid.json';
+    anchor.click();
+
+    URL.revokeObjectURL(url); // clean up
+  }
+
+  exportProject() {
+    const json = this.htmlGeneratorService.buildIndexHtml(this.gridWidgets());
+
+    const blob = new Blob([json], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'index.html';
     anchor.click();
 
     URL.revokeObjectURL(url); // clean up

@@ -5,6 +5,7 @@ services:
     image: mongo:4.4
     command: --nojournal
     container_name: mongo-db
+    profiles: ["prod", "dev"]
     ports:
       - "27017:27017"
     networks:
@@ -15,6 +16,7 @@ services:
   orion:
     image: fiware/orion:3.8.1
     container_name: silvester-orion
+    profiles: ["prod", "dev"]
     depends_on:
       - mongo
     ports:
@@ -31,6 +33,7 @@ services:
       context: ./node
       dockerfile: Dockerfile
     container_name: silvester-node
+    profiles: ["prod"]
     ports:
       - "3000:3000"
     networks:
@@ -47,6 +50,7 @@ services:
       context: ./angular
       dockerfile: Dockerfile
     container_name: silvester-angular
+    profiles: ["prod"]
     ports:
       - "8080:80"
     networks:
