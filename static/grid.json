@@ -23,7 +23,7 @@
         },
         "title": {
           "type": "WeatherTitle",
-          "value": "nuvens"
+          "value": "Clouds"
         }
       }
     }
@@ -52,7 +52,7 @@
         },
         "title": {
           "type": "WeatherTitle",
-          "value": "sensação"
+          "value": "Feels Like"
         }
       }
     }
@@ -81,7 +81,7 @@
         },
         "title": {
           "type": "WeatherTitle",
-          "value": "orvalho"
+          "value": "Dew Point"
         }
       }
     }
@@ -110,7 +110,7 @@
         },
         "title": {
           "type": "WeatherTitle",
-          "value": "Nascer do sol"
+          "value": "Sunrise"
         }
       }
     }
@@ -139,7 +139,7 @@
         },
         "title": {
           "type": "WeatherTitle",
-          "value": "Por do Sol"
+          "value": "Sunset"
         }
       }
     }
@@ -168,7 +168,7 @@
         },
         "title": {
           "type": "WeatherTitle",
-          "value": "Temperatura"
+          "value": "Temperature"
         }
       }
     }

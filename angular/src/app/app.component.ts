@@ -384,7 +384,6 @@ export class AppComponent implements OnInit, OnDestroy {
       try {
         const json = JSON.parse(reader.result as string);
         this.gridWidgetService.setGridWidgets(json);
-        console.log('Loaded JSON:', json);
       } catch (err) {
         console.error('Invalid JSON file', err);
       }
