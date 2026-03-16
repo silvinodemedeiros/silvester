@@ -17,7 +17,7 @@ widget_value = (widget) => {
 
   switch (valueType) {
     case 'time':
-      resultValue = new Date(widget.data.value, 'HH:mm');
+      resultValue = new Date(widget.value, 'HH:mm');
       break;
     case "distance":
       resultValue = widget.value / 1000;
@@ -93,3 +93,32 @@ widgetSource.onmessage = (event) => {
     }
   });
 };
+
+[...document.querySelectorAll(".grid-widget")].map(widgetNode => {
+    widgetNode.addEventListener("focus", () => {
+        widgetNode.classList.add('magnified');
+    });
+
+    widgetNode.addEventListener("blur", () => {
+        widgetNode.classList.remove('magnified');
+    });
+})
+
+document.addEventListener("keydown", (event) => {
+    const container = document.querySelector('.grid-widgets-wrapper');
+    const focusableElements = container.querySelectorAll('[tabindex="1"]');
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey) { // Shift + Tab
+      if (document.activeElement === firstElement) {
+        lastElement.focus();
+        event.preventDefault();
+      }
+    } else { // Tab
+      if (document.activeElement === lastElement) {
+        firstElement.focus();
+        event.preventDefault();
+      }
+    }
+});
