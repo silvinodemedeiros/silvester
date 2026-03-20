@@ -35,7 +35,7 @@ export class HtmlGeneratorService {
         </main>
       </div>
       
-      <div class="accessibility">
+      <div id="dark-mode-toggle" class="accessibility" tabIndex="1">
         <i class="bi bi-moon-stars"></i>
       </div>
     </body>

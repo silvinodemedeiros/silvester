@@ -49,7 +49,7 @@ export class GridWidgetService {
     const widget = JSON.parse(widgetJsonStr);
     gridWidgets = {
       ...this._gridWidgets(),
-      [`${row}${col}`]: {
+      [`${row}_${col}`]: {
         row,
         col,
         item: {

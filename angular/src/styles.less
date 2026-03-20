@@ -70,7 +70,6 @@ body, html {
 .topbar {
     grid-area: topbar;
     background-color: #444;
-    /* Dark gray */
     color: white;
     padding: 1rem;
     display: flex;
@@ -114,28 +113,27 @@ body, html {
 
     .config-panel-wrapper {
         position: absolute;
-        bottom: 1rem;
-        left: 1rem;
+        right: 1rem;
+        top: 1rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        width: calc(100% - 2rem);
-        height: 20rem;
+        width: 20rem;
+        height: calc(100% - 4rem);
     }
 
     .config-panel {
         display: grid;
-        grid-template-rows: 3rem 1fr;
-        grid-template-columns: 1fr 20rem;
+        grid-template-rows: 3rem 1fr auto;
         grid-template-areas:
-            "header header"
-            "form actions";
+            "header"
+            "form"
+            "actions";
         width: 100%;
         height: 100%;
-        max-width: 1080px;
         background: white;
-        border: 1px solid rgb(200, 200, 200);
-        border-radius: .25rem;
+        border: 1px solid #c8c8c8;
+        border-radius: 0.25rem;
 
         &-header {
             grid-area: header;
@@ -354,8 +352,8 @@ body, html {
 .grid {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: repeat(24, 1fr);
+    grid-template-rows: repeat(12, 1fr);
     aspect-ratio: 6 / 3;
     width: 100%;
     background: rgba(200, 200, 200, 0.5);
@@ -403,8 +401,8 @@ body, html {
 .grid-widgets-wrapper {
     position: absolute;
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: repeat(24, 1fr);
+    grid-template-rows: repeat(12, 1fr);
     justify-content: center;
     gap: .5rem;
     width: 100%;
@@ -422,6 +420,8 @@ body, html {
         align-items: center;
         padding: .5rem;
         background-color: white;
+
+        container-type: inline-size;
 
         &.cell {
             box-shadow: 0 4px 30px rgba(136, 106, 106, 0.1);
@@ -467,7 +467,7 @@ body, html {
         &-title {
             grid-area: title;
             text-transform: uppercase;
-            font-size: 1.3vw;
+            font-size: 10cqw;
 
             &-dark {
                 font-weight: bold;
@@ -478,7 +478,7 @@ body, html {
 
         &-value {
             grid-area: value;
-            font-size: 3.6vw;
+            font-size: 35cqw;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -492,7 +492,7 @@ body, html {
             }
 
             &-suffix {
-                font-size: 1.7vw;
+                font-size: 20cqw;
             }
         }
 
@@ -629,22 +629,34 @@ body, html {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    opacity: 0.7;
-    background: grey;
     cursor: pointer;
     color: black;
     transform-origin: center center;
     transition: .1s all ease;
-    border: 2px solid transparent;
+    border: 1px solid grey;
 
-    &-high-contrast {
+    &.accessibility-high-contrast {
         color: white;
+        background: grey;
         border: 2px solid white;
-        opacity: 1;
+
+        &:focus {
+            transform-origin: center center;
+            transform: scale(1.2);
+            outline: 2px dashed white !important;
+            outline-offset: 3px !important;
+        }
     }
     
     &:hover {
         opacity: 1;
         transform: scale(1.2);
+    }
+
+    &:focus {
+        transform-origin: center center;
+        transform: scale(1.2);
+        outline: 2px solid black !important;
+        outline-offset: 3px !important;
     }
 }

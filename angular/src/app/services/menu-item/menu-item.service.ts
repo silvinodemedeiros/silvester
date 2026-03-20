@@ -35,8 +35,8 @@ export class MenuItemService {
       if(typeof widgetsObject[key] === 'object') {
 
         const dimensions = {
-          width: key === 'location' ? 4 : 2,
-          height: key === 'location' ? 4 : 2
+          width: key === 'location' ? 8 : 4,
+          height: key === 'location' ? 8 : 4
         };
         
         return [...acc, {

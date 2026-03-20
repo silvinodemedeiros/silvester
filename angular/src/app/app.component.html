@@ -131,8 +131,7 @@
     <main
       [ngClass]="{
         'content': true,
-        'content-preview': previewMode_(),
-        'content-edit': isEditingWidget
+        'content-preview': previewMode_()
       }"
       role="main"
     >
@@ -332,12 +331,13 @@
 
 <div
   *ngIf="previewMode_()"
+  id="dark-mode-toggle"
   [ngClass]="{
     'accessibility': true,
     'accessibility-high-contrast': darkMode_()
   }"
-  [matTooltip]="'Dark Mode ' + (darkMode_() ? 'Active' : 'Inactive') + '. Click to toggle.'"
   (click)="toggleDarkMode()"
+  [tabIndex]="1"
 >
   <ng-icon name="bootstrapMoonStars"></ng-icon>
 </div>

@@ -50,8 +50,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   menuItems = computed(() => this.menuItemService.menuItems());
 
-  rows = 6;
-  cols = 12;
+  rows = 12;
+  cols = 24;
   cells: Cell[] = [];
 
   _gridWidgets = computed(() => this.gridWidgetService._gridWidgets());
@@ -181,23 +181,33 @@ export class AppComponent implements OnInit, OnDestroy {
     this.previewMode_.set(false);
   }
 
-  @HostListener('document:keydown.tab', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   onTabKey(event: KeyboardEvent) {
-    const container: any = document.querySelector('.grid-widgets-wrapper');
-    const focusableElements = container.querySelectorAll('[tabindex="1"]');
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
+    const focusableElements = document.querySelectorAll('[tabindex="1"]');
+    const firstElement: any = focusableElements[0];
+    const lastElement: any = focusableElements[focusableElements.length - 1];
+    
+    if (event.key === 'Tab') {
+      if (event.shiftKey) { // Shift + Tab
+        if (document.activeElement === firstElement) {
+          lastElement.focus();
+          event.preventDefault();
+        }
+      } else { // Tab
+        if (document.activeElement === lastElement) {
+          firstElement.focus();
+          event.preventDefault();
+        }
+      }
+    } else if (event.key === "Enter") {
 
-    if (event.shiftKey) { // Shift + Tab
-      if (document.activeElement === firstElement) {
-        lastElement.focus();
-        event.preventDefault();
+      const activeElement = document.activeElement;
+      const darkModeToggle = document.getElementById("dark-mode-toggle");
+
+      if (activeElement === darkModeToggle) {
+        this.toggleDarkMode();
       }
-    } else { // Tab
-      if (document.activeElement === lastElement) {
-        firstElement.focus();
-        event.preventDefault();
-      }
+
     }
   }
 

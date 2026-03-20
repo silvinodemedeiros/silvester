@@ -1,3 +1,31 @@
+
+let darkMode = false;
+const darkModeToggle = document.getElementById("dark-mode-toggle");
+
+toggleDarkMode = () => {
+    const layoutNode = document.querySelector('.layout');
+    const accessibilityNode = document.querySelector('.accessibility');
+    const cellNodeList = document.querySelectorAll('.grid-widget');
+    const widgetTitlesNodeList = document.querySelectorAll('.grid-widget-title');
+    const widgetValuesNodeList = document.querySelectorAll('.grid-widget-value');
+
+    if (darkMode) {
+        darkMode = false;
+        layoutNode.classList.remove('layout-dark');
+        accessibilityNode.classList.remove('accessibility-high-contrast');
+        [...cellNodeList].forEach(cell => cell.classList.remove('cell-dark'));
+        [...widgetTitlesNodeList].forEach(gridWidgetTitle => gridWidgetTitle.classList.remove('grid-widget-title-dark'));
+        [...widgetValuesNodeList].forEach(gridWidgetValue => gridWidgetValue.classList.remove('grid-widget-value-dark'));
+    } else {
+        darkMode = true;
+        layoutNode.classList.add('layout-dark');
+        accessibilityNode.classList.add('accessibility-high-contrast');
+        [...cellNodeList].forEach(cell => cell.classList.add('cell-dark'));
+        [...widgetTitlesNodeList].forEach(gridWidgetTitle => gridWidgetTitle.classList.add('grid-widget-title-dark'));
+        [...widgetValuesNodeList].forEach(gridWidgetValue => gridWidgetValue.classList.add('grid-widget-value-dark'));
+    }
+}
+
 formatOffset_function = (offset) => {
   const sign = offset >= 0 ? "+" : "-";
   const abs = Math.abs(offset);
@@ -74,6 +102,7 @@ widget_suffix = (unit) => {
 
 const widgetSource = new EventSource("http://localhost:3000/events");
 
+// # SUBSCRIBES TO NOTIFICATIONS FROM SERVER
 widgetSource.onmessage = (event) => {
   const gridWidgets = JSON.parse(event.data).data[0];
   
@@ -94,6 +123,7 @@ widgetSource.onmessage = (event) => {
   });
 };
 
+// ADDS FOCUS AND UNFOCUS EVENTS TO WIDGETS
 [...document.querySelectorAll(".grid-widget")].map(widgetNode => {
     widgetNode.addEventListener("focus", () => {
         widgetNode.classList.add('magnified');
@@ -104,21 +134,32 @@ widgetSource.onmessage = (event) => {
     });
 })
 
+// KEYPRESS HANDLE - 
 document.addEventListener("keydown", (event) => {
-    const container = document.querySelector('.grid-widgets-wrapper');
-    const focusableElements = container.querySelectorAll('[tabindex="1"]');
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    if (event.shiftKey) { // Shift + Tab
-      if (document.activeElement === firstElement) {
-        lastElement.focus();
-        event.preventDefault();
+    
+    if (event.key === "Tab") {
+        
+      const focusableElements = document.querySelectorAll('[tabindex="1"]');
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+      
+      if (event.shiftKey) { // Shift + Tab
+        if (document.activeElement === firstElement) {
+          lastElement.focus();
+          event.preventDefault();
+        }
+      } else { // Tab
+        if (document.activeElement === lastElement) {
+          firstElement.focus();
+          event.preventDefault();
+        }
       }
-    } else { // Tab
-      if (document.activeElement === lastElement) {
-        firstElement.focus();
-        event.preventDefault();
+    } else if (event.key === "Enter") {
+      const activeElement = document.activeElement;
+      if (activeElement === darkModeToggle) {
+          toggleDarkMode();
       }
     }
 });
+
+darkModeToggle.addEventListener("mousedown", () => toggleDarkMode());

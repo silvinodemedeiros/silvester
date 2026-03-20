@@ -33,7 +33,6 @@ html {
 .topbar {
   grid-area: topbar;
   background-color: #444;
-  /* Dark gray */
   color: white;
   padding: 1rem;
   display: flex;
@@ -154,9 +153,9 @@ html {
 }
 .sidebar {
   display: grid;
-  grid-template-rows: 2rem 1fr auto auto;
+  grid-template-rows: 2rem 1fr auto auto auto;
   grid-template-columns: 1fr;
-  grid-template-areas: "sidebarTitle" "sidebarList" "exportGrid" "importGrid";
+  grid-template-areas: "sidebarTitle" "sidebarList" "exportGrid" "importGrid" "exportProject";
   grid-area: sidebar;
   background-color: #ccc;
   gap: 0.5rem;
@@ -334,6 +333,10 @@ html {
 }
 .menu-item-button-import {
   grid-area: importGrid;
+  margin: 0;
+}
+.menu-item-button-export-project {
+  grid-area: exportProject;
   margin: 0;
 }
 .widget-item:active {
@@ -563,20 +566,30 @@ html {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  opacity: 0.7;
-  background: grey;
   cursor: pointer;
   color: black;
   transform-origin: center center;
   transition: 0.1s all ease;
-  border: 2px solid transparent;
+  border: 1px solid grey;
 }
-.accessibility-high-contrast {
+.accessibility.accessibility-high-contrast {
   color: white;
+  background: grey;
   border: 2px solid white;
-  opacity: 1;
+}
+.accessibility.accessibility-high-contrast:focus {
+  transform-origin: center center;
+  transform: scale(1.2);
+  outline: 2px dashed white !important;
+  outline-offset: 3px !important;
 }
 .accessibility:hover {
   opacity: 1;
   transform: scale(1.2);
+}
+.accessibility:focus {
+  transform-origin: center center;
+  transform: scale(1.2);
+  outline: 2px solid black !important;
+  outline-offset: 3px !important;
 }
