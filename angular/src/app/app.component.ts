@@ -50,9 +50,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   menuItems = computed(() => this.menuItemService.menuItems());
 
-  rows = 12;
   cols = 24;
+  rows = 12;
   cells: Cell[] = [];
+  macroCells: Cell[] = [];
 
   _gridWidgets = computed(() => this.gridWidgetService._gridWidgets());
   gridWidgets = computed(() => Object.values(this._gridWidgets()));
@@ -176,7 +177,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @HostListener('document:keydown', ['$event'])
   onTabKey(event: KeyboardEvent) {
-    const focusableElements = document.querySelectorAll('[tabindex="1"]');
+    const focusableElements = document.querySelectorAll('[tabindex="0"]');
     const firstElement: any = focusableElements[0];
     const lastElement: any = focusableElements[focusableElements.length - 1];
     
@@ -218,17 +219,19 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  load() {
-    this.onEscKey();
-    // this.gridWidgetService.loadGridTemplate();
-  }
-
   ngOnInit(): void {
     
     // initializes cells
     for (let row = 0; row < this.rows; row++) {
       for (let col = 0; col < this.cols; col++) {
         this.cells.push({ row, col });
+      }
+    }
+    
+    // initializes macro cells
+    for (let row = 0; row < this.rows / 2; row++) {
+      for (let col = 0; col < this.cols / 2; col++) {
+        this.macroCells.push({ row, col });
       }
     }
   }
@@ -266,7 +269,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // if widget as moved instead of added, delete previous widget
     if (widget.moved) {
-      this.gridWidgetService.removeWidget(widget);
+      this.removeWidget(widget);
     }
     
     if (event.dataTransfer) {
@@ -419,9 +422,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /*# REMOVE WIDGET #*/
-  removeWidget() {
-    this.gridWidgetService.removeWidget(this.previousWidget);
-    this.deactivateWidgetEdit();
+  removeWidget(widget: GridWidget) {
+    this.gridWidgetService.removeWidget(widget);
   }
 
   /*# EDIT WIDGET METHODS #*/

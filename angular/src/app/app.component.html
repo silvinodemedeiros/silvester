@@ -95,10 +95,24 @@
       }"
       role="main"
     >
-      <div class="grid" [ngClass]="{
+      <div [ngClass]="{
         'grid': true,
+        'grid-structure': true,
         'grid-preview': previewMode_()
       }">
+
+        <div class="grid-structure grid-structure-macro">
+          <ng-container *ngIf="!previewMode_()">
+            <ng-container *ngFor="let cell of macroCells">
+              <div
+                [ngClass]="{
+                  'cell': true,
+                }"
+              ></div>
+            </ng-container>
+          </ng-container>
+        </div>
+      
         <!--# CELLS LAYER #-->
         <ng-container *ngIf="!previewMode_()">
           <ng-container *ngFor="let cell of cells">
@@ -118,8 +132,10 @@
 
         <!--# WIDGETS LAYER #-->
         <div [ngClass]="{
+          'grid-structure': true,
           'grid-widgets-wrapper': true,
-          'dragging': isDragging
+          'grid-widgets-wrapper-preview': previewMode_(),
+          'on-dragging': isDragging
         }">
           <div
             *ngFor="let gridWidget of gridWidgets()"
@@ -136,7 +152,7 @@
               'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.height + '/ span ' + gridWidget.item.width
             }"
             (dragstart)="onDragStart($event, gridWidget, true)"
-            [tabIndex]="1"
+            [tabIndex]="previewMode_() ? 0 : -1"
             (focus)="onWidgetFocus($event)"
             (blur)="onWidgetBlur($event)"
           >
@@ -188,16 +204,12 @@
             <div
               *ngIf="!previewMode_()"
               [ngClass]="{
-                'edit-handle': true
+                'delete-handle': true
               }"
-              (mousedown)="toggleWidgetEdit(gridWidget)"
+              (mousedown)="removeWidget(gridWidget)"
             >
               <ng-icon
-                [name]="
-                  previousWidget?.item?.id == gridWidget.item.id
-                  ? 'bootstrapX'
-                  : 'bootstrapPencil'
-                "
+                [name]="'bootstrapTrash'"
               ></ng-icon>
             </div>
           </div>
@@ -268,7 +280,7 @@
             Sync Widget
           </div>
           
-          <div class="menu-item-button menu-item-button-header" (click)="removeWidget()">
+          <div class="menu-item-button menu-item-button-header">
             <ng-icon name="bootstrapTrash"></ng-icon>
             Remove Widget
           </div>
@@ -285,7 +297,7 @@
     'accessibility-high-contrast': darkMode_()
   }"
   (click)="toggleDarkMode()"
-  [tabIndex]="1"
+  [tabIndex]="0"
 >
   <ng-icon name="bootstrapMoonStars"></ng-icon>
 </div>

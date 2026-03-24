@@ -6,8 +6,8 @@
       "id": "wi_1",
       "type": "clouds",
       "label": "Clouds",
-      "width": 4,
-      "height": 4
+      "width": 8,
+      "height": 8
     },
     "data": {
       "type": "clouds",
@@ -35,8 +35,8 @@
       "id": "wi_3",
       "type": "dew_point",
       "label": "Dew Point",
-      "width": 4,
-      "height": 4
+      "width": 8,
+      "height": 8
     },
     "data": {
       "type": "dew_point",
@@ -64,8 +64,8 @@
       "id": "wi_5",
       "type": "sunset",
       "label": "Sunset",
-      "width": 4,
-      "height": 4
+      "width": 8,
+      "height": 8
     },
     "data": {
       "type": "sunset",
@@ -93,8 +93,8 @@
       "id": "wi_4",
       "type": "sunrise",
       "label": "Sunrise",
-      "width": 4,
-      "height": 4
+      "width": 8,
+      "height": 8
     },
     "data": {
       "type": "sunrise",
@@ -122,8 +122,8 @@
       "id": "wi_6",
       "type": "temp",
       "label": "Temperature",
-      "width": 4,
-      "height": 4
+      "width": 8,
+      "height": 8
     },
     "data": {
       "type": "temp",
@@ -151,8 +151,8 @@
       "id": "wi_2",
       "type": "feels_like",
       "label": "Feels Like",
-      "width": 4,
-      "height": 4
+      "width": 8,
+      "height": 8
     },
     "data": {
       "type": "feels_like",
