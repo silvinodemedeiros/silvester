@@ -69,8 +69,6 @@ export class AppComponent implements OnInit, OnDestroy {
   weatherList = WEATHER_INFO_LIST;
   measurementsList = MEASUREMENTS_LIST;
 
-  currentTab_= signal<string>('widgets');
-
   currentWidgetSource: any;
 
   // MAGNIFICATION PROPERTIES
@@ -83,11 +81,6 @@ export class AppComponent implements OnInit, OnDestroy {
   // EDIT WIDGET PROPERTIES
   isEditingWidget = false;
   previousWidget: GridWidget | null = null;
-
-  // CREATE WIDGET INSTRUCTIONS
-  isCreatingWidget = false;
-  creationWidget: any = null;
-  creatingWidgetMsg = '';
 
   constructor(
     private menuItemService: MenuItemService,
@@ -161,10 +154,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   focusWidget(event: any) {
-    event.target.focus();
+    if (this.previewMode_()) {
+      event.target.focus();
+    }
   }
 
-  @HostListener('document:keydown.escape', ['$event'])
+  @HostListener('document:keydown.escape')
   onEscKey() {
 
     if (this.focusedWidgetElem) {
@@ -174,8 +169,6 @@ export class AppComponent implements OnInit, OnDestroy {
     
     this.isDragging = false;
     this.isDraggingFile = false;
-    this.isCreatingWidget = false;
-    this.creatingWidgetMsg = '';
     
     this.deactivateWidgetEdit();
     this.previewMode_.set(false);
@@ -262,10 +255,6 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
-  setTab(tab: string) {
-    this.currentTab_.set(tab);
-  }
-
   setWidgetTransfer(event: DragEvent, widget: any, moved = false) {
     widget = {
       ...widget,
@@ -324,8 +313,6 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.deactivateWidgetCreation();
-
     // adds widget to grid
     const addedWidget = this.gridWidgetService.addGridWidget(event, row, col);
 
@@ -336,13 +323,12 @@ export class AppComponent implements OnInit, OnDestroy {
   onDragLeave(): void {
   }
 
-  importGrid() {
+  importJson() {
     this.isDraggingFile = true;
-    this.isCreatingWidget = false;
     this.isEditingWidget = false;
   }
 
-  exportGrid() {
+  exportJson() {
 
     if (this.gridWidgets().length === 0) {
       console.log('No widgets detected...');
@@ -361,7 +347,7 @@ export class AppComponent implements OnInit, OnDestroy {
     URL.revokeObjectURL(url); // clean up
   }
 
-  exportProject() {
+  exportHtml() {
     const json = this.htmlGeneratorService.buildIndexHtml(this.gridWidgets());
 
     const blob = new Blob([json], { type: 'text/html' });
@@ -427,30 +413,9 @@ export class AppComponent implements OnInit, OnDestroy {
     (event.target as any)?.parentNode.setAttribute('draggable', 'false')
   }
 
-  /*# CREATE WIDGET METHOD #*/
-
-  activateWidgetCreation() {
-    this.isCreatingWidget = false;
-    this.toggleWidgetCreation();
-  }
-
-  deactivateWidgetCreation() {
-    this.isCreatingWidget = true;
-    this.toggleWidgetCreation();
-  }
-
-  toggleWidgetCreation() {
-    this.isCreatingWidget = !this.isCreatingWidget;
-
-    this.creatingWidgetMsg = this.isCreatingWidget 
-      ? 'Click on the grid to add a widget'
-      : '';
-  }
-
   handleCellClick(event: any, row: number, col: number) {
     this.transferEmptyWidget(event, row, col);
     this.onDrop(event, row, col);
-    this.isCreatingWidget = false;
   }
 
   /*# REMOVE WIDGET #*/

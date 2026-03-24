@@ -12,68 +12,60 @@
       *ngIf="!previewMode_()"
       class="topbar"
     >
-      <div class="menu-item menu-item-button menu-item-button-header" (click)="togglePreview()" [ngClass]="{'inactive': isCreatingWidget || isDraggingFile || gridWidgets().length === 0}">
-        <ng-icon name="bootstrapEye"></ng-icon>
+
+      <h1>Silvester</h1>
+      
+      <div style="margin-left: auto;"></div>
+
+      <div
+        role="button"
+        class="menu-item-button menu-item-button-header"
+        (click)="togglePreview()"
+        [ngClass]="{'inactive': isDraggingFile || gridWidgets().length === 0}"
+      >
         Preview
       </div>
-      <div style="margin-left: auto;"></div>
-      <div class="menu-item menu-item-button menu-item-button-header" (click)="activateWidgetCreation()" [ngClass]="{'inactive': isCreatingWidget || isDraggingFile}">
-        <ng-icon name="bootstrapPlus"></ng-icon>
-        Create Widget
+
+      <div
+        role="button"
+        class="menu-item-button menu-item-button-header"
+        (click)="importJson()"
+      >
+        Import JSON
+      </div>
+
+      <div
+        role="button"
+        class="menu-item-button menu-item-button-header"
+        [ngClass]="{ 'inactive': gridWidgets().length == 0 }"
+        (click)="exportJson()"
+      >
+        Export JSON
+      </div>
+      
+      <div
+        role="button"
+        class="menu-item-button menu-item-button-header"
+        [ngClass]="{ 'inactive': gridWidgets().length == 0 }"
+        (click)="exportHtml()"
+      >
+        Export HTML
       </div>
     </header>
 
     <!-- SIDEBAR -->
     <aside
       *ngIf="!previewMode_()"
-      class="sidebar"
+      class="sidebar-panel panel panel-left"
     >
-      <div class="sidebar-title">
-        <div 
-          [ngClass]="{
-            'sidebar-title-tab': true,
-            'active': currentTab_() == 'widgets'
-          }"
-          (click)="setTab('widgets')"
-        >
-          Widgets
-        </div> 
-        <div 
-          [ngClass]="{
-            'sidebar-title-tab': true,
-            'active': currentTab_() == 'templates'
-          }" 
-          (click)="setTab('templates')"
-        >
-          Templates
-        </div> 
-      </div>
-      <div class="menu-items-wrapper">
-        <div class="menu-items-wrapper-content">
-          @if (currentTab_() == 'widgets') {
-            @for (widget of gridWidgets(); track widget.item.id) {
-              <div
-                class="menu-item widget-list-item"
-                [ngClass]="{
-                  'menu-item': true,
-                  'widget-list-item': true,
-                  'selected': previousWidget?.item?.id == widget.item.id
-                }"
-                (click)="toggleWidgetEdit(widget)"
-              >
-                <ng-icon [name]="widget.data.metadata?.icon?.value"></ng-icon>
-                {{ widget.data.metadata?.title?.value }}
-              </div>
-            }
 
-            @empty {
-              @if (!this.isDragging) {
-                <div class="menu-items-wrapper-content--empty">
-                  This list is empty. Create a widget to start.
-                </div>
-              }
-            }
-          } @else {
+      <div class="panel-header">
+        <span class="title">Widgets</span>
+      </div>
+
+      <div class="panel-content">
+
+        <div class="panel-content-body">
             @for (menuItem of menuItems(); track menuItem.item.id) {
               <div
                 class="menu-item"
@@ -86,45 +78,13 @@
             }
 
             @empty {
-              <div class="menu-items-wrapper-content--empty">
-                This list is empty. Save a widget as template populate.
+              <div class="panel-content-body--empty">
+                Populate entities on Orion Context Broker to see them here.
               </div>
             }
-          }
         </div>
       </div>
-      <div
-        [ngClass]="{
-          'menu-item': true,
-          'menu-item-button': true,
-          'menu-item-button-export': true,
-          'inactive': gridWidgets().length == 0
-        }"
-        (click)="exportGrid()"
-        [matTooltip]="gridWidgets().length == 0 ? 'Grid is Empty' : ''"
-      >
-        Export Grid
-      </div>
-      <div
-        [ngClass]="{
-          'menu-item': true,
-          'menu-item-button': true,
-          'menu-item-button-import': true
-        }"
-        (click)="importGrid()"
-      >
-        Import Grid
-      </div>
-      <div
-        [ngClass]="{
-          'menu-item': true,
-          'menu-item-button': true,
-          'menu-item-button-export-project': true
-        }"
-        (click)="exportProject()"
-      >
-        Export Project
-      </div>
+      
     </aside>
 
     <!--# GRID #-->
@@ -135,12 +95,6 @@
       }"
       role="main"
     >
-      @if (isCreatingWidget && creatingWidgetMsg) {
-        <div class="content-alert">
-          {{ creatingWidgetMsg }}
-        </div>
-      }
-
       <div class="grid" [ngClass]="{
         'grid': true,
         'grid-preview': previewMode_()
@@ -152,8 +106,7 @@
               [ngClass]="{
                 'cell': true,
                 'has-widget-preview': previewWidget && hasPreview(cell.row, cell.col),
-                'has-grid-preview': previewMode_(),
-                'is-creating-widget': isCreatingWidget
+                'has-grid-preview': previewMode_()
               }"
               (dragover)="onDragOver($event, cell.row, cell.col)"
               (dragleave)="onDragLeave()"
@@ -164,7 +117,10 @@
         </ng-container>
 
         <!--# WIDGETS LAYER #-->
-        <div class="grid-widgets-wrapper" *ngIf="!(isDragging || isCreatingWidget)">
+        <div [ngClass]="{
+          'grid-widgets-wrapper': true,
+          'dragging': isDragging
+        }">
           <div
             *ngFor="let gridWidget of gridWidgets()"
             [ngClass]="{
@@ -183,7 +139,6 @@
             [tabIndex]="1"
             (focus)="onWidgetFocus($event)"
             (blur)="onWidgetBlur($event)"
-            (click)="focusWidget($event)"
           >
           
           <!-- # WIDGET TITLE # -->
@@ -259,74 +214,67 @@
           <h1>Drop your JSON file here</h1>
         </div>
       </div>
+    </main>
 
-      @if (isEditingWidget) {
-        <div class="config-panel-wrapper">
+    @if (isEditingWidget) {
 
-          <div class="config-panel">
+      <div class="edit-panel panel panel-right">
 
-            <div class="config-panel-header">
-              <span class="title">Editing widget - {{ previousWidget?.data?.metadata?.title?.value }}</span>
-            </div>
+        <div class="panel-header">
+          <span class="title">edit widget</span>
+        </div>
 
-            <div class="config-panel-form">
+        <div class="panel-content">
 
-              <div class="config-panel-form-content" [formGroup]="editForm">
-                <mat-form-field appearance="outline">
-                  <mat-label>Widget Title</mat-label>
-                  <input matInput formControlName="title"/>
-                </mat-form-field>
-                
-                <mat-form-field appearance="outline">
-                  <mat-label>Icon Name</mat-label>
-                  <mat-select formControlName="icon">
-                    @for(icon of iconList; track icon.id) {
-                      <mat-option [value]="icon.value">{{icon.name}}</mat-option>
-                    }
-                  </mat-select>
-                </mat-form-field>
-                
-                <mat-form-field appearance="outline">
-                  <mat-label>Measurement</mat-label>
-                  <mat-select formControlName="measures">
-                    @for(measures of measurementsList; track measures.id) {
-                      <mat-option [value]="measures.value">{{measures.title}}</mat-option>
-                    }
-                  </mat-select>
-                </mat-form-field>
-                
-                <mat-form-field appearance="outline">
-                  <mat-label>Data Source</mat-label>
-                  <mat-select formControlName="weatherType">
-                    @for(weather of weatherList; track weather.id) {
-                      <mat-option [value]="weather.value">{{weather.name}}</mat-option>
-                    }
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </div>
-
-            <div class="config-panel-actions">
-              
-              <div class="menu-item menu-item-button menu-item-button-header" (click)="updateGridWidgets()">
-                <ng-icon name="bootstrapCheck"></ng-icon>
-                Update Widget
-              </div>
-              
-              <div class="menu-item menu-item-button menu-item-button-header">
-                <ng-icon name="bootstrapSave"></ng-icon>
-                Save as Template
-              </div>
-              
-              <div class="menu-item menu-item-button menu-item-button-header" (click)="removeWidget()">
-                <ng-icon name="bootstrapTrash"></ng-icon>
-                Remove Widget
-              </div>
-            </div>
+          <div class="panel-content-body" [formGroup]="editForm">
+            <mat-form-field appearance="outline">
+              <mat-label>Widget Title</mat-label>
+              <input matInput formControlName="title"/>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>Icon Name</mat-label>
+              <mat-select formControlName="icon">
+                @for(icon of iconList; track icon.id) {
+                  <mat-option [value]="icon.value">{{icon.name}}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>Measurement</mat-label>
+              <mat-select formControlName="measures">
+                @for(measures of measurementsList; track measures.id) {
+                  <mat-option [value]="measures.value">{{measures.title}}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>Data Source</mat-label>
+              <mat-select formControlName="weatherType">
+                @for(weather of weatherList; track weather.id) {
+                  <mat-option [value]="weather.value">{{weather.name}}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
           </div>
         </div>
-      }
-    </main>
+
+        <div class="panel-actions">
+          
+          <div class="menu-item-button menu-item-button-header" (click)="updateGridWidgets()">
+            <ng-icon name="bootstrapArrowRepeat"></ng-icon>
+            Sync Widget
+          </div>
+          
+          <div class="menu-item-button menu-item-button-header" (click)="removeWidget()">
+            <ng-icon name="bootstrapTrash"></ng-icon>
+            Remove Widget
+          </div>
+        </div>
+      </div>
+    }
 </div>
 
 <div
