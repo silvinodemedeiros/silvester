@@ -253,6 +253,23 @@ const WEATHER_DATA = {
                 type: 'WeatherValueUnit'
             }
         }
+    },
+    wind_gust: {
+        type: 'wind_gust',
+        metadata: {
+            title: {
+                value: 'Wind Gust',
+                type: 'WeatherTitle'
+            },
+            icon: {
+                value: 'bootstrapWind',
+                type: 'WeatherIconName'
+            },
+            measures: {
+                value: 'velocity',
+                type: 'WeatherValueUnit'
+            }
+        }
     }
 };
 

@@ -5,8 +5,9 @@ const bodyParser = require('body-parser');
 const orionService = require('./orion.service');
 const weatherService = require('./weather/weather.service');
 const { SUBSCRIPTION_TEMPLATE } = require('./models/subscription');
-const app = express();
+const { Subject } = require('rxjs');
 
+const app = express();
 const PORT = 3000;
 
 app.use(cors());
@@ -97,15 +98,31 @@ app.post('/notify', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 
-  orionService.createSubscription(SUBSCRIPTION_TEMPLATE);
+  // orionService.createSubscription(SUBSCRIPTION_TEMPLATE);
 
   weatherService.getLocalWeather().then((localWeather) => {
-
     const orionEntity = weatherService.generateOrionEntity(localWeather);
+    const removeEntity_ = new Subject();
+    const recreateEntity_ = new Subject();
 
     orionService.createEntity(orionEntity).then(
       (result) => console.log(result), 
-      (error) => console.log(error.response?.status, error.response?.data)
+      (error) => {
+        console.log(error.response?.status, error.response?.data);
+        console.log('recreating entity...');
+
+        if (error.response?.status === 422) {
+          removeEntity_.next();
+        }
+      }
+    );
+
+    const removeEntitySub = removeEntity_.subscribe(
+      () => void orionService.removeEntity(orionEntity.id).then()
+    );
+
+    const recreateEntitySub = recreateEntity_.subscribe(
+      () => void orionService.createEntity(orionEntity).then()
     );
   });
 });
