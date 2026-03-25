@@ -101,28 +101,26 @@ app.listen(PORT, () => {
   // orionService.createSubscription(SUBSCRIPTION_TEMPLATE);
 
   weatherService.getLocalWeather().then((localWeather) => {
-    const orionEntity = weatherService.generateOrionEntity(localWeather);
-    const removeEntity_ = new Subject();
-    const recreateEntity_ = new Subject();
+    let orionEntity = weatherService.generateOrionEntity(localWeather);
+    const entityId = orionEntity.id;
+    const updateEntity_ = new Subject();
 
     orionService.createEntity(orionEntity).then(
       (result) => console.log(result), 
       (error) => {
         console.log(error.response?.status, error.response?.data);
-        console.log('recreating entity...');
-
+        
         if (error.response?.status === 422) {
-          removeEntity_.next();
+          console.log('updating entity...');
+          delete orionEntity.id;
+          delete orionEntity.type;
+          updateEntity_.next();
         }
       }
     );
 
-    const removeEntitySub = removeEntity_.subscribe(
-      () => void orionService.removeEntity(orionEntity.id).then()
-    );
-
-    const recreateEntitySub = recreateEntity_.subscribe(
-      () => void orionService.createEntity(orionEntity).then()
+    const updateEntitySub = updateEntity_.subscribe(
+      () => void orionService.updateEntity(orionEntity, entityId)
     );
   });
 });
