@@ -98,29 +98,15 @@ app.post('/notify', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 
-  // orionService.createSubscription(SUBSCRIPTION_TEMPLATE);
+  weatherService.getLocalWeather().then(
+    (localWeather) => orionService.generateOrionEntity(localWeather)
+  );
 
-  weatherService.getLocalWeather().then((localWeather) => {
-    let orionEntity = weatherService.generateOrionEntity(localWeather);
-    const entityId = orionEntity.id;
-    const updateEntity_ = new Subject();
-
-    orionService.createEntity(orionEntity).then(
-      (result) => console.log(result), 
-      (error) => {
-        console.log(error.response?.status, error.response?.data);
-        
-        if (error.response?.status === 422) {
-          console.log('updating entity...');
-          delete orionEntity.id;
-          delete orionEntity.type;
-          updateEntity_.next();
-        }
-      }
-    );
-
-    const updateEntitySub = updateEntity_.subscribe(
-      () => void orionService.updateEntity(orionEntity, entityId)
-    );
+  orionService.getSubscriptions().then((result) => {
+    if (result.length === 0 || !result.length) {
+      orionService.createSubscription(SUBSCRIPTION_TEMPLATE);
+    }
+  }, error => {
+    console.error('Error updating entity:', error.response?.data || error.message)
   });
 });

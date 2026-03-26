@@ -1,4 +1,6 @@
 const axios = require('axios');
+const { Subject } = require('rxjs');
+const weatherService = require('./weather/weather.service');
 
 const ORION_URL = 'http://localhost:1026/v2';
 // const ORION_URL = 'http://silvester-orion:1026/v2';
@@ -88,6 +90,30 @@ async function updateSubscription(subscriptionId, subscription) {
   }
 }
 
+async function generateOrionEntity(openWeatherObj) {
+  let orionEntity = weatherService.generateOrionEntity(openWeatherObj);
+  const entityId = orionEntity.id;
+  const updateEntity_ = new Subject();
+
+  createEntity(orionEntity).then(
+    (result) => console.log(result), 
+    (error) => {
+      console.log(error.response?.status, error.response?.data);
+      
+      if (error.response?.status === 422) {
+        console.log('updating entity...');
+        delete orionEntity.id;
+        delete orionEntity.type;
+        updateEntity_.next();
+      }
+    }
+  );
+
+  const updateEntitySub = updateEntity_.subscribe(
+    () => void updateEntity(orionEntity, entityId)
+  );
+}
+
 module.exports = {
   getEntities,
   createEntity,
@@ -95,5 +121,6 @@ module.exports = {
   removeEntity,
   getSubscriptions,
   updateSubscription,
-  createSubscription
+  createSubscription,
+  generateOrionEntity
 };
