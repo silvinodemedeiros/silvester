@@ -20,7 +20,6 @@ import { HtmlGeneratorService } from './services/html-generator/html-generator.s
 
 @Component({
   selector: 'app-root',
-  // templateUrl: './app2.component.html',
   templateUrl: './app.component.html',
   imports: [
     CommonModule,

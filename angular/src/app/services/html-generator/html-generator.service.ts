@@ -35,7 +35,7 @@ export class HtmlGeneratorService {
         </main>
       </div>
       
-      <div id="dark-mode-toggle" class="accessibility" tabIndex="1">
+      <div id="dark-mode-toggle" class="accessibility" tabIndex="0" role="button">
         <i class="bi bi-moon-stars"></i>
       </div>
     </body>
@@ -79,23 +79,23 @@ export class HtmlGeneratorService {
       <div
         class="grid-widget grid-widget-has-preview grid-widget-${gridWidget.data.type} cell monochromatic"
         style="grid-area: ${gridWidget.row + 1} / ${gridWidget.col + 1} / span ${gridWidget.item.height} / span ${gridWidget.item.width};"
-        tabIndex="1"
+        tabIndex="0"
       >
 
-        <p class="grid-widget-title">
+        <h1 class="grid-widget-title">
           ${gridWidget.data.metadata?.title?.value}
-        </p>
+        </h1>
 
-        <span class="grid-widget-value">
+        <div class="grid-widget-value">
           ${widget_value(gridWidget, this.datePipe)}
           <span class="grid-widget-value-suffix">
             ${widget_suffix(gridWidget.data.metadata?.measures?.value)}
           </span>
-        </span>
+        </div>
 
-        <p class="grid-widget-icon">
+        <div class="grid-widget-icon" role="presentation">
           <i class="bi bi-${this.ngIconsHtmlIconMap[gridWidget.data.metadata?.icon?.value as string]}"></i>
-        </p>
+        </div>
       </div>
     `;
   }

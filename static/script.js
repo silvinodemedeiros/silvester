@@ -139,7 +139,7 @@ document.addEventListener("keydown", (event) => {
     
     if (event.key === "Tab") {
         
-      const focusableElements = document.querySelectorAll('[tabindex="1"]');
+      const focusableElements = document.querySelectorAll('[tabindex="0"]');
       const firstElement = focusableElements[0];
       const lastElement = focusableElements[focusableElements.length - 1];
       
