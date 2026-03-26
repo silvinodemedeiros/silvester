@@ -25,9 +25,9 @@ export class HtmlGeneratorService {
       <div class="layout layout-preview">
         <main class="content content-preview">
 
-          <div class="grid grid-preview">
+          <div class="grid grid-structure grid-preview">
 
-            <div class="grid-widgets-wrapper">`;
+            <div class="grid-structure grid-widgets-wrapper grid-widgets-wrapper-preview">`;
 
   indexTail = 
   `         </div>
@@ -77,7 +77,7 @@ export class HtmlGeneratorService {
   generateWidget(gridWidget: GridWidget) {
     return `
       <div
-        class="grid-widget grid-widget-${gridWidget.data.type} cell monochromatic"
+        class="grid-widget grid-widget-has-preview grid-widget-${gridWidget.data.type} cell monochromatic"
         style="grid-area: ${gridWidget.row + 1} / ${gridWidget.col + 1} / span ${gridWidget.item.height} / span ${gridWidget.item.width};"
         tabIndex="1"
       >

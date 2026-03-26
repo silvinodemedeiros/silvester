@@ -6,13 +6,17 @@
       "id": "wi_1",
       "type": "clouds",
       "label": "Clouds",
-      "width": 8,
-      "height": 8
+      "width": 4,
+      "height": 4
     },
     "data": {
       "type": "clouds",
-      "value": 33,
+      "value": 55,
       "metadata": {
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Clouds"
+        },
         "icon": {
           "type": "WeatherIconName",
           "value": "bootstrapClouds"
@@ -20,23 +24,48 @@
         "measures": {
           "type": "WeatherValueUnit",
           "value": "percentage"
-        },
-        "title": {
-          "type": "WeatherTitle",
-          "value": "Clouds"
         }
       }
     }
   },
-  "2_14": {
+  "2_2": {
     "row": 2,
-    "col": 14,
+    "col": 2,
     "item": {
       "id": "wi_3",
+      "type": "humidity",
+      "label": "Humidity",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "humidity",
+      "value": 74,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapDroplet"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "percentage"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Humidity"
+        }
+      }
+    }
+  },
+  "2_10": {
+    "row": 2,
+    "col": 10,
+    "item": {
+      "id": "wi_4",
       "type": "dew_point",
       "label": "Dew Point",
-      "width": 8,
-      "height": 8
+      "width": 4,
+      "height": 4
     },
     "data": {
       "type": "dew_point",
@@ -57,73 +86,15 @@
       }
     }
   },
-  "6_10": {
-    "row": 6,
-    "col": 10,
-    "item": {
-      "id": "wi_5",
-      "type": "sunset",
-      "label": "Sunset",
-      "width": 8,
-      "height": 8
-    },
-    "data": {
-      "type": "sunset",
-      "value": 1772483976,
-      "metadata": {
-        "icon": {
-          "type": "WeatherIconName",
-          "value": "bootstrapSunset"
-        },
-        "measures": {
-          "type": "WeatherValueUnit",
-          "value": "time"
-        },
-        "title": {
-          "type": "WeatherTitle",
-          "value": "Sunset"
-        }
-      }
-    }
-  },
-  "6_6": {
-    "row": 6,
-    "col": 6,
-    "item": {
-      "id": "wi_4",
-      "type": "sunrise",
-      "label": "Sunrise",
-      "width": 8,
-      "height": 8
-    },
-    "data": {
-      "type": "sunrise",
-      "value": 1772440014,
-      "metadata": {
-        "icon": {
-          "type": "WeatherIconName",
-          "value": "bootstrapSunrise"
-        },
-        "measures": {
-          "type": "WeatherValueUnit",
-          "value": "time"
-        },
-        "title": {
-          "type": "WeatherTitle",
-          "value": "Sunrise"
-        }
-      }
-    }
-  },
-  "6_14": {
-    "row": 6,
+  "2_14": {
+    "row": 2,
     "col": 14,
     "item": {
-      "id": "wi_6",
+      "id": "wi_5",
       "type": "temp",
       "label": "Temperature",
-      "width": 8,
-      "height": 8
+      "width": 4,
+      "height": 4
     },
     "data": {
       "type": "temp",
@@ -144,15 +115,131 @@
       }
     }
   },
-  "2_10": {
+  "2_18": {
     "row": 2,
+    "col": 18,
+    "item": {
+      "id": "wi_6",
+      "type": "uvi",
+      "label": "UVI",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "uvi",
+      "value": 8.2,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapArrowDownRight"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "angle"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "UVI"
+        }
+      }
+    }
+  },
+  "6_2": {
+    "row": 6,
+    "col": 2,
+    "item": {
+      "id": "wi_7",
+      "type": "wind_deg",
+      "label": "Wind Angle",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "wind_deg",
+      "value": 160,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapArrowsMove"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "angle"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Wind Angle"
+        }
+      }
+    }
+  },
+  "6_6": {
+    "row": 6,
+    "col": 6,
+    "item": {
+      "id": "wi_8",
+      "type": "wind_speed",
+      "label": "Wind Speed",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "wind_speed",
+      "value": 4.12,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapWind"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "velocity"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Wind Speed"
+        }
+      }
+    }
+  },
+  "6_10": {
+    "row": 6,
     "col": 10,
     "item": {
-      "id": "wi_2",
+      "id": "wi_9",
+      "type": "sunset",
+      "label": "Sunset",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "sunset",
+      "value": 1774556937,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapSunset"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "time"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Sunset"
+        }
+      }
+    }
+  },
+  "6_14": {
+    "row": 6,
+    "col": 14,
+    "item": {
+      "id": "wi_10",
       "type": "feels_like",
       "label": "Feels Like",
-      "width": 8,
-      "height": 8
+      "width": 4,
+      "height": 4
     },
     "data": {
       "type": "feels_like",
@@ -160,7 +247,7 @@
       "metadata": {
         "icon": {
           "type": "WeatherIconName",
-          "value": "bootstrapDroplet"
+          "value": "bootstrapEmojiSunglasses"
         },
         "measures": {
           "type": "WeatherValueUnit",
@@ -169,6 +256,35 @@
         "title": {
           "type": "WeatherTitle",
           "value": "Feels Like"
+        }
+      }
+    }
+  },
+  "6_18": {
+    "row": 6,
+    "col": 18,
+    "item": {
+      "id": "wi_11",
+      "type": "pressure",
+      "label": "Pressure",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "pressure",
+      "value": 1012,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapChevronBarDown"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "hectoPascal"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Pressure"
         }
       }
     }
