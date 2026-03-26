@@ -76,27 +76,27 @@ export class HtmlGeneratorService {
 
   generateWidget(gridWidget: GridWidget) {
     return `
-      <div
-        class="grid-widget grid-widget-has-preview grid-widget-${gridWidget.data.type} cell monochromatic"
-        style="grid-area: ${gridWidget.row + 1} / ${gridWidget.col + 1} / span ${gridWidget.item.height} / span ${gridWidget.item.width};"
-        tabIndex="0"
-      >
+          <div
+            class="grid-widget grid-widget-has-preview grid-widget-${gridWidget.data.type} cell monochromatic"
+            style="grid-area: ${gridWidget.row + 1} / ${gridWidget.col + 1} / span ${gridWidget.item.height} / span ${gridWidget.item.width};"
+            tabIndex="0"
+          >
 
-        <h1 class="grid-widget-title">
-          ${gridWidget.data.metadata?.title?.value}
-        </h1>
+            <h1 class="grid-widget-title">
+              ${gridWidget.data.metadata?.title?.value}
+            </h1>
 
-        <div class="grid-widget-value">
-          ${widget_value(gridWidget, this.datePipe)}
-          <span class="grid-widget-value-suffix">
-            ${widget_suffix(gridWidget.data.metadata?.measures?.value)}
-          </span>
-        </div>
+            <div class="grid-widget-value">
+              ${widget_value(gridWidget, this.datePipe)}
+              <span class="grid-widget-value-suffix">
+                ${widget_suffix(gridWidget.data.metadata?.measures?.value)}
+              </span>
+            </div>
 
-        <div class="grid-widget-icon" role="presentation">
-          <i class="bi bi-${this.ngIconsHtmlIconMap[gridWidget.data.metadata?.icon?.value as string]}"></i>
-        </div>
-      </div>
+            <div class="grid-widget-icon">
+              <i class="bi bi-${this.ngIconsHtmlIconMap[gridWidget.data.metadata?.icon?.value as string]}"></i>
+            </div>
+          </div>
     `;
   }
 

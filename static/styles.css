@@ -1,3 +1,4 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
 .mat-select-panel {
   background: #fff;
 }
@@ -312,7 +313,6 @@ html {
   padding: 0.5rem;
   background-color: white;
   container-type: inline-size;
-  border: 2px dashed #cccccc;
 }
 .grid-widgets-wrapper .grid-widget-selected,
 .grid-widgets-wrapper .grid-widget:active,
@@ -320,8 +320,7 @@ html {
   border: 2px dashed black;
 }
 .grid-widgets-wrapper .grid-widget:hover {
-  border-radius: none;
-  transition: border 0.2s ease;
+  transition: border 0.1s ease;
 }
 .grid-widgets-wrapper .grid-widget.cell:focus {
   outline: 2px solid black !important;
@@ -340,12 +339,10 @@ html {
   margin: 0;
 }
 .grid-widgets-wrapper .grid-widget-has-preview {
-  border-width: 1px;
-  border-style: solid;
+  border: 1px solid #cccccc;
   border-radius: 4px;
 }
 .grid-widgets-wrapper .grid-widget-has-preview:hover {
-  border: 1px solid #cccccc;
   transition: none;
 }
 .grid-widgets-wrapper .grid-widget.grid-widget-map {
@@ -360,7 +357,7 @@ html {
 .grid-widgets-wrapper .grid-widget-title-dark {
   font-weight: bold;
   letter-spacing: 1px;
-  font-size: 1.5vw;
+  font-size: 1.3rem;
 }
 .grid-widgets-wrapper .grid-widget-value {
   grid-area: value;
@@ -374,7 +371,7 @@ html {
   width: 100%;
 }
 .grid-widgets-wrapper .grid-widget-value-dark {
-  font-size: 4.2vw;
+  font-size: 30cqw;
 }
 .grid-widgets-wrapper .grid-widget-value-suffix {
   font-size: 15cqw;
