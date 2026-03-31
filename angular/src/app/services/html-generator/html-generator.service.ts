@@ -18,6 +18,7 @@ export class HtmlGeneratorService {
       <link rel="stylesheet" href="styles.css">
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
       <title>Dashboard X</title>
     </head>
     <body>
@@ -41,7 +42,8 @@ export class HtmlGeneratorService {
     </body>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
-  
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
     <script src="script.js" type="text/javascript" language="javascript"></script>
 
   </html>`;
@@ -74,6 +76,26 @@ export class HtmlGeneratorService {
     return this.ngIconsHtmlIconMap[iconName];
   }
 
+  generateWidgetValue(gridWidget: GridWidget) {
+
+    if (gridWidget.data.type === 'location') {
+      return `
+            <div class="grid-widget-map" style="width: 300px; height: 200px">
+            </div>
+      `;
+    }
+
+    return `
+            <div class="grid-widget-value">
+              ${widget_value(gridWidget, this.datePipe)}
+              <span class="grid-widget-value-suffix">
+                ${widget_suffix(gridWidget.data.metadata?.measures?.value)}
+              </span>
+            </div>
+    `;
+
+  }
+
   generateWidget(gridWidget: GridWidget) {
     return `
           <div
@@ -86,12 +108,7 @@ export class HtmlGeneratorService {
               ${gridWidget.data.metadata?.title?.value}
             </h1>
 
-            <div class="grid-widget-value">
-              ${widget_value(gridWidget, this.datePipe)}
-              <span class="grid-widget-value-suffix">
-                ${widget_suffix(gridWidget.data.metadata?.measures?.value)}
-              </span>
-            </div>
+            ${this.generateWidgetValue(gridWidget)}
 
             <div class="grid-widget-icon">
               <i class="bi bi-${this.ngIconsHtmlIconMap[gridWidget.data.metadata?.icon?.value as string]}"></i>

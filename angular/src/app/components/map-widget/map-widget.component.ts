@@ -73,6 +73,7 @@ export class WidgetComponent implements OnInit {
 
   handleMapReady(map: Map) {
     this.map = map;
+    this.addPoint(this.gridWidget.data.value, 'Point added!');
     this.cd.detectChanges();
   }
 

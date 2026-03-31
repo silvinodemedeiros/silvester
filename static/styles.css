@@ -1,4 +1,4 @@
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
 .mat-select-panel {
   background: #fff;
 }
@@ -313,14 +313,13 @@ html {
   padding: 0.5rem;
   background-color: white;
   container-type: inline-size;
+  border: 1px dashed #ececec;
+  transition: border 0.15s ease;
 }
 .grid-widgets-wrapper .grid-widget-selected,
 .grid-widgets-wrapper .grid-widget:active,
 .grid-widgets-wrapper .grid-widget:hover {
-  border: 2px dashed black;
-}
-.grid-widgets-wrapper .grid-widget:hover {
-  transition: border 0.1s ease;
+  border: 1px dashed black;
 }
 .grid-widgets-wrapper .grid-widget.cell:focus {
   outline: 2px solid black !important;
@@ -338,12 +337,11 @@ html {
 .grid-widgets-wrapper .grid-widget > * {
   margin: 0;
 }
-.grid-widgets-wrapper .grid-widget-has-preview {
+.grid-widgets-wrapper .grid-widget-has-preview,
+.grid-widgets-wrapper .grid-widget-has-preview:hover,
+.grid-widgets-wrapper .grid-widget-has-preview:active {
   border: 1px solid #cccccc;
   border-radius: 4px;
-}
-.grid-widgets-wrapper .grid-widget-has-preview:hover {
-  transition: none;
 }
 .grid-widgets-wrapper .grid-widget.grid-widget-map {
   grid-template-rows: 3rem 1fr 3rem;

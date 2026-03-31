@@ -2,6 +2,13 @@
 let darkMode = false;
 const darkModeToggle = document.getElementById("dark-mode-toggle");
 
+let mapContainer = document.querySelector('.grid-widget-location .grid-widget-map');
+let mapWidget = null;
+
+if (mapContainer) {
+  mapWidget = L.map(mapContainer).setView([-5.837008, -35.203026], 14);
+}
+
 toggleDarkMode = () => {
     const layoutNode = document.querySelector('.layout');
     const accessibilityNode = document.querySelector('.accessibility');
@@ -112,18 +119,24 @@ widgetSource.onmessage = (event) => {
     ][0];
 
     if (widgetNode) {
-      const widgetValueNode = [...widgetNode.querySelectorAll(".grid-widget-value")][0];
-      widgetValueNode.textContent = widget_value(gridWidget);
 
-      widgetSuffixNode = document.createElement('div');
-      widgetSuffixNode.classList.add('grid-widget-value-suffix');
-      widgetSuffixNode.textContent = widget_suffix(gridWidget.metadata?.measures?.value);
-      widgetValueNode.appendChild(widgetSuffixNode);
+      const widgetValueNode = [...widgetNode.querySelectorAll(".grid-widget-value")][0];
+
+      if (gridWidget.data.type === 'location') {
+
+      } else {
+        widgetValueNode.textContent = widget_value(gridWidget);
+  
+        widgetSuffixNode = document.createElement('div');
+        widgetSuffixNode.classList.add('grid-widget-value-suffix');
+        widgetSuffixNode.textContent = widget_suffix(gridWidget.metadata?.measures?.value);
+        widgetValueNode.appendChild(widgetSuffixNode);
+      } 
     }
   });
 };
 
-// ADDS FOCUS AND UNFOCUS EVENTS TO WIDGETS
+// # ADDS FOCUS AND UNFOCUS EVENTS TO PROTOTYPED WIDGETS
 [...document.querySelectorAll(".grid-widget")].map(widgetNode => {
     widgetNode.addEventListener("focus", () => {
         widgetNode.classList.add('magnified');
@@ -163,3 +176,8 @@ document.addEventListener("keydown", (event) => {
 });
 
 darkModeToggle.addEventListener("mousedown", () => toggleDarkMode());
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(mapWidget);

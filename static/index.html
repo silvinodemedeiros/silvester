@@ -7,6 +7,7 @@
       <link rel="stylesheet" href="styles.css">
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
       <title>Dashboard X</title>
     </head>
     <body>
@@ -19,206 +20,52 @@
             <div class="grid-structure grid-widgets-wrapper grid-widgets-wrapper-preview">
       
           <div
-            class="grid-widget grid-widget-has-preview grid-widget-clouds cell monochromatic"
-            style="grid-area: 3 / 7 / span 4 / span 4;"
+            class="grid-widget grid-widget-has-preview grid-widget-location cell monochromatic"
+            style="grid-area: 3 / 15 / span 8 / span 8;"
             tabIndex="0"
           >
 
             <h1 class="grid-widget-title">
-              Clouds
+              Location
             </h1>
 
-            <div class="grid-widget-value">
-              55
-              <span class="grid-widget-value-suffix">
-                %
-              </span>
+            
+            <div class="grid-widget-map" style="width: 300px; height: 200px">
             </div>
+      
 
             <div class="grid-widget-icon">
-              <i class="bi bi-clouds"></i>
+              <i class="bi bi-geo"></i>
             </div>
           </div>
     
           <div
-            class="grid-widget grid-widget-has-preview grid-widget-humidity cell monochromatic"
+            class="grid-widget grid-widget-has-preview grid-widget-sunrise cell monochromatic"
             style="grid-area: 3 / 3 / span 4 / span 4;"
             tabIndex="0"
           >
 
             <h1 class="grid-widget-title">
-              Humidity
+              Sunrise
             </h1>
 
+            
             <div class="grid-widget-value">
-              74
+              05:23
               <span class="grid-widget-value-suffix">
-                %
+                
               </span>
             </div>
-
-            <div class="grid-widget-icon">
-              <i class="bi bi-droplet"></i>
-            </div>
-          </div>
     
-          <div
-            class="grid-widget grid-widget-has-preview grid-widget-dew_point cell monochromatic"
-            style="grid-area: 3 / 11 / span 4 / span 4;"
-            tabIndex="0"
-          >
-
-            <h1 class="grid-widget-title">
-              Dew Point
-            </h1>
-
-            <div class="grid-widget-value">
-              23.91
-              <span class="grid-widget-value-suffix">
-                °C
-              </span>
-            </div>
 
             <div class="grid-widget-icon">
-              <i class="bi bi-droplet-half"></i>
-            </div>
-          </div>
-    
-          <div
-            class="grid-widget grid-widget-has-preview grid-widget-temp cell monochromatic"
-            style="grid-area: 3 / 15 / span 4 / span 4;"
-            tabIndex="0"
-          >
-
-            <h1 class="grid-widget-title">
-              Temperature
-            </h1>
-
-            <div class="grid-widget-value">
-              29.02
-              <span class="grid-widget-value-suffix">
-                °C
-              </span>
-            </div>
-
-            <div class="grid-widget-icon">
-              <i class="bi bi-thermometer-half"></i>
-            </div>
-          </div>
-    
-          <div
-            class="grid-widget grid-widget-has-preview grid-widget-uvi cell monochromatic"
-            style="grid-area: 3 / 19 / span 4 / span 4;"
-            tabIndex="0"
-          >
-
-            <h1 class="grid-widget-title">
-              UVI
-            </h1>
-
-            <div class="grid-widget-value">
-              8.2
-              <span class="grid-widget-value-suffix">
-                °
-              </span>
-            </div>
-
-            <div class="grid-widget-icon">
-              <i class="bi bi-arrow-down-right"></i>
-            </div>
-          </div>
-    
-          <div
-            class="grid-widget grid-widget-has-preview grid-widget-wind_deg cell monochromatic"
-            style="grid-area: 7 / 3 / span 4 / span 4;"
-            tabIndex="0"
-          >
-
-            <h1 class="grid-widget-title">
-              Wind Angle
-            </h1>
-
-            <div class="grid-widget-value">
-              160
-              <span class="grid-widget-value-suffix">
-                °
-              </span>
-            </div>
-
-            <div class="grid-widget-icon">
-              <i class="bi bi-arrows-move"></i>
-            </div>
-          </div>
-    
-          <div
-            class="grid-widget grid-widget-has-preview grid-widget-wind_speed cell monochromatic"
-            style="grid-area: 7 / 7 / span 4 / span 4;"
-            tabIndex="0"
-          >
-
-            <h1 class="grid-widget-title">
-              Wind Speed
-            </h1>
-
-            <div class="grid-widget-value">
-              4.12
-              <span class="grid-widget-value-suffix">
-                m/s
-              </span>
-            </div>
-
-            <div class="grid-widget-icon">
-              <i class="bi bi-wind"></i>
-            </div>
-          </div>
-    
-          <div
-            class="grid-widget grid-widget-has-preview grid-widget-feels_like cell monochromatic"
-            style="grid-area: 7 / 15 / span 4 / span 4;"
-            tabIndex="0"
-          >
-
-            <h1 class="grid-widget-title">
-              Feels Like
-            </h1>
-
-            <div class="grid-widget-value">
-              33.54
-              <span class="grid-widget-value-suffix">
-                °C
-              </span>
-            </div>
-
-            <div class="grid-widget-icon">
-              <i class="bi bi-emoji-sunglasses"></i>
-            </div>
-          </div>
-    
-          <div
-            class="grid-widget grid-widget-has-preview grid-widget-pressure cell monochromatic"
-            style="grid-area: 7 / 19 / span 4 / span 4;"
-            tabIndex="0"
-          >
-
-            <h1 class="grid-widget-title">
-              Pressure
-            </h1>
-
-            <div class="grid-widget-value">
-              1012
-              <span class="grid-widget-value-suffix">
-                hPa
-              </span>
-            </div>
-
-            <div class="grid-widget-icon">
-              <i class="bi bi-chevron-bar-down"></i>
+              <i class="bi bi-sunrise"></i>
             </div>
           </div>
     
           <div
             class="grid-widget grid-widget-has-preview grid-widget-sunset cell monochromatic"
-            style="grid-area: 7 / 11 / span 4 / span 4;"
+            style="grid-area: 7 / 3 / span 4 / span 4;"
             tabIndex="0"
           >
 
@@ -226,15 +73,113 @@
               Sunset
             </h1>
 
+            
             <div class="grid-widget-value">
-              17:28
+              17:27
               <span class="grid-widget-value-suffix">
                 
               </span>
             </div>
+    
 
             <div class="grid-widget-icon">
               <i class="bi bi-sunset"></i>
+            </div>
+          </div>
+    
+          <div
+            class="grid-widget grid-widget-has-preview grid-widget-uvi cell monochromatic"
+            style="grid-area: 3 / 7 / span 4 / span 4;"
+            tabIndex="0"
+          >
+
+            <h1 class="grid-widget-title">
+              UVI
+            </h1>
+
+            
+            <div class="grid-widget-value">
+              2.83
+              <span class="grid-widget-value-suffix">
+                °
+              </span>
+            </div>
+    
+
+            <div class="grid-widget-icon">
+              <i class="bi bi-arrow-down-right"></i>
+            </div>
+          </div>
+    
+          <div
+            class="grid-widget grid-widget-has-preview grid-widget-humidity cell monochromatic"
+            style="grid-area: 7 / 7 / span 4 / span 4;"
+            tabIndex="0"
+          >
+
+            <h1 class="grid-widget-title">
+              Humidity
+            </h1>
+
+            
+            <div class="grid-widget-value">
+              66
+              <span class="grid-widget-value-suffix">
+                %
+              </span>
+            </div>
+    
+
+            <div class="grid-widget-icon">
+              <i class="bi bi-droplet"></i>
+            </div>
+          </div>
+    
+          <div
+            class="grid-widget grid-widget-has-preview grid-widget-clouds cell monochromatic"
+            style="grid-area: 3 / 11 / span 4 / span 4;"
+            tabIndex="0"
+          >
+
+            <h1 class="grid-widget-title">
+              Clouds
+            </h1>
+
+            
+            <div class="grid-widget-value">
+              55
+              <span class="grid-widget-value-suffix">
+                %
+              </span>
+            </div>
+    
+
+            <div class="grid-widget-icon">
+              <i class="bi bi-clouds"></i>
+            </div>
+          </div>
+    
+          <div
+            class="grid-widget grid-widget-has-preview grid-widget-temp cell monochromatic"
+            style="grid-area: 7 / 11 / span 4 / span 4;"
+            tabIndex="0"
+          >
+
+            <h1 class="grid-widget-title">
+              Temperature
+            </h1>
+
+            
+            <div class="grid-widget-value">
+              31.02
+              <span class="grid-widget-value-suffix">
+                °C
+              </span>
+            </div>
+    
+
+            <div class="grid-widget-icon">
+              <i class="bi bi-thermometer-half"></i>
             </div>
           </div>
     
@@ -249,7 +194,8 @@
     </body>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
-  
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
     <script src="script.js" type="text/javascript" language="javascript"></script>
 
   </html>
