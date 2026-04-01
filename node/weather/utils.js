@@ -101,6 +101,23 @@ const WEATHER_DATA = {
             }
         }
     },
+    rain: {
+        type: 'rain',
+        metadata: {
+            title: {
+                value: 'Rain',
+                type: 'WeatherTitle'
+            },
+            icon: {
+                value: 'bootstrapCloudRain',
+                type: 'WeatherIconName'
+            },
+            measures: {
+                value: 'precipitation',
+                type: 'WeatherValueUnit'
+            }
+        }
+    },
     sunrise: {
         type: 'sunrise',
         metadata: {

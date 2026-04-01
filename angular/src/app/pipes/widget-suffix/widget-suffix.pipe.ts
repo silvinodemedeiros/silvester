@@ -22,6 +22,9 @@ export const widget_suffix = (unit: unknown): string => {
       case 'velocity':
         suffix = 'm/s';
         break;
+      case 'precipitation':
+        suffix = 'mm/h';
+        break;
       default:
         suffix = '';
         break;

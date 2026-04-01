@@ -65,7 +65,8 @@ export class HtmlGeneratorService {
     'bootstrapArrowsMove': 'arrows-move',
     'bootstrapWind': 'wind',
     'bootstrapGeo': 'geo',
-    'bootstrapClouds': 'clouds'
+    'bootstrapClouds': 'clouds',
+    'bootstrapCloudRain': 'cloud-rain'
   };
 
   constructor(

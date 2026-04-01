@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { WEATHER_DATA, MAP_DATA_1 } = require('./utils');
+const { WEATHER_DATA } = require('./utils');
 
 const lat = '-5.891076';
 const lon = '-35.228625';
@@ -11,11 +11,21 @@ function generateOrionEntity(weatherObject) {
   
   const {timezone, timezone_offset} = weatherObject;
     
-  return Object.entries(weatherObject.current).reduce((acc, [key, value]) => {
+  return Object.entries(weatherObject.current).reduce((acc, keyValueArr) => {
+
+    let [key, value] = keyValueArr;
+    
     if (key === 'weather') {
       return acc;
+    } else if (key === 'rain') {
+      value = value['1h'];
     }
     
+    // console.log('key', key);
+    // console.log('value', value);
+    // console.log('WEATHER_DATA[key]', WEATHER_DATA[key]);
+    // console.log('---');
+
     return {
       ...acc,
       [key]: {

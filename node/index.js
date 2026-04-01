@@ -18,6 +18,13 @@ app.use(bodyParser.json());
 app.get('/entities', async (req, res) => {
   try {
     const result = await orionService.getEntities();
+
+    
+
+    weatherService.getLocalWeather().then(
+      (localWeather) => orionService.generateOrionEntity(localWeather)
+    );
+
     res.status(201).json(result);
   } catch (err) {
     res.status(500).json({ error: 'Could not get entity' });
@@ -97,10 +104,6 @@ app.post('/notify', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
-
-  weatherService.getLocalWeather().then(
-    (localWeather) => orionService.generateOrionEntity(localWeather)
-  );
 
   orionService.getSubscriptions().then((result) => {
     if (result.length === 0 || !result.length) {

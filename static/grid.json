@@ -28,35 +28,6 @@
       }
     }
   },
-  "6_10": {
-    "row": 6,
-    "col": 10,
-    "item": {
-      "id": "wi_9",
-      "type": "temp",
-      "label": "Temperature",
-      "width": 4,
-      "height": 4
-    },
-    "data": {
-      "type": "temp",
-      "value": 31.02,
-      "metadata": {
-        "icon": {
-          "type": "WeatherIconName",
-          "value": "bootstrapThermometerHalf"
-        },
-        "measures": {
-          "type": "WeatherValueUnit",
-          "value": "temperature"
-        },
-        "title": {
-          "type": "WeatherTitle",
-          "value": "Temperature"
-        }
-      }
-    }
-  },
   "2_18": {
     "row": 2,
     "col": 18,
@@ -201,6 +172,35 @@
         "title": {
           "type": "MapTitle",
           "value": "Location"
+        }
+      }
+    }
+  },
+  "6_10": {
+    "row": 6,
+    "col": 10,
+    "item": {
+      "id": "wi_1",
+      "type": "rain",
+      "label": "Rain",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "rain",
+      "value": 0.43,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapCloudRain"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "precipitation"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Rain"
         }
       }
     }
