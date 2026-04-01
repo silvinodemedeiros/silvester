@@ -78,9 +78,8 @@ export class AppComponent implements OnInit, OnDestroy {
   previewMode_ = signal(false);
   darkMode_ = signal(false);
 
-  // EDIT WIDGET PROPERTIES
-  isEditingWidget = false;
-  previousWidget: GridWidget | null = null;
+  // MOVE WIDGET PROPERTIES
+  movedWidget: GridWidget | null = null;
 
   constructor(
     private menuItemService: MenuItemService,
@@ -116,36 +115,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (!previewMode) {
         this.darkMode_.set(false);
       }
-    })
-    
-    const titleSub = this.editForm.get('title')?.valueChanges.subscribe((value: string) => {
-      if (this.previousWidget?.data?.metadata?.title) {
-        this.previousWidget.data.metadata.title.value = value;
-      }
     });
-
-    const iconSub = this.editForm.get('icon')?.valueChanges.subscribe((value: string) => {
-      if (this.previousWidget?.data?.metadata?.icon) {
-        this.previousWidget.data.metadata.icon.value = value;
-      }
-    });
-
-    const measuresSub = this.editForm.get('measures')?.valueChanges.subscribe((value: string) => {
-      if (this.previousWidget?.data?.metadata?.measures) {
-        this.previousWidget.data.metadata.measures.value = value;
-      }
-    });
-
-    const weatherTypeSub = this.editForm.get('weatherType')?.valueChanges.subscribe((value: string) => {
-      if (this.previousWidget?.data.type) {
-        this.previousWidget.data.type = value;
-      }
-    });
-
-    this.subscription.add(titleSub);
-    this.subscription.add(iconSub);
-    this.subscription.add(measuresSub);
-    this.subscription.add(weatherTypeSub);
   }
 
   terminateWidgetFocus() {
@@ -170,7 +140,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isDragging = false;
     this.isDraggingFile = false;
     
-    this.deactivateWidgetEdit();
     this.previewMode_.set(false);
   }
 
@@ -257,7 +226,10 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
-  setWidgetTransfer(event: DragEvent, widget: any, moved = false) {
+  onDragStart(event: DragEvent, widget: any, moved = false): void {
+    console.log('drag start');
+    this.isDragging = true;
+    
     widget = {
       ...widget,
       moved
@@ -268,25 +240,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // if widget as moved instead of added, delete previous widget
     if (widget.moved) {
-      this.removeWidget(widget);
+      this.movedWidget = widget;
     }
     
     if (event.dataTransfer) {
       event.dataTransfer.setData('application/json', JSON.stringify(widget));
       event.dataTransfer.effectAllowed = 'copy';
-    } else {
-      localStorage.setItem('transfer-widget', JSON.stringify(widget));
     }
-  }
-
-  onDragStart(event: DragEvent, widget: any, moved = false): void {
-    this.isDragging = true;
-    this.setWidgetTransfer(event, widget, moved);
-  }
-
-  transferEmptyWidget(event: any, row: number, col: number) {
-    const emptyWidget = { ...EMPTY_WIDGET, row, col };
-    this.setWidgetTransfer(event, emptyWidget, false);
   }
 
   onDragOver(event: DragEvent, row: number, col: number): void {
@@ -309,10 +269,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
     event.preventDefault();
 
+    console.log('drop');
+
     if (!(row >= 0 && col >= 0)) {
       this.isDragging = false;
       this.previewWidget = null;
       return;
+    }
+
+    if (this.movedWidget) {
+      this.removeWidget(this.movedWidget);
     }
 
     // adds widget to grid
@@ -327,7 +293,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   importJson() {
     this.isDraggingFile = true;
-    this.isEditingWidget = false;
   }
 
   exportJson() {
@@ -395,10 +360,6 @@ export class AppComponent implements OnInit, OnDestroy {
   togglePreview() {
     const previewModeValue = this.previewMode_();
     this.previewMode_.set(!previewModeValue);
-
-    if (!previewModeValue) {
-      this.deactivateWidgetEdit();
-    }
   }
 
   toggleDarkMode() {
@@ -415,54 +376,8 @@ export class AppComponent implements OnInit, OnDestroy {
     (event.target as any)?.parentNode.setAttribute('draggable', 'false')
   }
 
-  handleCellClick(event: any, row: number, col: number) {
-    this.transferEmptyWidget(event, row, col);
-    this.onDrop(event, row, col);
-  }
-
   /*# REMOVE WIDGET #*/
   removeWidget(widget: GridWidget) {
     this.gridWidgetService.removeWidget(widget);
-  }
-
-  /*# EDIT WIDGET METHODS #*/
-  toggleWidgetEdit(widget: GridWidget) {
-    if (this.isEditingWidget) {
-      if (this.previousWidget?.item.id === widget.item.id) {
-        this.deactivateWidgetEdit();
-      } else {
-        this.previousWidget = widget;
-        this.populateWidgetEditForm(widget);
-      }
-    } else {
-      this.isEditingWidget = !this.isEditingWidget;
-  
-      if (!this.isEditingWidget) {
-        this.deactivateWidgetEdit();
-      } else {
-        this.previousWidget = widget;
-        this.populateWidgetEditForm(widget);
-      }
-    }
-  }
-
-  populateWidgetEditForm(widget: GridWidget) {
-    const title = widget.data.metadata?.title?.value;
-    const icon = widget.data.metadata?.icon?.value;
-    const measures = widget.data.metadata?.measures?.value;
-    const weatherType = widget.data.type;
-    
-    this.editForm.get('title')?.patchValue(title);
-    this.editForm.get('icon')?.patchValue(icon);
-    this.editForm.get('measures')?.patchValue(measures);
-    this.editForm.get('weatherType')?.patchValue(weatherType);
-
-    this.cd.detectChanges();
-  }
-
-  deactivateWidgetEdit() {
-    this.previousWidget = null; 
-    this.isEditingWidget = false;
-    this.editForm.reset();
   }
 }

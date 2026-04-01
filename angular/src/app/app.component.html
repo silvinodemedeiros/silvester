@@ -125,7 +125,6 @@
               (dragover)="onDragOver($event, cell.row, cell.col)"
               (dragleave)="onDragLeave()"
               (drop)="onDrop($event, cell.row, cell.col)"
-              (click)="handleCellClick($event, cell.row, cell.col)"
             ></div>
           </ng-container>
         </ng-container>
@@ -145,8 +144,7 @@
               'cell-dark': darkMode_(),
               'monochromatic': true,
               'grid-widget-map': gridWidget.data.type == 'Location',
-              'grid-widget-has-preview': previewMode_(),
-              'grid-widget-selected': previousWidget?.item?.id == gridWidget.item.id
+              'grid-widget-has-preview': previewMode_()
             }"
             [ngStyle]="{
               'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.height + '/ span ' + gridWidget.item.width
@@ -228,7 +226,7 @@
       </div>
     </main>
 
-    @if (isEditingWidget) {
+    @if (false) {
 
       <div class="edit-panel panel panel-right">
 
