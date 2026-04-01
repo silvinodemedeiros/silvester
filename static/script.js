@@ -2,12 +2,19 @@
 let darkMode = false;
 const darkModeToggle = document.getElementById("dark-mode-toggle");
 
-let mapContainer = document.querySelector('.grid-widget-location .grid-widget-map');
-let mapWidget = null;
+let mapWidget = document.querySelector('.grid-widget-location .grid-widget-map');
+let mapComponent = null;
+let mapMarker = null;
+let mapZoom = 14;
 
-if (mapContainer) {
-  mapWidget = L.map(mapContainer).setView([-5.837008, -35.203026], 14);
+if (mapWidget) {
+  mapComponent = L.map(mapWidget).setView([-5.837008, -35.203026], mapZoom);
 }
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(mapComponent);
 
 toggleDarkMode = () => {
     const layoutNode = document.querySelector('.layout');
@@ -52,14 +59,28 @@ widget_value = (widget) => {
 
   switch (valueType) {
     case 'time':
-      resultValue = new Date(widget.value, 'HH:mm');
+      
+      const unixTimeString = widget.value;
+      const currentTime = Temporal.Instant.fromEpochMilliseconds(Number(unixTimeString) * 1000);
+      const localTimezone = Temporal.Now.timeZoneId();
+      const zonedTime = currentTime.toZonedDateTimeISO(localTimezone);
+      const formatter = new Intl.DateTimeFormat('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+
+      resultValue = formatter.format(zonedTime.toInstant());
       break;
+
     case "distance":
       resultValue = widget.value / 1000;
       break;
+
     case "timezoneOffset":
       resultValue = formatOffset_function(widget.value / 3600);
       break;
+      
     default:
       resultValue = widget.value;
       break;
@@ -107,6 +128,46 @@ widget_suffix = (unit) => {
   return suffix;
 };
 
+// # ADDS FOCUS AND UNFOCUS EVENTS TO PROTOTYPED WIDGETS
+[...document.querySelectorAll(".grid-widget")].map(widgetNode => {
+    widgetNode.addEventListener("focus", () => {
+        widgetNode.classList.add('magnified');
+    });
+
+    widgetNode.addEventListener("blur", () => {
+        widgetNode.classList.remove('magnified');
+    });
+})
+
+// # KEYPRESS HANDLE - 
+document.addEventListener("keydown", (event) => {
+    
+    if (event.key === "Tab") {
+      const focusableElements = document.querySelectorAll('[tabindex="0"]');
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+      
+      if (event.shiftKey) { // SHIFT + TAB
+        if (document.activeElement === firstElement) {
+          lastElement.focus();
+          event.preventDefault();
+        }
+      } else { // TAB
+        if (document.activeElement === lastElement) {
+          firstElement.focus();
+          event.preventDefault();
+        }
+      }
+    } else if (event.key === "Enter") { // ENTER
+      const activeElement = document.activeElement;
+      if (activeElement === darkModeToggle) {
+          toggleDarkMode();
+      }
+    }
+});
+
+darkModeToggle.addEventListener("mousedown", () => toggleDarkMode());
+
 const widgetSource = new EventSource("http://localhost:3000/events");
 
 // # SUBSCRIBES TO NOTIFICATIONS FROM SERVER
@@ -122,8 +183,22 @@ widgetSource.onmessage = (event) => {
 
       const widgetValueNode = [...widgetNode.querySelectorAll(".grid-widget-value")][0];
 
-      if (gridWidget.data.type === 'location') {
+      if (gridWidget.type === 'location') {
 
+        if (mapMarker) {
+          mapMarker.remove();
+          mapMarker = null;
+        }
+        
+        const {lat, lng} = gridWidget.value;
+        const latLng = [lat, lng];
+
+        // creates and binds popup
+        mapMarker = L.marker(latLng).addTo(mapComponent);
+        mapMarker.bindPopup('I was just created!');
+
+        // updates map center
+        mapComponent.setView([lat, lng], mapZoom);
       } else {
         widgetValueNode.textContent = widget_value(gridWidget);
   
@@ -135,49 +210,3 @@ widgetSource.onmessage = (event) => {
     }
   });
 };
-
-// # ADDS FOCUS AND UNFOCUS EVENTS TO PROTOTYPED WIDGETS
-[...document.querySelectorAll(".grid-widget")].map(widgetNode => {
-    widgetNode.addEventListener("focus", () => {
-        widgetNode.classList.add('magnified');
-    });
-
-    widgetNode.addEventListener("blur", () => {
-        widgetNode.classList.remove('magnified');
-    });
-})
-
-// KEYPRESS HANDLE - 
-document.addEventListener("keydown", (event) => {
-    
-    if (event.key === "Tab") {
-        
-      const focusableElements = document.querySelectorAll('[tabindex="0"]');
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-      
-      if (event.shiftKey) { // Shift + Tab
-        if (document.activeElement === firstElement) {
-          lastElement.focus();
-          event.preventDefault();
-        }
-      } else { // Tab
-        if (document.activeElement === lastElement) {
-          firstElement.focus();
-          event.preventDefault();
-        }
-      }
-    } else if (event.key === "Enter") {
-      const activeElement = document.activeElement;
-      if (activeElement === darkModeToggle) {
-          toggleDarkMode();
-      }
-    }
-});
-
-darkModeToggle.addEventListener("mousedown", () => toggleDarkMode());
-
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(mapWidget);

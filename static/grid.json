@@ -1,152 +1,4 @@
 {
-  "2_14": {
-    "row": 2,
-    "col": 14,
-    "item": {
-      "id": "wi_1",
-      "type": "location",
-      "label": "Location",
-      "width": 8,
-      "height": 8
-    },
-    "data": {
-      "type": "location",
-      "value": {
-        "lat": -5.837006,
-        "lng": -35.203026
-      },
-      "metadata": {
-        "category": {
-          "type": "Text",
-          "value": "capital"
-        },
-        "icon": {
-          "type": "MapIconName",
-          "value": "bootstrapGeo"
-        },
-        "title": {
-          "type": "MapTitle",
-          "value": "Location"
-        }
-      }
-    }
-  },
-  "2_2": {
-    "row": 2,
-    "col": 2,
-    "item": {
-      "id": "wi_3",
-      "type": "sunrise",
-      "label": "Sunrise",
-      "width": 4,
-      "height": 4
-    },
-    "data": {
-      "type": "sunrise",
-      "value": 1774859009,
-      "metadata": {
-        "icon": {
-          "type": "WeatherIconName",
-          "value": "bootstrapSunrise"
-        },
-        "measures": {
-          "type": "WeatherValueUnit",
-          "value": "time"
-        },
-        "title": {
-          "type": "WeatherTitle",
-          "value": "Sunrise"
-        }
-      }
-    }
-  },
-  "6_2": {
-    "row": 6,
-    "col": 2,
-    "item": {
-      "id": "wi_4",
-      "type": "sunset",
-      "label": "Sunset",
-      "width": 4,
-      "height": 4
-    },
-    "data": {
-      "type": "sunset",
-      "value": 1774902423,
-      "metadata": {
-        "icon": {
-          "type": "WeatherIconName",
-          "value": "bootstrapSunset"
-        },
-        "measures": {
-          "type": "WeatherValueUnit",
-          "value": "time"
-        },
-        "title": {
-          "type": "WeatherTitle",
-          "value": "Sunset"
-        }
-      }
-    }
-  },
-  "2_6": {
-    "row": 2,
-    "col": 6,
-    "item": {
-      "id": "wi_6",
-      "type": "uvi",
-      "label": "UVI",
-      "width": 4,
-      "height": 4
-    },
-    "data": {
-      "type": "uvi",
-      "value": 2.83,
-      "metadata": {
-        "icon": {
-          "type": "WeatherIconName",
-          "value": "bootstrapArrowDownRight"
-        },
-        "measures": {
-          "type": "WeatherValueUnit",
-          "value": "angle"
-        },
-        "title": {
-          "type": "WeatherTitle",
-          "value": "UVI"
-        }
-      }
-    }
-  },
-  "6_6": {
-    "row": 6,
-    "col": 6,
-    "item": {
-      "id": "wi_7",
-      "type": "humidity",
-      "label": "Humidity",
-      "width": 4,
-      "height": 4
-    },
-    "data": {
-      "type": "humidity",
-      "value": 66,
-      "metadata": {
-        "icon": {
-          "type": "WeatherIconName",
-          "value": "bootstrapDroplet"
-        },
-        "measures": {
-          "type": "WeatherValueUnit",
-          "value": "percentage"
-        },
-        "title": {
-          "type": "WeatherTitle",
-          "value": "Humidity"
-        }
-      }
-    }
-  },
   "2_10": {
     "row": 2,
     "col": 10,
@@ -201,6 +53,154 @@
         "title": {
           "type": "WeatherTitle",
           "value": "Temperature"
+        }
+      }
+    }
+  },
+  "2_18": {
+    "row": 2,
+    "col": 18,
+    "item": {
+      "id": "wi_6",
+      "type": "uvi",
+      "label": "UVI",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "uvi",
+      "value": 2.83,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapArrowDownRight"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "angle"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "UVI"
+        }
+      }
+    }
+  },
+  "2_14": {
+    "row": 2,
+    "col": 14,
+    "item": {
+      "id": "wi_3",
+      "type": "sunrise",
+      "label": "Sunrise",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "sunrise",
+      "value": 1774859009,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapSunrise"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "time"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Sunrise"
+        }
+      }
+    }
+  },
+  "6_18": {
+    "row": 6,
+    "col": 18,
+    "item": {
+      "id": "wi_7",
+      "type": "humidity",
+      "label": "Humidity",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "humidity",
+      "value": 66,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapDroplet"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "percentage"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Humidity"
+        }
+      }
+    }
+  },
+  "6_14": {
+    "row": 6,
+    "col": 14,
+    "item": {
+      "id": "wi_4",
+      "type": "sunset",
+      "label": "Sunset",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "sunset",
+      "value": 1774902423,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapSunset"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "time"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Sunset"
+        }
+      }
+    }
+  },
+  "2_2": {
+    "row": 2,
+    "col": 2,
+    "item": {
+      "id": "wi_1",
+      "type": "location",
+      "label": "Location",
+      "width": 8,
+      "height": 8
+    },
+    "data": {
+      "type": "location",
+      "value": {
+        "lat": -5.837006,
+        "lng": -35.203026
+      },
+      "metadata": {
+        "category": {
+          "type": "Text",
+          "value": "capital"
+        },
+        "icon": {
+          "type": "MapIconName",
+          "value": "bootstrapGeo"
+        },
+        "title": {
+          "type": "MapTitle",
+          "value": "Location"
         }
       }
     }
