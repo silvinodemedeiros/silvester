@@ -131,6 +131,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @HostListener('document:keydown.escape')
   onEscKey() {
+    this.handleOnEscapeKey(null);
+  }
+
+  handleOnEscapeKey(escParams: {skipImportLayer: boolean} | null) {
 
     if (this.focusedWidgetElem) {
       this.terminateWidgetFocus();
@@ -138,7 +142,12 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     
     this.isDragging = false;
-    this.isDraggingFile = false;
+
+    if (!escParams?.skipImportLayer) {
+      this.isDraggingFile = false;
+    }
+
+    this.onDrop(null, -1, -1);
     
     this.previewMode_.set(false);
   }
@@ -227,7 +236,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onDragStart(event: DragEvent, widget: any, moved = false): void {
-    console.log('drag start');
     this.isDragging = true;
     
     widget = {
@@ -265,11 +273,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDrop(event: DragEvent, row: number, col: number): void {
-
-    event.preventDefault();
-
-    console.log('drop');
+  onDrop(event: DragEvent | null, row: number, col: number): void {
 
     if (!(row >= 0 && col >= 0)) {
       this.isDragging = false;
@@ -282,7 +286,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     // adds widget to grid
-    const addedWidget = this.gridWidgetService.addGridWidget(event, row, col);
+    if (event) {
+      this.gridWidgetService.addGridWidget(event, row, col);
+    }
 
     // cleans up after drop
     this.previewWidget = null;
@@ -333,6 +339,8 @@ export class AppComponent implements OnInit, OnDestroy {
   onUploadDragLeave(): void {}
 
   onUploadDrop(event: any): void {
+    event.preventDefault();
+    
     this.isDraggingFile = false;
 
     const file = event.dataTransfer?.files?.[0];
@@ -367,7 +375,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.darkMode_.set(!darkModeValue);
   }
 
-  /*# DRAG HANDLE SHENANIGANS #*/
+  /*# DRAG HANDLE SHENANIGANS # */
+
+  handleOnMouseMove() {
+    this.handleOnEscapeKey({
+      skipImportLayer: true
+    });
+  }
 
   handleOnMouseDown(event: MouseEvent) {
     (event.target as any)?.parentNode.setAttribute('draggable', 'true')

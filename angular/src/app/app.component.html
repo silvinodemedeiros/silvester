@@ -7,6 +7,7 @@
   }"
   (dragover)="onDragOver($event, -1, -1)"
   (drop)="onDrop($event, -1, -1)"
+  (mousemove)="handleOnMouseMove()"
 >
     <header
       *ngIf="!previewMode_()"
