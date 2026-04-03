@@ -134,7 +134,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.handleOnEscapeKey(null);
   }
 
-  handleOnEscapeKey(escParams: {skipImportLayer: boolean} | null) {
+  handleOnEscapeKey(escParams: {
+    skipImportLayer: boolean,
+    skipPreviewLayer: boolean
+  } | null) {
 
     if (this.focusedWidgetElem) {
       this.terminateWidgetFocus();
@@ -148,8 +151,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     this.onDrop(null, -1, -1);
+
+    if (!escParams?.skipPreviewLayer) {
+      this.previewMode_.set(false);
+    }
     
-    this.previewMode_.set(false);
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -379,7 +385,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   handleOnMouseMove() {
     this.handleOnEscapeKey({
-      skipImportLayer: true
+      skipImportLayer: true,
+      skipPreviewLayer: true
     });
   }
 

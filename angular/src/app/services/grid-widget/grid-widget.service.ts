@@ -81,13 +81,9 @@ export class GridWidgetService {
   removeWidget(widget: GridWidget | null) {
 
     this.gridWidgets_.update((gridWidgetSource: GridWidgetSource) => {
-      return Object.entries(gridWidgetSource).reduce((acc, entry) => {
-      // return Object.entries(gridWidgetSource).reduce((acc, [widgetRowCol, gridWidget]) => {
+      return Object.entries(gridWidgetSource).reduce((acc, gridWidgetEntry) => {
+        const [widgetRowCol, gridWidget] = gridWidgetEntry;
 
-        // console.log(entry, widget);
-
-        const [widgetRowCol, gridWidget] = entry;
-        
         if (widget?.item.id === gridWidget.item.id) {
           return acc;
         }
