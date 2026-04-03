@@ -9,12 +9,13 @@ let mapZoom = 14;
 
 if (mapWidget) {
   mapComponent = L.map(mapWidget).setView([-5.837008, -35.203026], mapZoom);
+  
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(mapComponent);
 }
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(mapComponent);
 
 toggleDarkMode = () => {
     const layoutNode = document.querySelector('.layout');
