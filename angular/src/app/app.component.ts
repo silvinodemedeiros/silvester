@@ -54,8 +54,8 @@ export class AppComponent implements OnInit, OnDestroy {
   cells: Cell[] = [];
   macroCells: Cell[] = [];
 
-  _gridWidgets = computed(() => this.gridWidgetService._gridWidgets());
-  gridWidgets = computed(() => Object.values(this._gridWidgets()));
+  gridWidgets_ = computed(() => this.gridWidgetService.gridWidgets_());
+  gridWidgets = computed(() => Object.values(this.gridWidgets_()));
   isGridEmpty_ = computed(() => Array.isArray(this.gridWidgets()) && this.gridWidgets().length === 0);
 
   isDragging = false;
@@ -308,7 +308,7 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
     
-    const json = JSON.stringify(this._gridWidgets(), null, 2); // pretty-print with 2-space indent
+    const json = JSON.stringify(this.gridWidgets_(), null, 2); // pretty-print with 2-space indent
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
 

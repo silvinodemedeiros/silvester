@@ -1,4 +1,4 @@
-import { effect, Injectable, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GridWidget, GridWidgetSource } from '../../types';
 import { GRID_TEMPLATE } from './grid-widget.model';
@@ -8,28 +8,41 @@ import { GRID_TEMPLATE } from './grid-widget.model';
 })
 export class GridWidgetService {
 
-  _gridWidgets = signal<GridWidgetSource>({});
+  gridWidgets_ = signal<GridWidgetSource>({});
   update_ = signal(false);
   
   sub = new Subscription();
   apiUrl = 'http://localhost:3000';
   eventsUrl = this.apiUrl + '/events';
 
-  widgetIdCounter = 1;
+  widgetIdCounter_ = computed(() => {
+    const gridWidgets = this.gridWidgets_();
+
+    let highestId = Object.values(gridWidgets).reduce((acc, widget) => {
+      const widgetIdStr = widget.item.id.split('_')[1];
+      const widgetId = parseInt(widgetIdStr, 10);
+      return widgetId <= acc ? acc : widgetId;
+    }, 1);
+
+    highestId += 1;
+
+    return highestId;
+  });
+
   widgetSource_ = signal<any>(null);
 
   constructor() {
     effect(() => {
-      // console.log('grid widget svc log', this._gridWidgets());
+      // console.log('grid widget log', this.gridWidgets_());
     });
   }
 
   loadGridTemplate() {
-    this._gridWidgets.set(GRID_TEMPLATE);
+    this.gridWidgets_.set(GRID_TEMPLATE);
   }
 
   setGridWidgets(data: any) {
-    this._gridWidgets.set({...data});
+    this.gridWidgets_.set({...data});
   }
 
   addGridWidget(event: DragEvent, row: number, col: number) {
@@ -45,33 +58,36 @@ export class GridWidgetService {
 
     if (!widgetJsonStr) return;
 
-    // populates _gridWidgets array
+    // populates gridWidgets_ array
     const widget = JSON.parse(widgetJsonStr);
     gridWidgets = {
-      ...this._gridWidgets(),
+      ...this.gridWidgets_(),
       [`${row}_${col}`]: {
         row,
         col,
         item: {
           ...widget.item,
-          id: widget.moved ? widget.item.id : 'wi_' + this.widgetIdCounter
+          id: widget.moved ? widget.item.id : 'wi_' + this.widgetIdCounter_()
         },
         data: {...widget.data}
       }
     };
 
-    this._gridWidgets.set(gridWidgets);
-
-    // increments widget counter
-    this.widgetIdCounter += 1;
+    this.gridWidgets_.set(gridWidgets);
 
     return gridWidgets[`${row}${col}`];
   }
 
   removeWidget(widget: GridWidget | null) {
 
-    this._gridWidgets.update((gridWidgetSource: GridWidgetSource) => {
-      return Object.entries(gridWidgetSource).reduce((acc, [widgetRowCol, gridWidget]) => {
+    this.gridWidgets_.update((gridWidgetSource: GridWidgetSource) => {
+      return Object.entries(gridWidgetSource).reduce((acc, entry) => {
+      // return Object.entries(gridWidgetSource).reduce((acc, [widgetRowCol, gridWidget]) => {
+
+        // console.log(entry, widget);
+
+        const [widgetRowCol, gridWidget] = entry;
+        
         if (widget?.item.id === gridWidget.item.id) {
           return acc;
         }
@@ -86,7 +102,7 @@ export class GridWidgetService {
 
   updateGridWidgets(widgetSourceObj: any) {
 
-    this._gridWidgets.update((gridWidgetSource: GridWidgetSource) => {
+    this.gridWidgets_.update((gridWidgetSource: GridWidgetSource) => {
       return Object.entries(gridWidgetSource).reduce((acc, [widgetRowCol, gridWidget]) => {
         const widgetType = gridWidget.data.type.toLowerCase();
 
