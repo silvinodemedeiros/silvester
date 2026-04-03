@@ -7,15 +7,36 @@ let mapComponent = null;
 let mapMarker = null;
 let mapZoom = 14;
 
+function addPoint(latLngArg) {
+  if (mapMarker) {
+    mapMarker.remove();
+    mapMarker = null;
+  }
+  
+  const {lat, lng} = latLngArg;
+  const latLng = [lat, lng];
+
+  // creates and binds popup
+  mapMarker = L.marker(latLng).addTo(mapComponent);
+  mapMarker.bindPopup('I was just created!');
+
+  // updates map center
+  mapComponent.setView([lat, lng], mapZoom);
+}
+
 if (mapWidget) {
   mapComponent = L.map(mapWidget).setView([-5.837008, -35.203026], mapZoom);
-  
+
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(mapComponent);
-}
 
+  addPoint({
+    lat: mapWidget.dataset.lat,
+    lng: mapWidget.dataset.lng
+  });
+}
 
 toggleDarkMode = () => {
     const layoutNode = document.querySelector('.layout');
@@ -185,21 +206,7 @@ widgetSource.onmessage = (event) => {
       const widgetValueNode = [...widgetNode.querySelectorAll(".grid-widget-value")][0];
 
       if (gridWidget.type === 'location') {
-
-        if (mapMarker) {
-          mapMarker.remove();
-          mapMarker = null;
-        }
-        
-        const {lat, lng} = gridWidget.value;
-        const latLng = [lat, lng];
-
-        // creates and binds popup
-        mapMarker = L.marker(latLng).addTo(mapComponent);
-        mapMarker.bindPopup('I was just created!');
-
-        // updates map center
-        mapComponent.setView([lat, lng], mapZoom);
+        addPoint(gridWidget.value);
       } else {
         widgetValueNode.textContent = widget_value(gridWidget);
   

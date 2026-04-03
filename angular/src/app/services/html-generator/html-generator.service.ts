@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GridWidget } from '../../types';
+import { GridWidget, LocationValue } from '../../types';
 import { DatePipe } from '@angular/common';
 import { widget_value } from '../../pipes/widget-value/widget-value.pipe';
 import { widget_suffix } from '../../pipes/widget-suffix/widget-suffix.pipe';
@@ -82,8 +82,13 @@ export class HtmlGeneratorService {
 
     if (gridWidget.data.type === 'location') {
       return `
-            <div class="grid-widget-map" style="width: 300px; height: 200px" inert>
-            </div>
+            <div
+              inert
+              class="grid-widget-map"
+              style="width: 300px; height: 200px;"
+              data-lat="${(gridWidget.data.value as LocationValue).lat}"
+              data-lng="${(gridWidget.data.value as LocationValue).lng}"
+            ></div>
       `;
     }
 
