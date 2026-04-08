@@ -6,7 +6,7 @@
     "start": "ng serve --no-hmr",
     "build": "ng build",
     "docker:start": "docker compose up -d",
-    "docker:build": "docker buildx build -t silvinodemedeiros/silvester-angular:latest --push .",
+    "docker:update": "docker buildx build -t silvinodemedeiros/silvester-angular:latest --push .",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

@@ -68,7 +68,6 @@ export class AppComponent implements OnInit, OnDestroy {
   iconList = ICON_LIST;
   weatherList = WEATHER_INFO_LIST;
   measurementsList = MEASUREMENTS_LIST;
-
   currentWidgetSource: any;
 
   // MAGNIFICATION PROPERTIES

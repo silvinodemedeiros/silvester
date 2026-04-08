@@ -102,7 +102,7 @@ export class GridWidgetService {
       return Object.entries(gridWidgetSource).reduce((acc, [widgetRowCol, gridWidget]) => {
         const widgetType = gridWidget.data.type.toLowerCase();
 
-        if (widgetType === gridWidget.data.type) {
+        if (widgetType === gridWidget.data.type && widgetSourceObj[widgetType]) {
           return {
             ...acc,
             [widgetRowCol]: {

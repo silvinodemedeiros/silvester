@@ -5,13 +5,11 @@ const bodyParser = require('body-parser');
 const orionService = require('./orion.service');
 const weatherService = require('./weather/weather.service');
 const { SUBSCRIPTION_TEMPLATE } = require('./models/subscription');
-const { Subject } = require('rxjs');
 
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
-// app.use(express.json());
 app.use(bodyParser.json());
 
 // get all orion entities
