@@ -3,6 +3,7 @@ import { GridWidget, LocationValue } from '../../types';
 import { DatePipe } from '@angular/common';
 import { widget_value } from '../../pipes/widget-value/widget-value.pipe';
 import { widget_suffix } from '../../pipes/widget-suffix/widget-suffix.pipe';
+import { SILVESTER_SCRIPT, SILVESTER_STYLES } from './html-generator.models';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,11 @@ export class HtmlGeneratorService {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="styles.css">
+      
+      <style>
+        ${SILVESTER_STYLES}
+      </style>
+
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
@@ -45,7 +50,9 @@ export class HtmlGeneratorService {
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src='https://unpkg.com/wicg-inert@latest/dist/inert.min.js'></script>
 
-    <script src="script.js" type="text/javascript" language="javascript"></script>
+    <script type="text/javascript" language="javascript">
+      ${SILVESTER_SCRIPT}
+    </script>
 
   </html>`;
 
