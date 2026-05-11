@@ -297,6 +297,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // cleans up after drop
     this.previewWidget = null;
+    this.movedWidget = null;
   }
 
   onDragLeave(): void {
