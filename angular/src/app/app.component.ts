@@ -51,6 +51,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   cols = 24;
   rows = 12;
+
   cells: Cell[] = [];
   macroCells: Cell[] = [];
 
@@ -240,7 +241,7 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
-  onDragStart(event: DragEvent, widget: any, moved = false): void {
+  onDragStart(event: DragEvent, widget: any, moved = false, element: any = null): void {
     this.isDragging = true;
     
     widget = {
@@ -255,6 +256,8 @@ export class AppComponent implements OnInit, OnDestroy {
     if (widget.moved) {
       this.movedWidget = widget;
     }
+
+    
     
     if (event.dataTransfer) {
       event.dataTransfer.setData('application/json', JSON.stringify(widget));
@@ -263,17 +266,23 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onDragOver(event: DragEvent, row: number, col: number): void {
+
+    if (!(row >= 0 && col >= 0)) {
+      return;
+    }
+
     event.preventDefault();
 
+    const hasChangedCells = (this.previewWidget?.row != row || this.previewWidget?.col != col);
+    const isCellValid_w = col + this.previewWidget.item.width <= this.cols;
+    const isCellValid_h = row + this.previewWidget.item.height <= this.rows;
+
     // updates drop preview (with (-1, -1) as invalid)
-    if (
-      row != -1 && col != -1 && 
-      (this.previewWidget?.row != row || this.previewWidget?.col != col)
-    ) {
+    if (row != -1 && col != -1 && hasChangedCells) {
       this.previewWidget = {
         ...this.previewWidget,
-        row,
-        col
+        row: isCellValid_h ? row : this.previewWidget.row,
+        col: isCellValid_w ? col : this.previewWidget.col
       };
     }
   }
@@ -286,13 +295,16 @@ export class AppComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const previewRow = this.previewWidget.row;
+    const previewCol = this.previewWidget.col;
+    
     if (this.movedWidget) {
       this.removeWidget(this.movedWidget);
     }
 
     // adds widget to grid
     if (event) {
-      this.gridWidgetService.addGridWidget(event, row, col);
+      this.gridWidgetService.addGridWidget(event, previewRow, previewCol);
     }
 
     // cleans up after drop
@@ -391,10 +403,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   handleOnMouseDown(event: MouseEvent) {
-    (event.target as any)?.parentNode.setAttribute('draggable', 'true')
+    const target = event.target as any;
+    target.parentNode.setAttribute('draggable', 'true');
   }
+
   handleOnMouseUp(event: MouseEvent) {
-    (event.target as any)?.parentNode.setAttribute('draggable', 'false')
+    const target = event.target as any;
+    target.parentNode.setAttribute('draggable', 'true');
   }
 
   /*# REMOVE WIDGET #*/

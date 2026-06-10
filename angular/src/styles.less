@@ -476,37 +476,44 @@ body, html {
   filter: grayscale(100%);
 }
 
-/*# WIDGET DRAG HANDLE #*/
-.drag-handle {
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    cursor: grab;
-    border: 2px solid transparent;
+/*# WIDGET HANDLES #*/
 
-    &:active {
-        cursor: grabbing;
-    }
-}
-
-.delete-handle {
+.grid-widget-handle {
     position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 2rem;
-    height: 2rem;
     display: flex;
-    cursor: pointer;
     align-items: center;
     justify-content: center;
+    width: 2rem;
+    height: 2rem;
     background: rgba(100, 100, 100, 0.05);
 
     &:hover {
         background: rgba(100, 100, 100, 0.2);
     }
+
+    &.drag-handle {
+        top: 0;
+        left: 0;
+        cursor: grab;
+
+        &:active {
+            cursor: grabbing;
+        }
+
+        ng-icon {
+            pointer-events: none;
+        }
+    }
+
+    &.delete-handle {
+        bottom: 0;
+        right: 0;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    
 }
 
 .grid-widget-map-wrapper {

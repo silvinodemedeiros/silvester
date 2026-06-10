@@ -102,6 +102,8 @@
         'grid-preview': previewMode_()
       }">
 
+      
+        <!--# MACRO CELLS LAYER #-->
         <div class="grid-structure grid-structure-macro">
           <ng-container *ngIf="!previewMode_()">
             <ng-container *ngFor="let cell of macroCells">
@@ -139,6 +141,7 @@
         }">
           <div
             *ngFor="let gridWidget of gridWidgets()"
+            #widgetElement
             [ngClass]="{
               'grid-widget': true,
               'cell': true,
@@ -150,7 +153,7 @@
             [ngStyle]="{
               'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.height + '/ span ' + gridWidget.item.width
             }"
-            (dragstart)="onDragStart($event, gridWidget, true)"
+            (dragstart)="onDragStart($event, gridWidget, true, widgetElement)"
             [tabIndex]="previewMode_() ? 0 : -1"
             (focus)="onWidgetFocus($event)"
             (blur)="onWidgetBlur($event)"
@@ -194,15 +197,19 @@
             <div
               *ngIf="!previewMode_()"
               [ngClass]="{
+                'grid-widget-handle': true,
                 'drag-handle': true
               }"
               (mousedown)="handleOnMouseDown($event)"
               (mouseup)="handleOnMouseUp($event)"
-            ></div>
+            >
+              <ng-icon [name]="'bootstrapArrowsMove'"></ng-icon>
+            </div>
             
             <div
               *ngIf="!previewMode_()"
               [ngClass]="{
+                'grid-widget-handle': true,
                 'delete-handle': true
               }"
               (mousedown)="removeWidget(gridWidget)"
