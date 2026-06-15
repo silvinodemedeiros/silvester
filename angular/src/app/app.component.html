@@ -140,8 +140,8 @@
             #widgetElement
             [ngClass]="{
               'grid-widget': true,
-              'cell': true,
-              'cell-dark': darkMode_(),
+              'cell': previewMode_(),
+              'cell-dark': previewMode_() && darkMode_(),
               'monochromatic': true,
               'grid-widget-map': gridWidget.data.type == 'Location',
               'grid-widget-has-preview': previewMode_()
