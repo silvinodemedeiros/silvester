@@ -6,6 +6,7 @@
     'layout-dark': darkMode_()
   }"
   (dragover)="onDragOver($event, -1, -1)"
+  (dragend)="handleOnEscapeKey(null)"
 >
     <header
       *ngIf="!previewMode_()"
@@ -226,13 +227,10 @@
           (dragleave)="onUploadDragLeave()"
           (drop)="onUploadDrop($event)"
         >
-          
           <ng-icon class="i-icon" name="bootstrapXCircle" (mousedown)="closeImportJson()"></ng-icon>
           <h1>Drop your JSON file here</h1>
         </div>
       </div>
-
-      
 
       @if (export_()) {
 
