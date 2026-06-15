@@ -6,7 +6,7 @@
     'layout-dark': darkMode_()
   }"
   (dragover)="onDragOver($event, -1, -1)"
-  (dragend)="handleOnEscapeKey(null)"
+  (dragend)="onDrop(null, -1, -1)"
 >
     <header
       *ngIf="!previewMode_()"
@@ -21,9 +21,9 @@
         role="button"
         class="menu-item-button menu-item-button-header"
         (click)="togglePreview()"
-        [ngClass]="{'inactive': isDraggingFile || gridWidgets().length === 0}"
+        [ngClass]="{'inactive': isUploaderActive || gridWidgets().length === 0}"
       >
-        <ng-icon name="bootstrapEyeFill"></ng-icon>
+        <ng-icon name="bootstrapEye"></ng-icon>
         Preview
       </div>
 
@@ -118,7 +118,7 @@
             <div
               [ngClass]="{
                 'cell': true,
-                'has-widget-preview': previewWidget && hasPreview(cell.row, cell.col),
+                'has-widget-preview': dropPreview && hasDropPreview(cell.row, cell.col),
                 'has-grid-preview': previewMode_()
               }"
               (dragover)="onDragOver($event, cell.row, cell.col)"
@@ -221,14 +221,16 @@
 
         <!--# UPLOADER LAYER #-->
         <div
-          *ngIf="isDraggingFile"
+          *ngIf="isUploaderActive"
           class="uploader-wrapper"
           (dragover)="onUploadDragOver($event)"
           (dragleave)="onUploadDragLeave()"
           (drop)="onUploadDrop($event)"
+          (click)="fileInput.click()"
         >
           <ng-icon class="i-icon" name="bootstrapXCircle" (mousedown)="closeImportJson()"></ng-icon>
-          <h1>Drop your JSON file here</h1>
+          <h1>Drop your JSON file here or <span>click to upload</span></h1>
+          <input #fileInput (change)="onUploadClick($event)" type="file" id="fileInput" style="display: none;">
         </div>
       </div>
 
@@ -257,7 +259,11 @@
                     <p>Exports dashboard to a functional web project contained in a single <i>index.html</i> file.</p>
                     <div
                       class="menu-item-button menu-item-button-header"
-                      (click)="exportHtml()">Download <i>html</i> File</div>
+                      (click)="exportHtml()"
+                    >
+                      <ng-icon name="bootstrapDownload"></ng-icon>
+                      Download <i>html</i> File
+                    </div>
                 </div>
                 <div class="export-modes-item">
                     <ng-icon name="lucideFileJson"></ng-icon>
@@ -265,7 +271,11 @@
                     <p>Export grid structure to a JSON file that can be imported later into the grid.</p>
                     <div
                       class="menu-item-button menu-item-button-header"
-                      (click)="exportJson()">Download <i>JSON</i> File</div>
+                      (click)="exportJson()"
+                    >
+                      <ng-icon name="bootstrapDownload"></ng-icon>
+                      Download <i>JSON</i> File
+                    </div>
                 </div>
               </div>
             
@@ -294,4 +304,12 @@
 </div>
 
 <ng-icon 
-  *ngIf="previewMode_()" [title]="'Close Preview'" name="bootstrapXCircle" class="i-icon close-preview-icon" (click)="closePreview()"></ng-icon>
+  *ngIf="previewMode_()" 
+  [title]="'Close Preview'" 
+  name="bootstrapXCircle" 
+  class="i-icon close-preview-icon" 
+  [ngClass]="{
+    'high-contrast': darkMode_()
+  }" 
+  (click)="closePreview()"
+></ng-icon>

@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, computed, effect, HostListener, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, effect, ElementRef, HostListener, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
@@ -66,8 +66,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isGridEmpty_ = computed(() => Array.isArray(this.gridWidgets()) && this.gridWidgets().length === 0);
 
   isDragging = false;
-  isDraggingFile = false;
-  previewWidget: any = null;
+  dropPreview: any = null;
 
   subscription = new Subscription();
   exportForm: FormGroup;
@@ -89,6 +88,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // EXPORT
   export_ = signal(false);
+
+  // FILE IMPORTS
+  isUploaderActive = false;
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private menuItemService: MenuItemService,
@@ -162,7 +165,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isDragging = false;
 
     if (!escParams?.skipImportLayer) {
-      this.isDraggingFile = false;
+      this.isUploaderActive = false;
     }
 
     this.onDrop(null, -1, -1);
@@ -247,9 +250,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.cd.detectChanges();
   }
 
-  hasPreview(cellRow: number, cellCol: number): boolean {
-    const {width, height} = this.previewWidget.item;
-    const {row, col} = this.previewWidget;
+  hasDropPreview(cellRow: number, cellCol: number): boolean {
+    const {width, height} = this.dropPreview.item;
+    const {row, col} = this.dropPreview;
 
     return (
       cellRow >= row && cellRow < row + height &&
@@ -266,7 +269,7 @@ export class AppComponent implements OnInit, OnDestroy {
     };
 
     // populates preview widget
-    this.previewWidget = {...widget};
+    this.dropPreview = {...widget};
 
     // if widget as moved instead of added, delete previous widget
     if (widget.moved) {
@@ -289,16 +292,16 @@ export class AppComponent implements OnInit, OnDestroy {
 
     event.preventDefault();
 
-    const hasChangedCells = (this.previewWidget?.row != row || this.previewWidget?.col != col);
-    const isCellValid_w = col + this.previewWidget.item.width <= this.cols;
-    const isCellValid_h = row + this.previewWidget.item.height <= this.rows;
+    const hasChangedCells = (this.dropPreview?.row != row || this.dropPreview?.col != col);
+    const isCellValid_w = col + this.dropPreview.item.width <= this.cols;
+    const isCellValid_h = row + this.dropPreview.item.height <= this.rows;
 
     // updates drop preview (with (-1, -1) as invalid)
     if (row != -1 && col != -1 && hasChangedCells) {
-      this.previewWidget = {
-        ...this.previewWidget,
-        row: isCellValid_h ? row : this.previewWidget.row,
-        col: isCellValid_w ? col : this.previewWidget.col
+      this.dropPreview = {
+        ...this.dropPreview,
+        row: isCellValid_h ? row : this.dropPreview.row,
+        col: isCellValid_w ? col : this.dropPreview.col
       };
     }
   }
@@ -307,12 +310,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
     if (row == -1 || col == -1) {
       this.isDragging = false;
-      this.previewWidget = null;
+      this.dropPreview = null;
       return;
     }
 
-    const previewRow = this.previewWidget.row;
-    const previewCol = this.previewWidget.col;
+    const previewRow = this.dropPreview.row;
+    const previewCol = this.dropPreview.col;
     
     if (this.movedWidget) {
       this.removeWidget(this.movedWidget);
@@ -324,7 +327,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     // cleans up after drop
-    this.previewWidget = null;
+    this.dropPreview = null;
     this.movedWidget = null;
   }
 
@@ -332,11 +335,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   importJson() {
-    this.isDraggingFile = true;
+    this.isUploaderActive = true;
   }
 
   closeImportJson() {
-    this.isDraggingFile = false;
+    this.isUploaderActive = false;
   }
 
   toggleExport() {
@@ -388,11 +391,19 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onUploadDrop(event: any): void {
     event.preventDefault();
-    this.isDraggingFile = false;
 
     const file = event.dataTransfer?.files?.[0];
+    this.readJsonAsText(file);
+  }
+
+  onUploadClick(event: any): void {
+    const file = event.target.files[0];
+    this.readJsonAsText(file);
+  }
+
+  readJsonAsText(file:any) {
     if (!file || file.type !== 'application/json') {
-      console.warn('Only JSON files are accepted.');
+      alert('Only JSON files are accepted.');
       return;
     }
 
@@ -402,6 +413,7 @@ export class AppComponent implements OnInit, OnDestroy {
       try {
         const json = JSON.parse(reader.result as string);
         this.gridWidgetService.setGridWidgets(json);
+        this.isUploaderActive = false;
       } catch (err) {
         console.error('Invalid JSON file', err);
       }
