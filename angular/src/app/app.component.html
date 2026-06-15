@@ -222,7 +222,7 @@
         <div
           *ngIf="isDraggingFile"
           class="uploader-wrapper"
-          (dragover)="onUploadDragOver()"
+          (dragover)="onUploadDragOver($event)"
           (dragleave)="onUploadDragLeave()"
           (drop)="onUploadDrop($event)"
         >
@@ -247,16 +247,16 @@
             
             <div class="panel-content-body" [formGroup]="exportForm">
               
-              <mat-form-field appearance="outline">
+              <!-- <mat-form-field appearance="outline">
                 <mat-label>Dashboard Title</mat-label>
                 <input matInput #titleFormField formControlName="title"/>
-              </mat-form-field>
+              </mat-form-field> -->
 
               <div class="export-modes">
                 <div class="export-modes-item">
                     <ng-icon name="tablerBrandHtml5"></ng-icon>
                     <h3>Export to Web Prototype</h3>
-                    <p>Single <i>index.html</i> file of a functional web project prototyped with HTML, CSS and JavaScript.</p>
+                    <p>Exports dashboard to a functional web project contained in a single <i>index.html</i> file.</p>
                     <div
                       class="menu-item-button menu-item-button-header"
                       (click)="exportHtml()">Download <i>html</i> File</div>

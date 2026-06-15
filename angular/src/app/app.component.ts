@@ -380,13 +380,14 @@ export class AppComponent implements OnInit, OnDestroy {
     URL.revokeObjectURL(url); // clean up
   }
 
-  onUploadDragOver(): void {}
+  onUploadDragOver(event: any): void {
+    event.preventDefault();
+  }
 
   onUploadDragLeave(): void {}
 
   onUploadDrop(event: any): void {
     event.preventDefault();
-    
     this.isDraggingFile = false;
 
     const file = event.dataTransfer?.files?.[0];
