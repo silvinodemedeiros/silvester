@@ -1,0 +1,771 @@
+
+      <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <style>
+        
+.mat-select-panel {
+  background: #fff;
+}
+.mat-select-panel:not([class*=mat-elevation-z]) {
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+}
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  overflow: hidden;
+}
+/* You can add global styles to this file, and also import other style files */
+/* styles.css */
+.layout {
+  display: grid;
+  grid-template-rows: 60px 1fr;
+  grid-template-columns: 240px 1fr auto;
+  grid-template-areas: "topbar topbar topbar" "sidebar content edit";
+  height: 100vh;
+  background: white;
+}
+.layout-preview {
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas: "content";
+}
+.layout-dark {
+  filter: invert(1);
+}
+.topbar {
+  grid-area: topbar;
+  background-color: #fff;
+  border-bottom: 1px solid #c8c8c8;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+.topbar h1 {
+  font-size: 1cqw;
+  text-transform: uppercase;
+}
+.content {
+  position: relative;
+  grid-area: content;
+  align-content: center;
+  justify-items: center;
+  background: #ccc;
+  padding: 2rem;
+}
+.content-preview {
+  background: none;
+}
+.content-alert {
+  position: absolute;
+  top: 0;
+  padding: 0.5rem 1rem;
+  margin: 1rem 0 0 0;
+  align-self: flex-start;
+  color: #969696;
+  border: 1px solid #969696;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.content-edit {
+  align-content: flex-start;
+}
+.panel.edit-panel {
+  grid-area: edit;
+  width: 20rem;
+}
+.panel {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "header" "form" "actions";
+  width: auto;
+  height: 100%;
+  background: white;
+}
+.panel.panel-right {
+  border-left: 1px solid #c8c8c8;
+}
+.panel.panel-left {
+  border-right: 1px solid #c8c8c8;
+}
+.panel-header {
+  grid-area: header;
+  border-bottom: 1px solid #c8c8c8;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  height: 2rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+.panel-header .title {
+  font-weight: bold;
+}
+.panel-content {
+  grid-area: form;
+  position: relative;
+}
+.panel-content-body {
+  position: absolute;
+  inset: 0 0 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow: auto;
+  /* Apply to all scrollable elements */
+  /* Optional: hide scrollbar corner */
+}
+.panel-content-body::-webkit-scrollbar {
+  width: 8px;
+  /* slim width */
+  height: 8px;
+  /* slim height for horizontal scrollbar */
+}
+.panel-content-body::-webkit-scrollbar-track {
+  background: transparent;
+  /* no background */
+  margin: 2px;
+  /* spacing at ends */
+}
+.panel-content-body::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 100, 0.2);
+  /* semi-transparent */
+  border-radius: 10px;
+  /* rounded */
+  transition: background 0.3s ease;
+  /* smooth hover effect */
+}
+.panel-content-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 100, 100, 0.5);
+}
+.panel-content-body::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.panel-content-body--empty {
+  width: calc(100% - 2rem - 4px);
+  height: calc(100% - 2rem - 4px);
+  border: 1px dotted #777;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  font-size: 0.7rem;
+  text-align: center;
+  color: #777;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+.panel-content-body--empty:hover {
+  background: #ddd;
+}
+.panel-actions {
+  grid-area: actions;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  background: #c8c8c8;
+}
+.sidebar-panel {
+  grid-area: sidebar;
+}
+.menu-item {
+  padding: 0.75rem;
+  background: #fff;
+  border: 2px dashed #eee;
+  cursor: grab;
+  user-select: none;
+  border-radius: 4px;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.7rem;
+}
+.menu-item ng-icon {
+  position: relative;
+  top: 2px;
+  margin-right: 0.25rem;
+  font-size: 0.8rem;
+}
+.menu-item:hover {
+  border-style: dashed;
+  border-color: black;
+  transition: border 0.2s ease;
+}
+.menu-item.widget-list-item {
+  cursor: pointer;
+}
+.menu-item.widget-list-item.selected {
+  border: 2px dashed black;
+}
+.menu-item-button {
+  padding: 0.75rem;
+  background: #fff;
+  user-select: none;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 4px;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.7rem;
+}
+.menu-item-button ng-icon {
+  position: relative;
+  top: 2px;
+  margin-right: 0.25rem;
+  font-size: 0.8rem;
+}
+.menu-item-button-header {
+  color: black;
+  margin: 0;
+  border-bottom: 1px solid #c8c8c8;
+}
+.menu-item-button:hover {
+  color: white;
+  background: #333;
+}
+.menu-item-button:active {
+  cursor: pointer;
+}
+.menu-item-button.inactive {
+  position: relative;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.widget-item:active {
+  cursor: grabbing;
+  background: #eaeaea;
+}
+.grid-structure {
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  aspect-ratio: 6 / 3;
+}
+.grid-structure.grid-structure-macro {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  pointer-events: none;
+}
+.grid-structure.grid-structure-macro .cell {
+  border: 2px solid #ececec;
+}
+.grid {
+  position: relative;
+  width: 100%;
+  max-width: 1300px;
+  background: #ffffff;
+  border: 2px solid #aaa;
+  border-radius: 2px;
+}
+.grid-preview {
+  background: none;
+  border: none;
+  width: 100%;
+}
+.cell {
+  position: relative;
+  border: 1px dashed #ececec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+.cell.has-widget-preview {
+  background: #efefef;
+  border-color: #bbb;
+  border-style: dashed;
+}
+.cell.has-grid-preview {
+  opacity: 0;
+}
+.grid-widgets-wrapper {
+  position: absolute;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.grid-widgets-wrapper-preview {
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+.grid-widgets-wrapper.on-dragging {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.grid-widgets-wrapper .grid-widget {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  grid-template-areas: "title" "value" "icon";
+  grid-gap: 0.5rem;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: white;
+  container-type: inline-size;
+  border: 1px dashed #ececec;
+  transition: border 0.15s ease;
+}
+.grid-widgets-wrapper .grid-widget-selected,
+.grid-widgets-wrapper .grid-widget:active,
+.grid-widgets-wrapper .grid-widget:hover {
+  border: 1px dashed black;
+}
+.grid-widgets-wrapper .grid-widget.cell:focus {
+  outline: 2px solid black !important;
+  outline-offset: 3px !important;
+}
+.grid-widgets-wrapper .grid-widget.cell-dark {
+  border-style: solid !important;
+  border-width: 3px !important;
+  border-color: black !important;
+}
+.grid-widgets-wrapper .grid-widget.cell-dark:focus {
+  outline: 2px dashed black !important;
+  outline-offset: 3px !important;
+}
+.grid-widgets-wrapper .grid-widget > * {
+  margin: 0;
+}
+.grid-widgets-wrapper .grid-widget-has-preview,
+.grid-widgets-wrapper .grid-widget-has-preview:hover,
+.grid-widgets-wrapper .grid-widget-has-preview:active {
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+.grid-widgets-wrapper .grid-widget.grid-widget-map {
+  grid-template-rows: 3rem 1fr 3rem;
+  grid-template-columns: 1fr;
+  width: 300px;
+  height: 200px;
+}
+.grid-widgets-wrapper .grid-widget-title {
+  grid-area: title;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+}
+.grid-widgets-wrapper .grid-widget-title-dark {
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 1.3rem;
+}
+.grid-widgets-wrapper .grid-widget-value {
+  grid-area: value;
+  font-size: 30cqw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  text-align: center;
+  pointer-events: none;
+  width: 100%;
+}
+.grid-widgets-wrapper .grid-widget-value-dark {
+  font-size: 30cqw;
+}
+.grid-widgets-wrapper .grid-widget-value-suffix {
+  font-size: 15cqw;
+}
+.grid-widgets-wrapper .grid-widget-icon {
+  grid-area: icon;
+  font-size: 1.4rem;
+  line-height: 1rem;
+}
+.grid-widgets-wrapper .frosty {
+  background: #ffffff;
+  box-shadow: 0 4px 30px rgba(39, 39, 39, 0.25);
+}
+.uploader-wrapper {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 6 / 3;
+  background: rgba(0, 0, 255, 0.5);
+  border-radius: 12px;
+  color: white;
+}
+/*# TILE LAYERS #*/
+.monochromatic {
+  filter: grayscale(100%);
+}
+/*# WIDGET DRAG HANDLE #*/
+.drag-handle {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  cursor: grab;
+  border: 2px solid transparent;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+.delete-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  background: rgba(100, 100, 100, 0.05);
+}
+.delete-handle:hover {
+  background: rgba(100, 100, 100, 0.2);
+}
+.grid-widget-map-wrapper {
+  width: 300px;
+  height: 200px;
+}
+.magnified {
+  z-index: 10;
+  transform-origin: center center;
+  transform: scale(1.4);
+  transition: 0.1s transform ease;
+}
+.accessibility {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  color: black;
+  transform-origin: center center;
+  transition: 0.1s all ease;
+  border: 1px solid grey;
+}
+.accessibility.accessibility-high-contrast {
+  color: white;
+  background: grey;
+  border: 2px solid white;
+}
+.accessibility.accessibility-high-contrast:focus {
+  transform-origin: center center;
+  transform: scale(1.2);
+  outline: 2px dashed white !important;
+  outline-offset: 3px !important;
+}
+.accessibility:hover {
+  opacity: 1;
+  transform: scale(1.2);
+}
+.accessibility:focus {
+  transform-origin: center center;
+  transform: scale(1.2);
+  outline: 2px solid black !important;
+  outline-offset: 3px !important;
+}
+
+
+      </style>
+
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+      <title>Dashboard X</title>
+    </head>
+    <body>
+      
+      <div class="layout layout-preview">
+        <main class="content content-preview">
+
+          <div class="grid grid-structure grid-preview">
+
+            <div class="grid-structure grid-widgets-wrapper grid-widgets-wrapper-preview">
+      
+          <div
+            class="grid-widget grid-widget-has-preview grid-widget-clouds cell monochromatic"
+            style="grid-area: 5 / 8 / span 4 / span 4;"
+            tabIndex="0"
+          >
+
+            <h1 class="grid-widget-title">
+              Clouds
+            </h1>
+
+            
+            <div class="grid-widget-value">
+              62
+              <span class="grid-widget-value-suffix">
+                %
+              </span>
+            </div>
+    
+
+            <div class="grid-widget-icon">
+              <i class="bi bi-clouds"></i>
+            </div>
+          </div>
+    
+               </div>
+          </div>
+        </main>
+      </div>
+      
+      <div id="dark-mode-toggle" class="accessibility" tabIndex="0" role="button">
+        <i class="bi bi-moon-stars"></i>
+      </div>
+    </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src='https://unpkg.com/wicg-inert@latest/dist/inert.min.js'></script>
+
+    <script type="text/javascript" language="javascript">
+      
+
+let darkMode = false;
+const darkModeToggle = document.getElementById("dark-mode-toggle");
+
+let mapWidget = document.querySelector('.grid-widget-location .grid-widget-map');
+let mapComponent = null;
+let mapMarker = null;
+let mapZoom = 14;
+
+function addPoint(latLngArg) {
+  if (mapMarker) {
+    mapMarker.remove();
+    mapMarker = null;
+  }
+  
+  const {lat, lng} = latLngArg;
+  const latLng = [lat, lng];
+
+  // creates and binds popup
+  mapMarker = L.marker(latLng).addTo(mapComponent);
+  mapMarker.bindPopup('I was just created!');
+
+  // updates map center
+  mapComponent.setView([lat, lng], mapZoom);
+}
+
+if (mapWidget) {
+  mapComponent = L.map(mapWidget).setView([-5.837008, -35.203026], mapZoom);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(mapComponent);
+
+  addPoint({
+    lat: mapWidget.dataset.lat,
+    lng: mapWidget.dataset.lng
+  });
+}
+
+toggleDarkMode = () => {
+    const layoutNode = document.querySelector('.layout');
+    const accessibilityNode = document.querySelector('.accessibility');
+    const cellNodeList = document.querySelectorAll('.grid-widget');
+    const widgetTitlesNodeList = document.querySelectorAll('.grid-widget-title');
+    const widgetValuesNodeList = document.querySelectorAll('.grid-widget-value');
+
+    if (darkMode) {
+        darkMode = false;
+        layoutNode.classList.remove('layout-dark');
+        accessibilityNode.classList.remove('accessibility-high-contrast');
+        [...cellNodeList].forEach(cell => cell.classList.remove('cell-dark'));
+        [...widgetTitlesNodeList].forEach(gridWidgetTitle => gridWidgetTitle.classList.remove('grid-widget-title-dark'));
+        [...widgetValuesNodeList].forEach(gridWidgetValue => gridWidgetValue.classList.remove('grid-widget-value-dark'));
+    } else {
+        darkMode = true;
+        layoutNode.classList.add('layout-dark');
+        accessibilityNode.classList.add('accessibility-high-contrast');
+        [...cellNodeList].forEach(cell => cell.classList.add('cell-dark'));
+        [...widgetTitlesNodeList].forEach(gridWidgetTitle => gridWidgetTitle.classList.add('grid-widget-title-dark'));
+        [...widgetValuesNodeList].forEach(gridWidgetValue => gridWidgetValue.classList.add('grid-widget-value-dark'));
+    }
+}
+
+formatOffset_function = (offset) => {
+  const sign = offset >= 0 ? "+" : "-";
+  const abs = Math.abs(offset);
+  const hours = Math.floor(abs);
+  const minutes = Math.round((abs - hours) * 60);
+
+  const hh = hours.toString().padStart(2, "0");
+  const mm = minutes.toString().padStart(2, "0");
+
+  return sign+hh+mm;
+};
+
+widget_value = (widget) => {
+  let resultValue;
+  const valueType = widget.metadata.measures?.value;
+  const dataType = widget.type;
+
+  switch (valueType) {
+    case 'time':
+      
+      const unixTimeString = widget.value;
+      const currentTime = Temporal.Instant.fromEpochMilliseconds(Number(unixTimeString) * 1000);
+      const localTimezone = Temporal.Now.timeZoneId();
+      const zonedTime = currentTime.toZonedDateTimeISO(localTimezone);
+      const formatter = new Intl.DateTimeFormat('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+
+      resultValue = formatter.format(zonedTime.toInstant());
+      break;
+
+    case "distance":
+      resultValue = widget.value / 1000;
+      break;
+
+    case "timezoneOffset":
+      resultValue = formatOffset_function(widget.value / 3600);
+      break;
+      
+    default:
+      resultValue = widget.value;
+      break;
+  }
+
+  switch (dataType) {
+    case "Integer":
+      resultValue = parseInt(resultValue, 10);
+      break;
+    case "Float":
+      resultValue = parseFloat(resultValue).toFixed(1);
+      break;
+  }
+
+  return resultValue;
+};
+
+widget_suffix = (unit) => {
+  let suffix = "";
+
+  switch (unit) {
+    case "percentage":
+      suffix = "%";
+      break;
+    case "temperature":
+      suffix = "°C";
+      break;
+    case "angle":
+      suffix = "°";
+      break;
+    case "distance":
+      suffix = "km";
+      break;
+    case "hectoPascal":
+      suffix = "hPa";
+      break;
+    case "velocity":
+      suffix = "m/s";
+      break;
+    default:
+      suffix = "";
+      break;
+  }
+
+  return suffix;
+};
+
+// # ADDS FOCUS AND UNFOCUS EVENTS TO PROTOTYPED WIDGETS
+[...document.querySelectorAll(".grid-widget")].map(widgetNode => {
+    widgetNode.addEventListener("focus", () => {
+        widgetNode.classList.add('magnified');
+    });
+
+    widgetNode.addEventListener("blur", () => {
+        widgetNode.classList.remove('magnified');
+    });
+})
+
+// # KEYPRESS HANDLE - 
+document.addEventListener("keydown", (event) => {
+    
+    if (event.key === "Tab") {
+      const focusableElements = document.querySelectorAll('[tabindex="0"]');
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+      
+      if (event.shiftKey) { // SHIFT + TAB
+        if (document.activeElement === firstElement) {
+          lastElement.focus();
+          event.preventDefault();
+        }
+      } else { // TAB
+        if (document.activeElement === lastElement) {
+          firstElement.focus();
+          event.preventDefault();
+        }
+      }
+    } else if (event.key === "Enter") { // ENTER
+      const activeElement = document.activeElement;
+      if (activeElement === darkModeToggle) {
+          toggleDarkMode();
+      }
+    }
+});
+
+darkModeToggle.addEventListener("mousedown", () => toggleDarkMode());
+
+const widgetSource = new EventSource("http://localhost:3000/events");
+
+// # SUBSCRIBES TO NOTIFICATIONS FROM SERVER
+widgetSource.onmessage = (event) => {
+  const gridWidgets = JSON.parse(event.data).data[0];
+  
+  Object.values(gridWidgets).forEach((gridWidget) => {
+    const widgetNode = [
+      ...document.querySelectorAll(".grid-widget-" + gridWidget.type),
+    ][0];
+
+    if (widgetNode) {
+
+      const widgetValueNode = [...widgetNode.querySelectorAll(".grid-widget-value")][0];
+
+      if (gridWidget.type === 'location') {
+        addPoint(gridWidget.value);
+      } else {
+        widgetValueNode.textContent = widget_value(gridWidget);
+  
+        widgetSuffixNode = document.createElement('div');
+        widgetSuffixNode.classList.add('grid-widget-value-suffix');
+        widgetSuffixNode.textContent = widget_suffix(gridWidget.metadata?.measures?.value);
+        widgetValueNode.appendChild(widgetSuffixNode);
+      } 
+    }
+  });
+};
+
+
+    </script>
+
+  </html>
+    

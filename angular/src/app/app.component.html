@@ -6,8 +6,6 @@
     'layout-dark': darkMode_()
   }"
   (dragover)="onDragOver($event, -1, -1)"
-  (drop)="onDrop($event, -1, -1)"
-  (mousemove)="handleOnMouseMove()"
 >
     <header
       *ngIf="!previewMode_()"
@@ -24,6 +22,7 @@
         (click)="togglePreview()"
         [ngClass]="{'inactive': isDraggingFile || gridWidgets().length === 0}"
       >
+        <ng-icon name="bootstrapEyeFill"></ng-icon>
         Preview
       </div>
 
@@ -32,26 +31,21 @@
         class="menu-item-button menu-item-button-header"
         (click)="importJson()"
       >
-        Import JSON
+        <ng-icon name="bootstrapArrowDownLeft"></ng-icon>
+        Import
       </div>
 
-      <div
-        role="button"
-        class="menu-item-button menu-item-button-header"
-        [ngClass]="{ 'inactive': gridWidgets().length == 0 }"
-        (click)="exportJson()"
-      >
-        Export JSON
-      </div>
-      
-      <div
-        role="button"
-        class="menu-item-button menu-item-button-header"
-        [ngClass]="{ 'inactive': gridWidgets().length == 0 }"
-        (click)="exportHtml()"
-      >
-        Export HTML
-      </div>
+      @if (gridWidgets().length > 0) {
+        <div
+          role="button"
+          class="menu-item-button menu-item-button-header"
+          (click)="toggleExport()"
+          [title]="'Share Dashboard'"
+        >
+          <ng-icon name="bootstrapArrowUpRight"></ng-icon>
+          Export
+        </div>
+      }
     </header>
 
     <!-- SIDEBAR -->
@@ -95,6 +89,7 @@
         'content-preview': previewMode_()
       }"
       role="main"
+      (drop)="onDrop($event, -1, -1)"
     >
       <div [ngClass]="{
         'grid': true,
@@ -202,6 +197,7 @@
               }"
               (mousedown)="handleOnMouseDown($event)"
               (mouseup)="handleOnMouseUp($event)"
+              [title]="'Click to drag widget'"
             >
               <ng-icon [name]="'bootstrapArrowsMove'"></ng-icon>
             </div>
@@ -213,6 +209,7 @@
                 'delete-handle': true
               }"
               (mousedown)="removeWidget(gridWidget)"
+              [title]="'Click to remove widget'"
             >
               <ng-icon
                 [name]="'bootstrapTrash'"
@@ -229,70 +226,60 @@
           (dragleave)="onUploadDragLeave()"
           (drop)="onUploadDrop($event)"
         >
+          
+          <ng-icon class="i-icon" name="bootstrapXCircle" (mousedown)="closeImportJson()"></ng-icon>
           <h1>Drop your JSON file here</h1>
         </div>
       </div>
+
+      
+
+      @if (export_()) {
+
+        <div class="export-panel panel panel-right">
+
+          <div class="panel-header">
+            <span class="title">Export This Dashboard</span>
+            <ng-icon class="i-icon" name="bootstrapXCircle" (mousedown)="closeExport()"></ng-icon>
+          </div>
+
+          <div class="panel-content">
+            
+            <div class="panel-content-body" [formGroup]="exportForm">
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Dashboard Title</mat-label>
+                <input matInput #titleFormField formControlName="title"/>
+              </mat-form-field>
+
+              <div class="export-modes">
+                <div class="export-modes-item">
+                    <ng-icon name="tablerBrandHtml5"></ng-icon>
+                    <h3>Export to Web Prototype</h3>
+                    <p>Single <i>index.html</i> file of a functional web project prototyped with HTML, CSS and JavaScript.</p>
+                    <div
+                      class="menu-item-button menu-item-button-header"
+                      (click)="exportHtml()">Download <i>html</i> File</div>
+                </div>
+                <div class="export-modes-item">
+                    <ng-icon name="lucideFileJson"></ng-icon>
+                    <h3>Export to JSON</h3>
+                    <p>Export grid structure to a JSON file that can be imported later into the grid.</p>
+                    <div
+                      class="menu-item-button menu-item-button-header"
+                      (click)="exportJson()">Download <i>JSON</i> File</div>
+                </div>
+              </div>
+            
+              <!-- <div class="menu-item-button menu-item-button-header" (click)="exportHtml()">
+                <ng-icon name="bootstrapDownload"></ng-icon>
+                Export Dashboard
+              </div> -->
+            </div>
+          </div>
+        </div>
+      }
     </main>
-
-    @if (false) {
-
-      <div class="edit-panel panel panel-right">
-
-        <div class="panel-header">
-          <span class="title">edit widget</span>
-        </div>
-
-        <div class="panel-content">
-
-          <div class="panel-content-body" [formGroup]="editForm">
-            <mat-form-field appearance="outline">
-              <mat-label>Widget Title</mat-label>
-              <input matInput formControlName="title"/>
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline">
-              <mat-label>Icon Name</mat-label>
-              <mat-select formControlName="icon">
-                @for(icon of iconList; track icon.id) {
-                  <mat-option [value]="icon.value">{{icon.name}}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline">
-              <mat-label>Measurement</mat-label>
-              <mat-select formControlName="measures">
-                @for(measures of measurementsList; track measures.id) {
-                  <mat-option [value]="measures.value">{{measures.title}}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-            
-            <mat-form-field appearance="outline">
-              <mat-label>Data Source</mat-label>
-              <mat-select formControlName="weatherType">
-                @for(weather of weatherList; track weather.id) {
-                  <mat-option [value]="weather.value">{{weather.name}}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="panel-actions">
-          
-          <div class="menu-item-button menu-item-button-header" (click)="updateGridWidgets()">
-            <ng-icon name="bootstrapArrowRepeat"></ng-icon>
-            Sync Widget
-          </div>
-          
-          <div class="menu-item-button menu-item-button-header">
-            <ng-icon name="bootstrapTrash"></ng-icon>
-            Remove Widget
-          </div>
-        </div>
-      </div>
-    }
 </div>
 
 <div
@@ -307,3 +294,6 @@
 >
   <ng-icon name="bootstrapMoonStars"></ng-icon>
 </div>
+
+<ng-icon 
+  *ngIf="previewMode_()" [title]="'Close Preview'" name="bootstrapXCircle" class="i-icon close-preview-icon" (click)="closePreview()"></ng-icon>

@@ -1,0 +1,208 @@
+{
+  "2_2": {
+    "row": 2,
+    "col": 2,
+    "item": {
+      "id": "wi_2",
+      "type": "clouds",
+      "label": "Clouds",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "clouds",
+      "value": 62,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapClouds"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "percentage"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Clouds"
+        }
+      }
+    }
+  },
+  "2_6": {
+    "row": 2,
+    "col": 6,
+    "item": {
+      "id": "wi_3",
+      "type": "feels_like",
+      "label": "Feels Like",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "feels_like",
+      "value": 30.37,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapEmojiSunglasses"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "temperature"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Feels Like"
+        }
+      }
+    }
+  },
+  "2_10": {
+    "row": 2,
+    "col": 10,
+    "item": {
+      "id": "wi_4",
+      "type": "humidity",
+      "label": "Humidity",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "humidity",
+      "value": 68,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapDroplet"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "percentage"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Humidity"
+        }
+      }
+    }
+  },
+  "6_2": {
+    "row": 6,
+    "col": 2,
+    "item": {
+      "id": "wi_5",
+      "type": "temp",
+      "label": "Temperature",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "temp",
+      "value": 27.98,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapThermometerHalf"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "temperature"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Temperature"
+        }
+      }
+    }
+  },
+  "6_6": {
+    "row": 6,
+    "col": 6,
+    "item": {
+      "id": "wi_6",
+      "type": "wind_speed",
+      "label": "Wind Speed",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "wind_speed",
+      "value": 5.13,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapWind"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "velocity"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Wind Speed"
+        }
+      }
+    }
+  },
+  "6_10": {
+    "row": 6,
+    "col": 10,
+    "item": {
+      "id": "wi_7",
+      "type": "pressure",
+      "label": "Pressure",
+      "width": 4,
+      "height": 4
+    },
+    "data": {
+      "type": "pressure",
+      "value": 1012,
+      "metadata": {
+        "icon": {
+          "type": "WeatherIconName",
+          "value": "bootstrapChevronBarDown"
+        },
+        "measures": {
+          "type": "WeatherValueUnit",
+          "value": "hectoPascal"
+        },
+        "title": {
+          "type": "WeatherTitle",
+          "value": "Pressure"
+        }
+      }
+    }
+  },
+  "2_14": {
+    "row": 2,
+    "col": 14,
+    "item": {
+      "id": "wi_8",
+      "type": "location",
+      "label": "Location",
+      "width": 8,
+      "height": 8
+    },
+    "data": {
+      "type": "location",
+      "value": {
+        "lat": -5.837006,
+        "lng": -35.203026
+      },
+      "metadata": {
+        "category": {
+          "type": "Text",
+          "value": "capital"
+        },
+        "icon": {
+          "type": "MapIconName",
+          "value": "bootstrapGeo"
+        },
+        "title": {
+          "type": "MapTitle",
+          "value": "Location"
+        }
+      }
+    }
+  }
+}

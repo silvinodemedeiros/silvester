@@ -3,6 +3,9 @@ import { ChangeDetectorRef, Component, computed, effect, HostListener, OnDestroy
 import { Subscription } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
+import * as tablerIcons from '@ng-icons/tabler-icons';
+import * as simpleIcons from '@ng-icons/simple-icons';
+import * as lucideIcons from '@ng-icons/lucide';
 import { WidgetSuffixPipe } from './pipes/widget-suffix/widget-suffix.pipe';
 import { WidgetValuePipe } from './pipes/widget-value/widget-value.pipe';
 import { Cell, EMPTY_WIDGET, GridWidget } from './types';
@@ -38,7 +41,10 @@ import { HtmlGeneratorService } from './services/html-generator/html-generator.s
   providers: [
     DatePipe,
     HtmlGeneratorService,
-    provideIcons(bootstrapIcons)
+    provideIcons(bootstrapIcons),
+    provideIcons(tablerIcons),
+    provideIcons(simpleIcons),
+    provideIcons(lucideIcons)
   ],
   styleUrl: './app.component.less'
 })
@@ -64,7 +70,7 @@ export class AppComponent implements OnInit, OnDestroy {
   previewWidget: any = null;
 
   subscription = new Subscription();
-  editForm: FormGroup;
+  exportForm: FormGroup;
 
   iconList = ICON_LIST;
   weatherList = WEATHER_INFO_LIST;
@@ -80,6 +86,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   // MOVE WIDGET PROPERTIES
   movedWidget: GridWidget | null = null;
+
+  // EXPORT
+  export_ = signal(false);
 
   constructor(
     private menuItemService: MenuItemService,
@@ -102,7 +111,13 @@ export class AppComponent implements OnInit, OnDestroy {
       this.currentWidgetSource = this.menuItemService.widgetSource_();
     });
 
-    this.editForm = this.fb.group({
+    // effect(() => {
+    //   if (this.export_()) {
+    //     this.exportForm.get('title')?.patchValue('My Dashboard');
+    //   }
+    // });
+
+    this.exportForm = this.fb.group({
       title: this.fb.control(''),
       icon: this.fb.control(''),
       measures: this.fb.control(''),
@@ -155,7 +170,8 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!escParams?.skipPreviewLayer) {
       this.previewMode_.set(false);
     }
-    
+
+    this.closeExport();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -289,7 +305,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   onDrop(event: DragEvent | null, row: number, col: number): void {
 
-    if (!(row >= 0 && col >= 0)) {
+    if (row == -1 || col == -1) {
       this.isDragging = false;
       this.previewWidget = null;
       return;
@@ -317,6 +333,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
   importJson() {
     this.isDraggingFile = true;
+  }
+
+  closeImportJson() {
+    this.isDraggingFile = false;
+  }
+
+  toggleExport() {
+    this.export_.update((value) => !value);
+  }
+
+  closeExport() {
+    this.export_.update(() => false);
   }
 
   exportJson() {
@@ -388,6 +416,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.previewMode_.set(!previewModeValue);
   }
 
+  closePreview() {
+    this.previewMode_.set(false);
+  }
+
   toggleDarkMode() {
     const darkModeValue = this.darkMode_();
     this.darkMode_.set(!darkModeValue);
@@ -396,10 +428,10 @@ export class AppComponent implements OnInit, OnDestroy {
   /*# DRAG HANDLE SHENANIGANS # */
 
   handleOnMouseMove() {
-    this.handleOnEscapeKey({
-      skipImportLayer: true,
-      skipPreviewLayer: true
-    });
+    // this.handleOnEscapeKey({
+    //   skipImportLayer: true,
+    //   skipPreviewLayer: true
+    // });
   }
 
   handleOnMouseDown(event: MouseEvent) {
@@ -409,7 +441,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   handleOnMouseUp(event: MouseEvent) {
     const target = event.target as any;
-    target.parentNode.setAttribute('draggable', 'true');
+    target.parentNode.setAttribute('draggable', 'false');
   }
 
   /*# REMOVE WIDGET #*/
