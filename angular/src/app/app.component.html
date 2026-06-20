@@ -13,9 +13,12 @@
       class="topbar"
     >
 
-      <h1>Silvester</h1>
-      
-      <div style="margin-left: auto;"></div>
+      <ng-icon
+        name="bootstrapGithub"
+        class="i-icon topbar-icon topbar-icon-left"
+        (click)="goToGithub()"
+        title="Open Github Repo"
+      ></ng-icon>
 
       <div
         role="button"
@@ -27,23 +30,15 @@
         Preview
       </div>
 
-      <div
-        role="button"
-        class="menu-item-button menu-item-button-header"
-        (click)="importJson()"
-      >
-        <ng-icon name="bootstrapArrowDownLeft"></ng-icon>
-        Import
-      </div>
-
       @if (gridWidgets().length > 0) {
         <div
           role="button"
-          class="menu-item-button menu-item-button-header"
+          class="menu-item-button menu-item-button-header middle"
           (click)="toggleExport()"
           [title]="'Share Dashboard'"
         >
-          <ng-icon name="bootstrapArrowUpRight"></ng-icon>
+          Import
+          <ng-icon name="bootstrapArrowLeftRight"></ng-icon>
           Export
         </div>
       }
@@ -198,7 +193,7 @@
               }"
               (mousedown)="handleOnMouseDown($event)"
               (mouseup)="handleOnMouseUp($event)"
-              [title]="'Click to drag widget'"
+              [title]="'Drag to move widget'"
             >
               <ng-icon [name]="'bootstrapArrowsMove'"></ng-icon>
             </div>
@@ -220,7 +215,7 @@
         </div>
 
         <!--# UPLOADER LAYER #-->
-        <div
+        <!-- <div
           *ngIf="isUploaderActive"
           class="uploader-wrapper"
           (dragover)="onUploadDragOver($event)"
@@ -231,7 +226,7 @@
           <ng-icon class="i-icon" name="bootstrapXCircle" (mousedown)="closeImportJson()"></ng-icon>
           <h1>Drop your JSON file here or <span>click to upload</span></h1>
           <input #fileInput (change)="onUploadClick($event)" type="file" id="fileInput" style="display: none;">
-        </div>
+        </div> -->
       </div>
 
       @if (export_()) {
@@ -240,7 +235,7 @@
 
           <div class="panel-header">
             <span class="title">Export This Dashboard</span>
-            <ng-icon class="i-icon" name="bootstrapXCircle" (mousedown)="closeExport()"></ng-icon>
+            <ng-icon class="i-icon" name="bootstrapXCircle" (mousedown)="closeExport()" title="Close export panel"></ng-icon>
           </div>
 
           <div class="panel-content">
@@ -254,9 +249,22 @@
 
               <div class="export-modes">
                 <div class="export-modes-item">
-                    <ng-icon name="tablerBrandHtml5"></ng-icon>
+                    <ng-icon name="bootstrapBoxArrowInUp"></ng-icon>
+                    <h3>Import JSON File</h3>
+                    <p>Upload a JSON file that stores widgets contained in a grid template that was previously exported.</p>
+                    <div
+                      class="menu-item-button menu-item-button-header"
+                      (click)="fileInput.click()"
+                    >
+                      <ng-icon name="bootstrapBoxArrowInUp"></ng-icon>
+                      Choose File...
+                    </div>
+                    <input #fileInput (change)="onUploadClick($event)" type="file" id="fileInput" style="display: none;">
+                </div>
+                <div class="export-modes-item">
+                    <ng-icon name="bootstrapDownload"></ng-icon>
                     <h3>Export to Web Prototype</h3>
-                    <p>Exports dashboard to a functional web project contained in a single <i>index.html</i> file.</p>
+                    <p>Exports dashboard to a functional web project contained in a single and reusable <i>index.html</i> file.</p>
                     <div
                       class="menu-item-button menu-item-button-header"
                       (click)="exportHtml()"
@@ -266,9 +274,9 @@
                     </div>
                 </div>
                 <div class="export-modes-item">
-                    <ng-icon name="lucideFileJson"></ng-icon>
+                    <ng-icon name="bootstrapDownload"></ng-icon>
                     <h3>Export to JSON</h3>
-                    <p>Export grid structure to a JSON file that can be imported later into the grid.</p>
+                    <p>Export grid structure to a JSON file that can be shared or imported later into the grid.</p>
                     <div
                       class="menu-item-button menu-item-button-header"
                       (click)="exportJson()"
@@ -313,3 +321,7 @@
   }" 
   (click)="closePreview()"
 ></ng-icon>
+
+<div class="frost">
+
+</div>

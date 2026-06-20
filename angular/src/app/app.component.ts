@@ -461,4 +461,8 @@ export class AppComponent implements OnInit, OnDestroy {
   removeWidget(widget: GridWidget) {
     this.gridWidgetService.removeWidget(widget);
   }
+
+  goToGithub() {
+    window.open('https://github.com/silvinodemedeiros/silvester', '_blank');
+  }
 }
