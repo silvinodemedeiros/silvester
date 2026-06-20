@@ -33,12 +33,12 @@
       @if (gridWidgets().length > 0) {
         <div
           role="button"
-          class="menu-item-button menu-item-button-header middle"
+          class="menu-item-button menu-item-button-header"
           (click)="toggleExport()"
           [title]="'Share Dashboard'"
         >
           Import
-          <ng-icon name="bootstrapArrowLeftRight"></ng-icon>
+          <ng-icon name="bootstrapArrowLeftRight" class="middle-icon"></ng-icon>
           Export
         </div>
       }
