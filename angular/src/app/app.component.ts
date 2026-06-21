@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, computed, effect, ElementRef, HostListener, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import * as bootstrapIcons from '@ng-icons/bootstrap-icons';
 import * as tablerIcons from '@ng-icons/tabler-icons';
@@ -20,6 +20,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { ICON_LIST, MEASUREMENTS_LIST, WEATHER_INFO_LIST } from './models';
 import { HtmlGeneratorService } from './services/html-generator/html-generator.service';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-root',
@@ -127,11 +128,15 @@ export class AppComponent implements OnInit, OnDestroy {
       weatherType: this.fb.control(''),
     });
 
+    // PREVIEW EFFECT
     effect(() => {
       const previewMode = this.previewMode_();
 
+      // if preview is now deactivated
       if (!previewMode) {
         this.darkMode_.set(false);
+      } else {
+        this.export_.set(false);
       }
     });
   }
@@ -402,7 +407,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   readJsonAsText(file:any) {
-    if (!file || file.type !== 'application/json') {
+    
+    if (!file) {
+      return;
+    } else if (file.type !== 'application/json') {
       alert('Only JSON files are accepted.');
       return;
     }
@@ -464,5 +472,28 @@ export class AppComponent implements OnInit, OnDestroy {
 
   goToGithub() {
     window.open('https://github.com/silvinodemedeiros/silvester', '_blank');
+  }
+
+  @ViewChild('captureArea') captureArea!: ElementRef<HTMLElement>;
+
+  async exportToPng(): Promise<void> {
+    this.previewMode_.set(true);
+
+    const timerSub = await timer(2000).subscribe(async () => {
+      const element = this.captureArea.nativeElement;
+  
+      const canvas = await html2canvas(element, {
+        scale: 2
+      });
+  
+      const pngUrl = canvas.toDataURL('image/png');
+  
+      const link = document.createElement('a');
+      link.href = pngUrl;
+      link.download = 'dashboard.png';
+      link.click();
+    });
+
+    this.subscription.add(timerSub);
   }
 }
