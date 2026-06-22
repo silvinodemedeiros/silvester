@@ -80,7 +80,7 @@ export class AppComponent implements OnInit, OnDestroy {
   // MAGNIFICATION PROPERTIES
   focusedWidgetElem: any = null;
 
-  // COLOR PROPERTIES
+  // EDITOR PROPERTIES
   previewMode_ = signal(false);
   darkMode_ = signal(false);
 
@@ -477,8 +477,6 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('captureArea') captureArea!: ElementRef<HTMLElement>;
 
   async exportToPng(): Promise<void> {
-    this.previewMode_.set(true);
-
     const timerSub = await timer(2000).subscribe(async () => {
       const element = this.captureArea.nativeElement;
   

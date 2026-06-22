@@ -1,9 +1,9 @@
 
 <div
-  #captureArea
   [ngClass]="{
     'layout': true,
     'layout-preview': previewMode_(),
+    'layout-export-preview': export_(),
     'layout-dark': darkMode_()
   }"
   (dragover)="onDragOver($event, -1, -1)"
@@ -57,7 +57,7 @@
 
     <!-- SIDEBAR -->
     <aside
-      *ngIf="!previewMode_()"
+      *ngIf="!previewMode_() && !export_()"
       class="sidebar-panel panel panel-left"
     >
 
@@ -91,9 +91,10 @@
 
     <!--# GRID #-->
     <main
+      #captureArea
       [ngClass]="{
         'content': true,
-        'content-preview': previewMode_()
+        'content-preview': previewMode_() || export_()
       }"
       role="main"
       (drop)="onDrop($event, -1, -1)"
@@ -101,13 +102,13 @@
       <div [ngClass]="{
         'grid': true,
         'grid-structure': true,
-        'grid-preview': previewMode_()
+        'grid-preview': previewMode_() || export_()
       }">
 
       
         <!--# MACRO CELLS LAYER #-->
         <div class="grid-structure grid-structure-macro">
-          <ng-container *ngIf="!previewMode_()">
+          <ng-container *ngIf="!previewMode_() && !export_()">
             <ng-container *ngFor="let cell of macroCells">
               <div
                 [ngClass]="{
@@ -119,13 +120,13 @@
         </div>
       
         <!--# CELLS LAYER #-->
-        <ng-container *ngIf="!previewMode_()">
+        <ng-container *ngIf="!previewMode_() && !export_()">
           <ng-container *ngFor="let cell of cells">
             <div
               [ngClass]="{
                 'cell': true,
                 'has-widget-preview': dropPreview && hasDropPreview(cell.row, cell.col),
-                'has-grid-preview': previewMode_()
+                'has-grid-preview': previewMode_() || export_()
               }"
               (dragover)="onDragOver($event, cell.row, cell.col)"
               (dragleave)="onDragLeave()"
@@ -138,7 +139,7 @@
         <div [ngClass]="{
           'grid-structure': true,
           'grid-widgets-wrapper': true,
-          'grid-widgets-wrapper-preview': previewMode_(),
+          'grid-widgets-wrapper-preview': previewMode_() || export_(),
           'on-dragging': isDragging
         }">
           <div
@@ -146,11 +147,11 @@
             #widgetElement
             [ngClass]="{
               'grid-widget': true,
-              'cell': previewMode_(),
+              'cell': previewMode_() || export_(),
               'cell-dark': previewMode_() && darkMode_(),
               'monochromatic': true,
               'grid-widget-map': gridWidget.data.type == 'Location',
-              'grid-widget-has-preview': previewMode_()
+              'grid-widget-has-preview': previewMode_() || export_()
             }"
             [ngStyle]="{
               'grid-area': (gridWidget.row + 1) + '/' + (gridWidget.col + 1) + '/ span ' + gridWidget.item.height + '/ span ' + gridWidget.item.width
@@ -175,7 +176,7 @@
             @if (gridWidget.data.type == 'location') {
               <app-map-widget
                 [data]="gridWidget"
-                [has-preview]="previewMode_()"
+                [has-preview]="previewMode_() || export_()"
               ></app-map-widget>
             } @else {
               <span
@@ -197,7 +198,7 @@
             </p>
             
             <div
-              *ngIf="!previewMode_()"
+              *ngIf="!previewMode_() && !export_()"
               [ngClass]="{
                 'grid-widget-handle': true,
                 'drag-handle': true
@@ -210,7 +211,7 @@
             </div>
             
             <div
-              *ngIf="!previewMode_()"
+              *ngIf="!previewMode_() && !export_()"
               [ngClass]="{
                 'grid-widget-handle': true,
                 'delete-handle': true
@@ -224,88 +225,69 @@
             </div>
           </div>
         </div>
-
-        <!--# UPLOADER LAYER #-->
-        <!-- <div
-          *ngIf="isUploaderActive"
-          class="uploader-wrapper"
-          (dragover)="onUploadDragOver($event)"
-          (dragleave)="onUploadDragLeave()"
-          (drop)="onUploadDrop($event)"
-          (click)="fileInput.click()"
-        >
-          <ng-icon class="i-icon" name="bootstrapXCircle" (mousedown)="closeImportJson()"></ng-icon>
-          <h1>Drop your JSON file here or <span>click to upload</span></h1>
-          <input #fileInput (change)="onUploadClick($event)" type="file" id="fileInput" style="display: none;">
-        </div> -->
       </div>
+    </main>
 
-      @if (export_()) {
+    @if (export_()) {
 
-        <div class="export-panel panel panel-right">
+      <div class="export-panel panel panel-right">
 
-          <div class="panel-header">
-            <span class="title">Export This Dashboard</span>
-            <ng-icon class="i-icon" name="bootstrapXCircle" (mousedown)="closeExport()" title="Close export panel"></ng-icon>
-          </div>
+        <div class="panel-header">
+          <span class="title">Export This Dashboard</span>
+          <ng-icon class="i-icon" name="bootstrapXCircle" (mousedown)="closeExport()" title="Close export panel"></ng-icon>
+        </div>
 
-          <div class="panel-content">
+        <div class="panel-content">
+          
+          <div class="panel-content-body" [formGroup]="exportForm">
             
-            <div class="panel-content-body" [formGroup]="exportForm">
-              
-              <!-- <mat-form-field appearance="outline">
-                <mat-label>Dashboard Title</mat-label>
-                <input matInput #titleFormField formControlName="title"/>
-              </mat-form-field> -->
+            <!-- <mat-form-field appearance="outline">
+              <mat-label>Dashboard Title</mat-label>
+              <input matInput #titleFormField formControlName="title"/>
+            </mat-form-field> -->
 
-              <div class="export-modes">
-                <div class="export-modes-item">
+            <div class="export-modes">
+              <div class="export-modes-item">
+                  <ng-icon name="lucideImageDown"></ng-icon>
+                  <h3>Export to PNG</h3>
+                  <p>Exports an image of the dashboard in PNG format to be shared with team members and stakeholders.</p>
+                  <div
+                    class="menu-item-button menu-item-button-header"
+                    (click)="exportToPng()"
+                  >
                     <ng-icon name="bootstrapDownload"></ng-icon>
-                    <h3>Export to PNG</h3>
-                    <p>Exports an image of the dashboard in PNG format to be shared with team members and stakeholders.</p>
-                    <div
-                      class="menu-item-button menu-item-button-header"
-                      (click)="exportToPng()"
-                    >
-                      <ng-icon name="bootstrapDownload"></ng-icon>
-                      Download <i>PNG</i> File
-                    </div>
-                </div>
-                <div class="export-modes-item">
-                    <ng-icon name="bootstrapDownload"></ng-icon>
-                    <h3>Export to Web Prototype</h3>
-                    <p>Exports dashboard to a functional web project contained in a single and reusable <i>index.html</i> file.</p>
-                    <div
-                      class="menu-item-button menu-item-button-header"
-                      (click)="exportHtml()"
-                    >
-                      <ng-icon name="bootstrapDownload"></ng-icon>
-                      Download <i>html</i> File
-                    </div>
-                </div>
-                <div class="export-modes-item">
-                    <ng-icon name="bootstrapDownload"></ng-icon>
-                    <h3>Export to JSON</h3>
-                    <p>Export grid structure to a JSON file that can be shared or imported later into the grid.</p>
-                    <div
-                      class="menu-item-button menu-item-button-header"
-                      (click)="exportJson()"
-                    >
-                      <ng-icon name="bootstrapDownload"></ng-icon>
-                      Download <i>JSON</i> File
-                    </div>
-                </div>
+                    Download <i>PNG</i> File
+                  </div>
               </div>
-            
-              <!-- <div class="menu-item-button menu-item-button-header" (click)="exportHtml()">
-                <ng-icon name="bootstrapDownload"></ng-icon>
-                Export Dashboard
-              </div> -->
+              <div class="export-modes-item">
+                  <ng-icon name="tablerBrandHtml5"></ng-icon>
+                  <h3>Export to Web Prototype</h3>
+                  <p>Exports dashboard to a functional web project contained in a single and reusable <i>index.html</i> file.</p>
+                  <div
+                    class="menu-item-button menu-item-button-header"
+                    (click)="exportHtml()"
+                  >
+                    <ng-icon name="bootstrapDownload"></ng-icon>
+                    Download <i>html</i> File
+                  </div>
+              </div>
+              <div class="export-modes-item">
+                  <ng-icon name="lucideFileJson2"></ng-icon>
+                  <h3>Export to JSON</h3>
+                  <p>Export grid structure to a JSON file that can be shared or imported later into the grid.</p>
+                  <div
+                    class="menu-item-button menu-item-button-header"
+                    (click)="exportJson()"
+                  >
+                    <ng-icon name="bootstrapDownload"></ng-icon>
+                    Download <i>JSON</i> File
+                  </div>
+              </div>
             </div>
           </div>
         </div>
-      }
-    </main>
+      </div>
+    }
 </div>
 
 <div
