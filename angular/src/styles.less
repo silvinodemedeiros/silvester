@@ -127,7 +127,9 @@ body, html {
     }
     
     &-dark {
-        filter: invert(1);
+        .content {
+            filter: invert(1);
+        }
     }
 }
 
@@ -157,12 +159,12 @@ body, html {
     grid-area: content;
     align-content: center;
     justify-items: center;
-    background: #ccc;
-    padding: 2rem;
+    background: #e2e2e2;
+    // padding: 2rem;
 
-    &-preview {
-        background: none;
-    }
+    // &-preview {
+    //     background: none;
+    // }
 
     &-alert {
         position: absolute;
@@ -381,16 +383,14 @@ body, html {
 
 .grid {
     position: relative;
-    width: 100%;
-    max-width: 1300px;
+    width: calc(100% - 2rem);
     background: rgba(255, 255, 255, 1);
-    border: 2px solid #aaa;
+    border: 2px solid white;
     border-radius: 2px;
 
     &-preview {
         background: none;
         border: none;
-        width: 100%;
     }
 }
 
@@ -425,6 +425,7 @@ body, html {
     &-preview {
         gap: .5rem;
         padding: .5rem;
+        width: calc(100% - 1rem);
         border: 1px solid #cccccc;
         border-radius: 4px;
         background: white;
@@ -638,6 +639,7 @@ body, html {
     transform-origin: center center;
     transition: .1s all ease;
     border: 1px solid grey;
+    background: white;
 
     &.accessibility-high-contrast {
         color: white;

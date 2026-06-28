@@ -24,8 +24,20 @@
       <div
         role="button"
         class="menu-item-button menu-item-button-header"
+        (click)="clearGrid()"
+        [ngClass]="{'inactive': isUploaderActive || gridWidgets().length === 0}"
+        [title]="'Clear Dashboard'"
+      >
+        <ng-icon name="tablerRestore"></ng-icon>
+        Clear
+      </div>
+
+      <div
+        role="button"
+        class="menu-item-button menu-item-button-header"
         (click)="togglePreview()"
         [ngClass]="{'inactive': isUploaderActive || gridWidgets().length === 0}"
+        [title]="'Preview Dashboard'"
       >
         <ng-icon name="bootstrapEye"></ng-icon>
         Preview
@@ -34,7 +46,7 @@
       <div
         role="button"
         class="menu-item-button menu-item-button-header"
-        [title]="'Share Dashboard'"
+        [title]="'Import Dashboard'"
         (click)="fileInput.click()"
       >
         <ng-icon name="bootstrapArrowDownLeft"></ng-icon>
@@ -62,7 +74,7 @@
     >
 
       <div class="panel-header">
-        <span class="title">Entities</span>
+        <span class="title">Widgets</span>
       </div>
 
       <div class="panel-content">
@@ -107,7 +119,7 @@
 
       
         <!--# MACRO CELLS LAYER #-->
-        <div class="grid-structure grid-structure-macro">
+        <!-- <div class="grid-structure grid-structure-macro">
           <ng-container *ngIf="!previewMode_() && !export_()">
             <ng-container *ngFor="let cell of macroCells">
               <div
@@ -117,7 +129,7 @@
               ></div>
             </ng-container>
           </ng-container>
-        </div>
+        </div> -->
       
         <!--# CELLS LAYER #-->
         <ng-container *ngIf="!previewMode_() && !export_()">
@@ -226,6 +238,19 @@
           </div>
         </div>
       </div>
+
+      <div
+        *ngIf="previewMode_() || export_()"
+        id="dark-mode-toggle"
+        [ngClass]="{
+          'accessibility': true,
+          'accessibility-high-contrast': darkMode_()
+        }"
+        (click)="toggleDarkMode()"
+        [tabIndex]="previewMode_() ? 0 : -1"
+      >
+        <ng-icon name="bootstrapMoonStars"></ng-icon>
+      </div>
     </main>
 
     @if (export_()) {
@@ -290,19 +315,6 @@
     }
 </div>
 
-<div
-  *ngIf="previewMode_()"
-  id="dark-mode-toggle"
-  [ngClass]="{
-    'accessibility': true,
-    'accessibility-high-contrast': darkMode_()
-  }"
-  (click)="toggleDarkMode()"
-  [tabIndex]="0"
->
-  <ng-icon name="bootstrapMoonStars"></ng-icon>
-</div>
-
 <ng-icon 
   *ngIf="previewMode_()" 
   [title]="'Close Preview'" 
@@ -313,3 +325,4 @@
   }" 
   (click)="closePreview()"
 ></ng-icon>
+

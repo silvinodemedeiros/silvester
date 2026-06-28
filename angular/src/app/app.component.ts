@@ -339,6 +339,10 @@ export class AppComponent implements OnInit, OnDestroy {
   onDragLeave(): void {
   }
 
+  clearGrid(): void {
+    this.gridWidgetService.setGridWidgets({});
+  }
+
   importJson() {
     this.isUploaderActive = true;
   }
@@ -353,6 +357,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   closeExport() {
     this.export_.update(() => false);
+    this.darkMode_.update(() => false);
   }
 
   exportJson() {

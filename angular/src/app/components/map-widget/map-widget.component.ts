@@ -25,7 +25,8 @@ export class WidgetComponent implements OnInit {
   mapOptions: MapOptions = {
     layers: [
       tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 18
+        maxZoom: 18,
+        crossOrigin: true
       })
     ]
   };
