@@ -397,15 +397,6 @@ export class AppComponent implements OnInit, OnDestroy {
     event.preventDefault();
   }
 
-  onUploadDragLeave(): void {}
-
-  onUploadDrop(event: any): void {
-    event.preventDefault();
-
-    const file = event.dataTransfer?.files?.[0];
-    this.readJsonAsText(file);
-  }
-
   onUploadClick(event: any): void {
     const file = event.target.files[0];
     this.readJsonAsText(file);
@@ -427,6 +418,7 @@ export class AppComponent implements OnInit, OnDestroy {
         const json = JSON.parse(reader.result as string);
         this.gridWidgetService.setGridWidgets(json);
         this.isUploaderActive = false;
+        this.fileInput.nativeElement.value = '';
       } catch (err) {
         console.error('Invalid JSON file', err);
       }
