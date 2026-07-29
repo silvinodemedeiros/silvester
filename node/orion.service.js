@@ -3,7 +3,7 @@ const { Subject } = require('rxjs');
 const weatherService = require('./weather/weather.service');
 
 const ORION_URL =
-    process.env.ORION_URL + "/v2" ||
+    process.env.ORION_URL + ":1026/v2" ||
     "http://localhost:1026/v2";
 
 async function getEntities() {
