@@ -10,7 +10,7 @@ export class MenuItemService {
 
   sub = new Subscription();
   // apiUrl = 'http://localhost:3000';
-  apiUrl = 'https://silvester-node.onrender.com';
+  apiUrl = 'https://silvester-node.onrender.com:3000';
   entitiesUrl = this.apiUrl + '/entities';
   menuItems = signal<MenuItem[]>([]);
 
