@@ -1,0 +1,71 @@
+services:
+
+####################################################
+# ORION
+####################################################
+
+- type: web
+  name: silvester-orion
+
+  runtime: docker
+
+  dockerContext: .
+
+  dockerfilePath: ./orion/Dockerfile
+
+  envVars:
+
+  - key: DB_HOST
+    sync: false
+
+  - key: DB_USER
+    sync: false
+
+  - key: DB_PASSWORD
+    sync: false
+
+  startCommand: >
+    -dbhost $DB_HOST
+    -dbuser $DB_USER
+    -dbpwd $DB_PASSWORD
+    -dbAuthDb admin
+    -dbSSL
+
+####################################################
+# NODE
+####################################################
+
+- type: web
+  name: silvester-node
+
+  runtime: docker
+
+  dockerContext: .
+
+  dockerfilePath: ./node/Dockerfile
+
+  envVars:
+
+  - key: ORION_URL
+    value: https://silvester-orion.onrender.com
+
+  - key: MONGO_URL
+    sync: false
+
+####################################################
+# ANGULAR
+####################################################
+
+- type: web
+  name: silvester-angular
+
+  runtime: docker
+
+  dockerContext: .
+
+  dockerfilePath: ./angular/Dockerfile
+
+  envVars:
+
+  - key: API_URL
+    value: https://silvester-node.onrender.com

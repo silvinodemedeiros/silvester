@@ -16,3 +16,5 @@
 scrapbook.txt
 subscriptions.http
 weather-entities.http
+
+atlas-credentials.env
