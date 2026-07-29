@@ -1,66 +1,81 @@
-version: "3.8"
+version: "3.9"
 
 services:
+
   mongo:
-    image: mongo:4.4
-    command: --nojournal
+    image: mongo:7
+
     container_name: mongo-db
-    profiles: ["prod", "dev"]
+
+    restart: unless-stopped
+
     ports:
       - "27017:27017"
-    networks:
-      - fiware
+
     volumes:
       - mongo-data:/data/db
 
+    networks:
+      - fiware
+
   orion:
-    image: fiware/orion:3.8.1
+    image: fiware/orion:4.5.0
+
     container_name: silvester-orion
-    profiles: ["prod", "dev"]
+
     depends_on:
       - mongo
+
     ports:
       - "1026:1026"
-    command: ["-dbhost", "mongo-db"]
+
+    command:
+      - -dbURI
+      - mongodb://mongo:27017/orion
+
     networks:
       - fiware
-    environment:
-      - ORION_LOG_LEVEL=INFO
 
   node:
-    image: silvinodemedeiros/silvester-node:latest
     build:
       context: ./node
-      dockerfile: Dockerfile
+
     container_name: silvester-node
-    profiles: ["prod"]
+
+    depends_on:
+      - orion
+
+    environment:
+
+      ORION_URL=http://orion:1026
     ports:
       - "3000:3000"
+
     networks:
       - fiware
-    depends_on:
-      - orion
-    environment:
-      - ORION_URL=http://orion:1026
-      - MONGO_URL=mongodb://mongo-db:27017
 
   angular:
-    image: silvinodemedeiros/silvester-angular:latest
+
     build:
       context: ./angular
-      dockerfile: Dockerfile
+
     container_name: silvester-angular
-    profiles: ["prod"]
+
+    depends_on:
+      - node
+
+    environment:
+
+      API_URL=http://node:3000
+
     ports:
       - "8080:80"
+
     networks:
       - fiware
-    depends_on:
-      - orion
 
 volumes:
   mongo-data:
 
 networks:
   fiware:
-    driver: bridge

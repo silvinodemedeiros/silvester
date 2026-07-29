@@ -1,3 +1,9 @@
-FROM fiware/orion:3.8.1
+FROM fiware/orion:4.5.0
 
-CMD ["-dbhost", "YOUR_MONGODB_HOST"]
+COPY entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 1026
+
+ENTRYPOINT ["/entrypoint.sh"]

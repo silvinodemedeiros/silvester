@@ -14,22 +14,11 @@ services:
   dockerfilePath: ./orion/Dockerfile
 
   envVars:
+    - key: ORION_MONGO_URI
+      sync: false
 
-  - key: DB_HOST
-    sync: false
-
-  - key: DB_USER
-    sync: false
-
-  - key: DB_PASSWORD
-    sync: false
-
-  startCommand: >
-    -dbhost $DB_HOST
-    -dbuser $DB_USER
-    -dbpwd $DB_PASSWORD
-    -dbAuthDb admin
-    -dbSSL
+    - key: ORION_LOG_LEVEL
+      value: INFO
 
 ####################################################
 # NODE
@@ -48,9 +37,6 @@ services:
 
   - key: ORION_URL
     value: https://silvester-orion.onrender.com
-
-  - key: MONGO_URL
-    sync: false
 
 ####################################################
 # ANGULAR
