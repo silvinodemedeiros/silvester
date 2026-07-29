@@ -21,4 +21,4 @@ WORKDIR /home/project/silvester
 EXPOSE 80
 
 # Default command
-CMD ["docker", "compose", , "--profile", "prod", "up", "-d"]
+CMD ["docker", "compose", "--profile", "prod", "up", "-d"]
