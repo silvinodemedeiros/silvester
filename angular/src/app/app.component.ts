@@ -52,7 +52,8 @@ import html2canvas from 'html2canvas';
 export class AppComponent implements OnInit, OnDestroy {
   
   title = 'silvester';
-  apiUrl = 'http://localhost:3000';
+  // apiUrl = 'http://localhost:3000';
+  apiUrl = 'https://silvester-node.onrender.com';
 
   menuItems = computed(() => this.menuItemService.menuItems());
 

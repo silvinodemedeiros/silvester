@@ -13,6 +13,8 @@ services:
 
   dockerfilePath: ./orion/Dockerfile
 
+  dockerCommand: contextBroker -dbURI "$ORION_MONGO_URI"
+
   envVars:
     - key: ORION_MONGO_URI
       sync: false

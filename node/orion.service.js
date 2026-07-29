@@ -2,8 +2,9 @@ const axios = require('axios');
 const { Subject } = require('rxjs');
 const weatherService = require('./weather/weather.service');
 
-const ORION_URL = 'http://localhost:1026/v2';
-// const ORION_URL = 'http://silvester-orion:1026/v2';
+const ORION_URL =
+    process.env.ORION_URL + "/v2" ||
+    "http://localhost:1026/v2";
 
 async function getEntities() {
   try {
