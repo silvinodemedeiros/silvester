@@ -12,7 +12,8 @@ export class GridWidgetService {
   update_ = signal(false);
   
   sub = new Subscription();
-  apiUrl = 'http://localhost:3000';
+  // apiUrl = 'http://localhost:3000';
+  apiUrl = 'https://silvester-node.onrender.com';
   eventsUrl = this.apiUrl + '/events';
 
   widgetIdCounter_ = computed(() => {
