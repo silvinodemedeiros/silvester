@@ -53,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
   
   title = 'silvester';
   // apiUrl = 'http://localhost:3000';
-  apiUrl = 'https://silvester-node.onrender.com';
+  apiUrl = 'https://silvester-node.onrender.com:3000';
 
   menuItems = computed(() => this.menuItemService.menuItems());
 
