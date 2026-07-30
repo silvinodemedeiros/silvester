@@ -1,4 +1,4 @@
-export const SILVESTER_SCRIPT = `
+export const PROTODIA_SCRIPT = `
 
 let darkMode = false;
 const darkModeToggle = document.getElementById("dark-mode-toggle");
@@ -222,7 +222,7 @@ widgetSource.onmessage = (event) => {
 
 `;
 
-export const SILVESTER_STYLES = `
+export const PROTODIA_STYLES = `
 .mat-select-panel {
   background: #fff;
 }

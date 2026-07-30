@@ -5,7 +5,7 @@ services:
 ####################################################
 
 - type: web
-  name: silvester-orion
+  name: protodia-orion
 
   runtime: docker
 
@@ -25,7 +25,7 @@ services:
 ####################################################
 
 - type: web
-  name: silvester-node
+  name: protodia-node
 
   runtime: docker
 
@@ -36,14 +36,14 @@ services:
   envVars:
 
   - key: ORION_URL
-    value: https://silvester-orion.onrender.com
+    value: https://protodia-orion.onrender.com
 
 ####################################################
 # ANGULAR
 ####################################################
 
 - type: web
-  name: silvester-angular
+  name: protodia-angular
 
   runtime: docker
 
@@ -54,4 +54,4 @@ services:
   envVars:
 
   - key: API_URL
-    value: https://silvester-node.onrender.com
+    value: https://protodia-node.onrender.com

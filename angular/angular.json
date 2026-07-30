@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "silvester": {
+    "protodia": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/silvester-angular",
+            "outputPath": "dist/protodia-angular",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -70,10 +70,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "silvester:build:production"
+              "buildTarget": "protodia:build:production"
             },
             "development": {
-              "buildTarget": "silvester:build:development"
+              "buildTarget": "protodia:build:development"
             }
           },
           "defaultConfiguration": "development"

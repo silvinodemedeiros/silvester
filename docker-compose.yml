@@ -16,7 +16,7 @@ services:
 
   orion:
     image: fiware/orion:4.5.0
-    container_name: silvester-orion
+    container_name: protodia-orion
     profiles: ["prod", "dev"]
     depends_on:
       - mongo
@@ -29,11 +29,11 @@ services:
       - ORION_LOG_LEVEL=INFO
 
   node:
-    image: silvinodemedeiros/silvester-node:latest
+    image: silvinodemedeiros/protodia-node:latest
     build:
       context: ./node
       dockerfile: Dockerfile
-    container_name: silvester-node
+    container_name: protodia-node
     profiles: ["prod"]
     ports:
       - "3000:3000"
@@ -46,11 +46,11 @@ services:
       - MONGO_URL=mongodb://mongo-db:27017
 
   angular:
-    image: silvinodemedeiros/silvester-angular:latest
+    image: silvinodemedeiros/protodia-angular:latest
     build:
       context: ./angular
       dockerfile: Dockerfile
-    container_name: silvester-angular
+    container_name: protodia-angular
     profiles: ["prod"]
     ports:
       - "8080:80"

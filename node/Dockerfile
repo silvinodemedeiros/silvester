@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-WORKDIR /usr/src/app/silvester-node
+WORKDIR /usr/src/app/protodia-node
 
 # Install dependencies
 COPY package.json ./

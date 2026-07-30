@@ -13,7 +13,7 @@ export class GridWidgetService {
   
   sub = new Subscription();
   // apiUrl = 'http://localhost:3000';
-  apiUrl = 'https://silvester-node.onrender.com';
+  apiUrl = 'https://protodia-node.onrender.com';
   eventsUrl = this.apiUrl + '/events';
 
   widgetIdCounter_ = computed(() => {
