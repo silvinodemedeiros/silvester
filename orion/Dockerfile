@@ -2,4 +2,6 @@ FROM fiware/orion:4.5.0
 
 EXPOSE 1026
 
-CMD sh -c 'exec /usr/bin/contextBroker -fg -multiservice -disableFileLog -dbURI "$ORION_MONGO_URI"'
+COPY --chmod=755 entrypoint.sh /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
