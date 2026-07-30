@@ -1,6 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-exec /usr/bin/contextBroker -fg -multiservice -disableFileLog \
-  -dbURI "$ORION_MONGO_URI" \
-  -port "1026" \
-  -logLevel "$ORION_LOG_LEVEL"
+exec contextBroker \
+    -fg \
+    -multiservice \
+    -disableFileLog \
+    -dbURI "$ORION_MONGO_URI" \
+    -logLevel "${ORION_LOG_LEVEL:-INFO}"
